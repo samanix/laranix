@@ -6,7 +6,7 @@ Please use the [issue tracker](https://bitbucket.org/samanix-php/laranix/issues)
  
 Contributions are encouraged via [pull requests](https://bitbucket.org/samanix-php/laranix/pull-requests/)
 
-For security related issues, please contact <samanix@gmail.com>
+For security related issues, please contact [<samanix@gmail.com>](mailto:samanix@gmail.com)
 
 
 ## License
