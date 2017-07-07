@@ -1,0 +1,8 @@
+<div class="ui center aligned container">
+    <div id="recaptcha-container">
+        <div class="field" id="recaptcha-field" style="display: none;">
+            <div class="g-recaptcha" data-sitekey="{{ $recaptcha['key'] }}" data-callback="recaptcha_callback"></div>
+        </div>
+        <div class="ui error message" id="recaptcha-error"></div>
+    </div>
+</div>

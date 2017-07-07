@@ -1,0 +1,97 @@
+<?php
+namespace __UserAppNamespace__Services\Laranix;
+
+use Laranix\Themer\Script\{Script, Settings as ScriptSettings};
+use Laranix\Themer\Style\{Style, Settings as StyleSettings};
+
+class ThemerDefaultFileLoader
+{
+    /**
+     * Default stylesheets to load
+     *
+     * @var array
+     */
+    protected static $defaultSheets = [
+        'semantic-css' => [
+            'file'  => 'semantic.min.css',
+            'url'   => 'https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/',
+            'order' => 1,
+        ],
+        'app-css'   => [
+            'file'  => 'app.min.css',
+            'order' => 2,
+        ],
+    ];
+
+    /**
+     * Default scripts to load
+     *
+     * @var array
+     */
+    protected static $defaultScripts = [
+        'jquery' => [
+            'file'  => 'jquery.min.js',
+            'url'   => 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/',
+            'order' => 1,
+        ],
+        'semantic-js' => [
+            'file'  => 'semantic.min.js',
+            'url'   => 'https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/',
+            'order' => 1,
+        ],
+        'app-main' =>  [
+            'file'  => 'app.js',
+            'order' => 2,
+        ],
+    ];
+
+    /**
+     * Load default themer parts
+     *
+     * @param \Laranix\Themer\Style\Style  $style
+     * @param \Laranix\Themer\Script\Script $scripts
+     */
+    public static function loadDefaults(Style $style, Script $scripts)
+    {
+        self::loadDefaultStylesheets($style);
+        self::loadDefaultScripts($scripts);
+    }
+
+    /**
+     * Add default stylesheets
+     *
+     * @param \Laranix\Themer\Style\Style $style
+     */
+    protected static function loadDefaultStylesheets(Style $style)
+    {
+        foreach (self::$defaultSheets as $key => $sheet) {
+            $style->add(new StyleSettings([
+                'key'   => $key,
+                'file'  => $sheet['file'],
+                'url'   => $sheet['url'] ?? null,
+                'order' => $sheet['order'] ?? -1,
+                'media' => $sheet['media'] ?? 'all',
+            ]));
+        }
+    }
+
+    /**
+     * Add default scripts
+     *
+     * @param \Laranix\Themer\Script\Script $scripts
+     */
+    protected static function loadDefaultScripts(Script $scripts)
+    {
+        foreach (self::$defaultScripts as $key => $defaultScript) {
+            $scripts->add(new ScriptSettings([
+                'key'   => $key,
+                'file'  => $defaultScript['file'],
+                'url'   => $defaultScript['url'] ?? null,
+                'order' => $defaultScript['order'] ?? -1,
+                'head'  => $defaultScript['head'] ?? true,
+                'async' => $defaultScript['async'] ?? false,
+                'defer' => $defaultScript['defer'] ?? true,
+            ]));
+        }
+    }
+}

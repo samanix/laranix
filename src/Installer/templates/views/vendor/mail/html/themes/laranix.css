@@ -1,0 +1,216 @@
+body {
+  font-family: 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  background: #F2F4F6;
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  height: 100%;
+  width: 100% !important;
+  -webkit-text-size-adjust: none;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  min-width: 320px;
+  font-size: 14px;
+  line-height: 1.4285em;
+  color: rgba(0, 0, 0, 0.87); }
+
+ul,
+ol,
+blockquote {
+  line-height: 1.4;
+  text-align: left; }
+
+a {
+  color: #4183C4;
+  text-decoration: none; }
+  a:hover {
+    color: #1e70bf; }
+  a img {
+    border: none; }
+
+/* Typography */
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-family: 'Lato', 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  padding: 5px 0; }
+
+h1 {
+  min-height: 1rem;
+  font-size: 2rem; }
+
+h2 {
+  font-size: 1.71428571rem; }
+
+h3 {
+  font-size: 1.28571429rem; }
+
+h4 {
+  font-size: 1.07142857rem; }
+
+h5 {
+  font-size: 1rem; }
+
+p {
+  margin: 0 0 1em;
+  line-height: 1.4285em; }
+  p.sub {
+    font-size: 12px; }
+
+img {
+  max-width: 100%; }
+
+/* Layout */
+.wrapper {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  -premailer-cellpadding: 0;
+  -premailer-cellspacing: 0;
+  -premailer-width: 100%; }
+
+.content {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  -premailer-cellpadding: 0;
+  -premailer-cellspacing: 0;
+  -premailer-width: 100%; }
+
+/* Header */
+.header {
+  padding: 20px 0;
+  text-align: center; }
+  .header a {
+    color: rgba(0, 0, 0, 0.87);
+    font-size: 19px;
+    font-weight: bold;
+    text-decoration: none;
+    text-shadow: 0 1px 0 #ffffff; }
+
+/* Body */
+.body, .inner-body {
+  -premailer-cellpadding: 0;
+  -premailer-cellspacing: 0;
+  -premailer-width: 100%;
+  padding: 0;
+  margin: 0 auto; }
+
+.body {
+  background-color: #F2F4F6;
+  width: 100%; }
+
+.inner-body {
+  background-color: #ffffff;
+  width: 570px;
+  border-radius: 10px; }
+
+/* Subcopy */
+.subcopy {
+  border-top: 1px solid #EDEFF2;
+  margin-top: 15px;
+  padding-top: 15px; }
+  .subcopy p {
+    font-size: 12px; }
+
+/* Footer */
+.footer {
+  color: rgba(0, 0, 0, 0.87);
+  padding: 0;
+  text-align: center;
+  margin-top: 10px;
+  -premailer-cellpadding: 0;
+  -premailer-cellspacing: 0;
+  -premailer-width: 570px; }
+  .footer p {
+    font-size: 12px;
+    text-align: center; }
+
+/* Tables */
+.table table {
+  margin: 30px auto;
+  width: 100%;
+  -premailer-cellpadding: 0;
+  -premailer-cellspacing: 0;
+  -premailer-width: 100%; }
+.table th {
+  border-bottom: 1px solid #EDEFF2;
+  padding-bottom: 8px; }
+.table td {
+  color: #74787E;
+  font-size: 15px;
+  line-height: 18px;
+  padding: 10px 0; }
+
+.content-cell {
+  padding: 20px; }
+
+/* Buttons */
+.action {
+  margin: 30px auto;
+  padding: 0;
+  text-align: center;
+  width: 100%;
+  -premailer-cellpadding: 0;
+  -premailer-cellspacing: 0;
+  -premailer-width: 100%; }
+
+.button {
+  cursor: pointer;
+  display: inline-block;
+  min-height: 1em;
+  outline: none;
+  border: none;
+  vertical-align: baseline;
+  background: #E0E1E2 none;
+  color: #FFFFFF;
+  margin: 0 0.25em 0 0;
+  padding: 0.78571429em 1.5em 0.78571429em;
+  text-transform: none;
+  text-shadow: none;
+  font-weight: bold;
+  line-height: 1em;
+  font-style: normal;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 0.28571429rem;
+  box-shadow: 0 0 0 0 rgba(34, 36, 38, 0.15) inset; }
+  .button-blue {
+    background: #2185D0 none; }
+  .button-green {
+    background: #21BA45 none; }
+  .button-red {
+    background: #DB2828 none; }
+
+/* Panels */
+.panel {
+  margin: 0 0 21px; }
+  .panel-content {
+    background-color: #F2F4F6;
+    padding: 16px; }
+  .panel-item {
+    padding: 0; }
+    .panel-item p:last-of-type {
+      margin-bottom: 0;
+      padding-bottom: 0; }
+
+/* Promotions */
+.promotion {
+  background-color: #FFFFFF;
+  border: 2px dashed #9BA2AB;
+  margin: 25px 0;
+  padding: 24px;
+  width: 100%;
+  -premailer-cellpadding: 0;
+  -premailer-cellspacing: 0;
+  -premailer-width: 100%; }
+  .promotion h1, .promotion p {
+    text-align: center; }
+  .promotion p {
+    font-size: 15px; }
+
+/*# sourceMappingURL=laranix.css.map */

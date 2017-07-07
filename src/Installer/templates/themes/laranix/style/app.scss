@@ -1,0 +1,97 @@
+// Fairly simple additions on top of semantic ui
+
+// Variables
+$white: #ffffff;
+$offwhite: #F2F4F6;
+$box-shadow: #222222;
+$menu-bg: #1B1C1D;
+
+$background-stripe: $white;
+$background-stripe-alt: #f8f8ff;
+
+// Rules
+body {
+    background: $offwhite repeating-linear-gradient(
+            45deg,
+            $background-stripe,
+            $background-stripe 10px,
+            $background-stripe-alt 10px,
+            $background-stripe-alt 20px
+    );
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+div#wrapper {
+    flex: 1;
+    background-color: $white;
+    padding-bottom: 50px;
+    box-shadow: 0 0 0.5em 0 #222;
+}
+
+div#main-menu-wrapper {
+    background: $menu-bg;
+}
+
+div#account-dropdown {
+    margin-right: 5px;
+}
+
+img#header-image {
+    max-width: 500px;
+}
+
+div#content-wrapper {
+    padding: 10px;
+    margin-top: 20px;
+}
+
+div#copyright {
+    font-size: 0.8rem;
+    text-align: center;
+}
+
+.ui {
+    $base-em: 0.8em;
+    $half-em: $base-em / 2;
+
+    &.form {
+        $location: top bottom;
+
+        @each $loc in $location {
+            .#{$loc}.spaced.field {
+                margin-#{$loc}: $base-em*3;
+            }
+        }
+
+        .field {
+            >label {
+                padding-top: 1em;
+            }
+
+            >.description {
+                font-size: $base-em;
+                padding-bottom: 0.1em;
+            }
+        }
+
+        .dividing {
+            @mixin header($mtop: $base-em*3) {
+                &.section {
+                    &.header {
+                        margin: $mtop -#{$base-em} $base-em -#{$base-em};
+                        padding: 0 $base-em $half-em $base-em;
+                    }
+                }
+            }
+
+            @include header;
+
+            &.first {
+                @include header($base-em);
+            }
+
+        }
+    }
+}

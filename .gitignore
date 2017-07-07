@@ -1,0 +1,13 @@
+.idea
+.subsplit
+composer.phar
+composer.lock
+.DS_Store
+Thumbs.db
+/vendor
+/tests/sandbox
+/node_modules
+/packages
+TODO.md
+_ide_helper.php
+.phpstorm.meta.php

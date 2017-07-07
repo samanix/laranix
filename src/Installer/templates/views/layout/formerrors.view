@@ -1,0 +1,11 @@
+@if (count($errors) > 0)
+    <div class="ui visible negative message">
+        <div class="header">Error</div>
+        <ul>
+            @foreach ($errors->all('<li>:message</li>') as $error)
+                {!! $error !!}
+            @endforeach
+        </ul>
+    </div>
+@endif
+

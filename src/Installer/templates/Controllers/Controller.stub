@@ -1,0 +1,333 @@
+<?php
+namespace __UserAppNamespace__Http\Controllers;
+
+use __UserAppNamespace__Services\Laranix\GlobalViewVariables;
+use Illuminate\Contracts\View\View;
+use Illuminate\Foundation\Application;
+use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Laranix\AntiSpam\{Sequence\Sequence,Recaptcha\Recaptcha};
+use Laranix\Themer\FileSettings as ThemerFileSettings;
+use Laranix\Themer\Image\Image;
+use Laranix\Themer\Script\{Script, Settings as ScriptSettings};
+use Laranix\Themer\Style\{Style, Settings as StyleSettings};
+use __UserAppNamespace__Services\Laranix\ThemerDefaultFileLoader;
+
+class Controller extends BaseController
+{
+    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+
+    /**
+     * @var bool
+     */
+    protected $inited = false;
+
+    /**
+     * @var \Illuminate\Foundation\Application
+     */
+    protected $app;
+
+    /**
+     * @var \Illuminate\Http\Request
+     */
+    protected $request;
+
+    /**
+     * @var \Illuminate\Contracts\View\Factory
+     */
+    protected $view;
+
+    /**
+     * @var \Illuminate\Contracts\Config\Repository
+     */
+    protected $config;
+
+    /**
+     * @var \Laranix\Themer\ThemerFile
+     */
+    protected $style;
+
+    /**
+     * @var \Laranix\Themer\ThemerFile
+     */
+    protected $scripts;
+
+    /**
+     * Ignore paths for themer auto init
+     *
+     * @var array
+     */
+    protected $autoInitExcept = [];
+
+    /**
+     * LaranixBaseController constructor.
+     *
+     * @param \Illuminate\Foundation\Application $application
+     */
+    public function __construct(Application $application)
+    {
+        $this->app      = $application;
+        $this->request  = $this->app->make('request');
+        $this->config   = $this->app->make('config');
+
+        $this->autoInitResponse();
+    }
+
+    /**
+     * POST data
+     *
+     * @param string|null   $key
+     * @param mixed         $default
+     * @return mixed
+     */
+    protected function getPostData(string $key = null, $default = null)
+    {
+        if ($key === null) {
+            return $this->request->request;
+        }
+
+        return $this->request->request->get($key, $default);
+    }
+
+    /**
+     * GET data
+     *
+     * @param string|null   $key
+     * @param mixed         $default
+     * @return mixed
+     */
+    protected function getQueryData(string $key = null, $default = null)
+    {
+        if ($key === null) {
+            return $this->request->query;
+        }
+
+        return $this->request->query->get($key, $default);
+    }
+
+    /**
+     * Get the session
+     *
+     * @param string|null   $key
+     * @param mixed         $default
+     * @return mixed
+     */
+    protected function getSessionData(string $key = null, $default = null)
+    {
+        $session = $this->request->session();
+
+        if ($key === null) {
+            return $session;
+        }
+
+        return $session->get($key, $default);
+    }
+
+    /**
+     * Auto init for a response
+     */
+    protected function autoInitResponse()
+    {
+        if ($this->request->isMethod('get') && !in_array($this->request->path(), $this->autoInitExcept)) {
+            $this->initForResponse();
+        }
+    }
+
+    /**
+     * Initialise parts for sending a response
+     */
+    protected function initForResponse()
+    {
+        if ($this->inited) {
+            return;
+        }
+
+        $this->view = $this->app->make('view');
+        $this->initThemer();
+        $this->initGlobalViewVariables();
+
+        $this->inited = true;
+    }
+
+    /**
+     * Add parts for themer base
+     */
+    protected function initThemer()
+    {
+        $this->style      = $this->app->make(Style::class);
+        $this->scripts    = $this->app->make(Script::class);
+
+        $this->share([
+            'style'     => $this->style,
+            'scripts'   => $this->scripts,
+            'image'     => $this->app->make(Image::class),
+        ]);
+
+        $this->addDefaultThemerFiles($this->style, $this->scripts);
+    }
+
+    /**
+     * Load variables available in all views
+     */
+    protected function initGlobalViewVariables()
+    {
+        $this->share(GlobalViewVariables::getGlobalViewVariables($this->app));
+    }
+
+    /**
+     * Add parts required for rendering a form
+     *
+     * @param array|ThemerFileSettings $scripts
+     */
+    protected function initForm($scripts = null)
+    {
+        $this->share([
+            'sequence'  => $this->app->make(Sequence::class),
+            'recaptcha' => $this->app->make(Recaptcha::class),
+        ]);
+
+        $formScript = new ScriptSettings([
+            'key'   => 'form-base-script',
+            'file'  => 'forms/form.js',
+            'order' => 5,
+        ]);
+
+        $recaptchaScript = new ScriptSettings([
+            'key'   => 'recaptcha',
+            'file'  => 'api.js',
+            'url'   => 'https://www.google.com/recaptcha',
+            'order' => 10,
+            'async' => true,
+        ]);
+
+        $scriptsCollection = [
+            $formScript, $recaptchaScript
+        ];
+
+        if (is_array($scripts)) {
+            $scriptsCollection = array_merge($scriptsCollection, $scripts);
+        } else {
+            $scriptsCollection[] = $scripts;
+        }
+
+        $this->addScripts($scriptsCollection);
+    }
+
+    /**
+     * Share a variables with the view
+     *
+     * @param mixed $share
+     * @param mixed $value
+     * @return mixed
+     */
+    protected function share($share, $value = null)
+    {
+        return $this->view->share($share, $value);
+    }
+
+    /**
+     * @param \Laranix\Themer\Style\Style  $style
+     * @param \Laranix\Themer\Script\Script $scripts
+     */
+    protected function addDefaultThemerFiles(Style $style, Script $scripts)
+    {
+        ThemerDefaultFileLoader::loadDefaults($style, $scripts);
+    }
+
+    /**
+     * Render error or success page
+     *
+     * @param array $data
+     * @param bool  $error
+     * @return \Illuminate\Contracts\View\View
+     */
+    protected function renderStatePage(array $data, bool $error = false) : View
+    {
+        return $error ? $this->renderErrorPage($data) : $this->renderSuccessPage($data);
+    }
+
+    /**
+     * Render success page
+     *
+     * @param array $data
+     * @return \Illuminate\Contracts\View\View
+     */
+    protected function renderSuccessPage(array $data) : View
+    {
+        return $this->view->make($this->config->get('appsettings.success_view', 'state.success'))->with($data);
+    }
+
+    /**
+     * Render error page
+     *
+     * @param array $data
+     * @return \Illuminate\Contracts\View\View
+     */
+    protected function renderErrorPage(array $data) : View
+    {
+        return $this->view->make($this->config->get('appsettings.error_view', 'state.error'))->with($data);
+    }
+
+    /**
+     * Validate a request
+     *
+     * @param array      $rules
+     * @param array|null $data
+     */
+    protected function validate(array $rules, array $data = null)
+    {
+        $data = $data ?? $this->getPostData()->all();
+
+        $this->app->make('validator')->make($data, $rules)->validate();
+    }
+
+    /**
+     * Add a stylesheet
+     *
+     * @param \Laranix\Themer\Style\Settings $settings
+     * @return $this
+     */
+    protected function addStylesheet(StyleSettings $settings)
+    {
+        $this->style->add($settings);
+
+        return $this;
+    }
+
+    /**
+     * @param array $sheets
+     */
+    protected function addStylesheets(array $sheets)
+    {
+        foreach ($sheets as $sheet) {
+            $this->addStylesheet($sheet);
+        }
+    }
+
+    /**
+     * Add a script
+     *
+     * @param \Laranix\Themer\FileSettings $settings
+     * @return $this
+     */
+    protected function addScript(ThemerFileSettings $settings)
+    {
+        $this->scripts->add($settings);
+
+        return $this;
+    }
+
+    /**
+     * Add multiple scripts
+     *
+     * @param array $scripts
+     */
+    protected function addScripts(array $scripts)
+    {
+        foreach ($scripts as $script) {
+            $this->addScript($script);
+        }
+    }
+}
