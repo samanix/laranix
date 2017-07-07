@@ -6,13 +6,18 @@ Please use the [issue tracker](https://bitbucket.org/samanix-php/laranix/issues)
  
 Contributions are encouraged via [pull requests](https://bitbucket.org/samanix-php/laranix/pull-requests/)
 
-For security related issues, please contact samanix@gmail.com
+For security related issues, please contact <samanix@gmail.com>
+
 
 ## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
-
 Laranix is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
+
+
+## Requirements
+* PHP 7.1+
+* [laravel/framework](https://github.com/laravel/framework) 5.4.*
+* [guzzlehttp/guzzle](https://github.com/guzzle/guzzle) 6.3.*
+* [andreasindal/laravel-markdown](https://github.com/andreasindal/laravel-markdown) 1.1.*
 
 
 ## Installation
