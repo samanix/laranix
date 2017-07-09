@@ -1,6 +1,6 @@
 {
   "name": "samanix/laranix",
-  "description": "Samanix Laravel Extensions",
+  "description": "Laravel extended functionality",
   "minimum-stability": "dev",
   "license": "MIT",
   "authors": [
