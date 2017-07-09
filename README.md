@@ -139,6 +139,8 @@ The following commands are also run automatically if the required option is set:
         
 If you skip these commands, you can run the artisan ones at a later time.
 
+**The command also attempts to run `composer dump-autoload`, if you get an error about this, please ensure you run manually afterwards.**
+
 ### Controller
 Laranix runs its own base controller, you can extend this class in your own controllers, by default its located at `App\Http\Controllers\Controller`. 
 
@@ -238,7 +240,6 @@ Run migrations using the `php artisan migrate` command.
 
 Seed your database with your default user groups using `php artisan db:seed --class=DefaultGroups`
 
-If you get a 'Class not found' error, run `composer dump-autoload` and then try again.
 
 ### Views
 Laranix provides several views to get you started, it also provides some mails in markdown format, so if you edit `config\laranixauth.php` to not use markdown on mails, you will have to edit the views in `resources/views/mail/auth/`.
