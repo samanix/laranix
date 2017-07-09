@@ -1,24 +1,73 @@
 # Laranix
 
+## About
 [Laranix](https://samanix.com/laranix) by [Samanix](https://samanix.com)
 
+Laranix provides extended functionality and more feature rich existing functions to Laravel.
+
+It was done as a package, albeit a large one, so that it is more easily updated with new Laravel versions.
+
+
+### Contributions
 Please use the [issue tracker](https://bitbucket.org/samanix-php/laranix/issues) to report any issues, or submit via [pull requests](https://bitbucket.org/samanix-php/laranix/pull-requests/)
  
 Contributions are encouraged via [pull requests](https://bitbucket.org/samanix-php/laranix/pull-requests/)
 
+
+### Security
 For security related issues, please contact <samanix@gmail.com>.
 
 
-## License
+### License
 Laranix is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
 
 
-## Requirements
+### Requirements
 * PHP 7.1+
 * [laravel/framework](https://github.com/laravel/framework) 5.4.*
 * [guzzlehttp/guzzle](https://github.com/guzzle/guzzle) 6.3.*
 * [andreasindal/laravel-markdown](https://github.com/andreasindal/laravel-markdown) 1.1.*
 
+
+### Features
+#### AntiSpam
+Provides recaptcha entry on forms (sign up with Google), as well as a sequence ID field, which will prevent the form being submitted twice.
+
+#### AppSettings
+Currently only provides a way to manage your App version, though you can add extra settings to it to access via the helper functions.
+
+#### Auth
+Custom auth package built on top of Laravels own, providing:
+
+* More feature rich User model 
+* User groups with group flags (permissions)
+* Password resets
+* Email verification
+* User cages - protect an area so a user cannot access it
+
+#### Installer
+Installs, publishes and copies files required for Laranix to run
+
+#### Networker
+Provides an easy way to link to your social media outlets, such as Twitter, Facebook, Instagram
+
+You can also add custom ones as you like
+
+#### Session
+Adds IP locking to sessions, not required if you don't want to use it
+ 
+#### Support
+Adds extra functionality, including:
+
+* Simple URL creator, that will always (try) and use the full URL - if it doesn't, somethings wrong with your setup
+* String formatting with named parameters (similar to C#)
+* Settings class, that allows you to use a class to determine parameters and their types
+
+#### Themer
+Provides themes and loads the files given, combines like for like files in to one automatically and updates if any file is added or changed
+
+#### Tracker
+Provides breadcrumb like tracking for user actions
 
 ## Installation
 ### Composer
