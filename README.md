@@ -73,7 +73,7 @@ Provides breadcrumb like tracking for user actions
 ### Composer
 `composer require samanix\laranix`
 
-Or add to composer.json:
+Or add to composer.json and then run `composer update`:
 
 `"samanix\laranix": "1.0.*"`
 
