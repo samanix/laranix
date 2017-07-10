@@ -11,3 +11,13 @@ Thumbs.db
 TODO.md
 _ide_helper.php
 .phpstorm.meta.php
+/public/hot
+/public/storage
+/storage/*.key
+/.vagrant
+Homestead.json
+Homestead.yaml
+npm-debug.log
+.env
+compiled*.js
+compiled*.css
