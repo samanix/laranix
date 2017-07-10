@@ -105,6 +105,6 @@ class ImageTest extends LaranixTestCase
         $this->assertSame('<img src="' . $imgurl . '" alt="img" title="title" />', $this->image->display('laranix.png', ['alt' => 'img', 'title' => 'title']));
         $this->assertSame('<img src="' . $imgurl . '" alt="img" title="title" />', $this->image->show('laranix.png'));
 
-        $this->assertSame('<img src="' . $imgurl2 . '" />', $this->image->show('samanix.png'));
+        $this->assertSame('<img src="' . $imgurl2 . '" alt="samanix.png" />', $this->image->show('samanix.png'));
     }
 }

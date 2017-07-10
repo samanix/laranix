@@ -34,6 +34,10 @@ class Image extends ThemerFile
             return null;
         }
 
+        $params = array_merge([
+            'alt'   => $image,
+        ], $params);
+
         $img = '<img src="' . $this->getWebUrl($image, $theme) . '" ';
 
         foreach ($params as $key => $param) {
