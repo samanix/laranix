@@ -143,18 +143,6 @@ class Image extends ThemerFile
     }
 
     /**
-     * Compile files of same type together
-     *
-     * @param array $files
-     * @return array|null
-     * @throws \Laranix\Support\Exception\NotImplementedException
-     */
-    protected function groupFilesByLocation(?array $files): ?array
-    {
-        throw new NotImplementedException('Method not required for ' . get_class($this));
-    }
-
-    /**
      * Create and return settings for file.
      *
      * @param \Laranix\Themer\Theme $theme

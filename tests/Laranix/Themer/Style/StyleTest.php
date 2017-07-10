@@ -147,6 +147,24 @@ class StyleTest extends LaranixTestCase
     }
 
     /**
+     * Test adding file without merging
+     */
+    public function testAddFileWithoutMerging()
+    {
+        $this->config->set('app.env', 'env1');
+
+        $style = $this->createStyle();
+
+        $this->loadLocalStyle($style);
+
+        $this->assertNull($style->files->get('style.local'));
+
+        $this->assertCount(6, $style->files->get('style.remote'));
+
+        $this->assertNotNull($style->files->get('style.remote.1')->url);
+    }
+
+    /**
      * View should render null with no scripts
      */
     public function testRenderWhenNoScriptsAdded()

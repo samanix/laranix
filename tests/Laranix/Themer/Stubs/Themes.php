@@ -43,6 +43,15 @@ class Themes
 
             'cookie' => 'cookie',
             'umask' => 0755,
+
+            'ignored' => [
+                'env1',
+                'env2',
+            ],
+        ],
+        'app' => [
+            'env' => 'testing',
+            'url' => 'http://bar.com',
         ],
     ];
 }

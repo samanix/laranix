@@ -145,6 +145,25 @@ class ScriptTest extends LaranixTestCase
     }
 
     /**
+     * Test adding file without merging
+     */
+    public function testAddFileWithoutMerging()
+    {
+        $this->config->set('app.env', 'env1');
+
+        $script = $this->createScript();
+
+        $this->loadLocalScripts($script);
+
+        $this->assertNull($script->files->get('scripts.local'));
+
+        $this->assertCount(5, $script->files->get('scripts.remote.head'));
+        $this->assertCount(1, $script->files->get('scripts.remote.body'));
+
+        $this->assertNotNull($script->files->get('scripts.remote.head.1')->url);
+    }
+
+    /**
      * View should render null with no scripts
      */
     public function testRenderWhenNoScriptsAdded()

@@ -26,4 +26,13 @@ return [
 
     // Directory permissions
     'umask' => 0755,
+
+    // Ignored environments
+    // If your environment is listed below is active, then themer will just return
+    // uncombined files to. Useful for development.
+    'ignored' => [
+        'testing',
+        'local',
+        'debug',
+    ],
 ];
