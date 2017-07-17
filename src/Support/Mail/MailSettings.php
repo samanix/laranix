@@ -71,7 +71,7 @@ class MailSettings extends Settings
     /**
      * @var bool
      */
-    public $markdown = false;
+    public $markdown = true;
 
     /**
      * @var string

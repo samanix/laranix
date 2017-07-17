@@ -16,7 +16,6 @@ class MailTest extends LaranixTestCase
             'to'            => [['email' => 'foo@bar.com', 'name' => 'FooBar']],
             'view'          => 'hello.world',
             'subject'       => 'Subject',
-            'markdown'      => true,
         ]);
 
         $this->assertNotNull(($mail = new Mail($settings))->options);
@@ -54,6 +53,7 @@ class MailTest extends LaranixTestCase
             'textView'      => 'text.view',
             'view'          => 'normal.view',
             'attachments'   => $attachments,
+            'markdown'      => false,
         ]);
 
         $mail->setOptions($settings);
