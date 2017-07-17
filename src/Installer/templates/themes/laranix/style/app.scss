@@ -1,13 +1,4 @@
-// Fairly simple additions on top of semantic ui
-
-// Variables
-$white: #ffffff;
-$offwhite: #F2F4F6;
-$box-shadow: #222222;
-$menu-bg: #1B1C1D;
-
-$background-stripe: $white;
-$background-stripe-alt: #f8f8ff;
+@import 'vars';
 
 // Rules
 body {
