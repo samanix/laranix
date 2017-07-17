@@ -15,6 +15,8 @@ class UrlTest extends LaranixTestCase
 
         $_SERVER['HTTP_HOST']   = 'bar.com';
         $_SERVER['REQUEST_URI'] = '';
+
+        config()->set('app.url', 'http://bar.com');
     }
 
     /**

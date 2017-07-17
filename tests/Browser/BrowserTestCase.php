@@ -6,5 +6,5 @@ use Laranix\Tests\LaranixTestSuite;
 
 abstract class BrowserTestCase extends DuskTestCase
 {
-    use Laranix\Tests\LaranixTestSuite;
+    use LaranixTestSuite;
 }
