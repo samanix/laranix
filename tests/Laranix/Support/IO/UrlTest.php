@@ -7,6 +7,11 @@ use Laranix\Tests\LaranixTestCase;
 class UrlTest extends LaranixTestCase
 {
     /**
+     * @var string
+     */
+    protected $url = 'http://bar.com';
+
+    /**
      * Set up
      */
     public function setUp()
@@ -44,18 +49,16 @@ class UrlTest extends LaranixTestCase
      */
     public function testCreateToUrl()
     {
-        $url = config('app.url', 'bar.com');
+        $this->assertSame($this->url . '/bar', Url::to('bar'));
+        $this->assertSame($this->url . '/bar/baz', Url::to(['bar', 'baz']));
+        $this->assertSame($this->url, Url::to(null));
+        $this->assertSame($this->url . '/bar/', Url::to('bar', null, null, true));
+        $this->assertSame($this->url . '/', Url::to(null, null, null, true));
+        $this->assertSame($this->url . '#bar', Url::to(null, null, 'bar'));
+        $this->assertSame($this->url . '/bar/?hello=world', Url::to('bar', [ 'hello' => 'world'], null, true));
+        $this->assertSame($this->url . '/bar?hello=world#foo', Url::to('bar', ['hello' => 'world'], 'foo', false));
 
-        $this->assertSame($url . '/bar', Url::to('bar'));
-        $this->assertSame($url . '/bar/baz', Url::to(['bar', 'baz']));
-        $this->assertSame($url, Url::to(null));
-        $this->assertSame($url . '/bar/', Url::to('bar', null, null, true));
-        $this->assertSame($url . '/', Url::to(null, null, null, true));
-        $this->assertSame($url . '#bar', Url::to(null, null, 'bar'));
-        $this->assertSame($url . '/bar/?hello=world', Url::to('bar', [ 'hello' => 'world'], null, true));
-        $this->assertSame($url . '/bar?hello=world#foo', Url::to('bar', ['hello' => 'world'], 'foo', false));
-
-        $this->assertSame($url, Url::self());
+        $this->assertSame($this->url, Url::self());
     }
 
     /**
@@ -63,13 +66,11 @@ class UrlTest extends LaranixTestCase
      */
     public function testMakeUrl()
     {
-        $url = config('app.url', 'bar.com');
-
-        $this->assertSame($url . '/foo', Url::url('/foo'));
-        $this->assertSame($url . '/foo/', Url::url('/foo/'));
+        $this->assertSame($this->url . '/foo', Url::url('/foo'));
+        $this->assertSame($this->url . '/foo/', Url::url('/foo/'));
         $this->assertSame('https://foo.com', Url::url('https://foo.com'));
         $this->assertSame('http://bar.com/baz/', Url::url('http://bar.com/baz/'));
-        $this->assertSame($url . '/bar?hello=world#foo', Url::url('/bar?hello=world#foo'));
+        $this->assertSame($this->url . '/bar?hello=world#foo', Url::url('/bar?hello=world#foo'));
     }
 
     /**
