@@ -397,7 +397,7 @@ abstract class Manager
             // TODO Default values
             'view'          => $this->config->get("laranixauth.{$this->configKey}.mail.view"),
             'subject'       => $this->config->get("laranixauth.{$this->configKey}.mail.subject"),
-            'markdown'      => $this->config->get("laranixauth.{$this->configKey}.mail.markdown", false),
+            'markdown'      => $this->config->get("laranixauth.{$this->configKey}.mail.markdown", true),
 
             'userId'        => $user->getAuthIdentifier(),
             'username'      => $user->username,
