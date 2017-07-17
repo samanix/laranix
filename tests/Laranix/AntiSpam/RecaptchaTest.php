@@ -1,5 +1,5 @@
 <?php
-namespace Tests\Laranix\AntiSpam;
+namespace Laranix\Tests\Laranix\AntiSpam;
 
 use GuzzleHttp\Client as GuzzleClient;
 use Illuminate\Contracts\View\Factory as ViewFactory;
@@ -8,7 +8,7 @@ use Mockery as m;
 use Illuminate\Config\Repository;
 use Illuminate\Http\Request;
 use Laranix\AntiSpam\Recaptcha\Recaptcha;
-use Tests\LaranixTestCase;
+use Laranix\Tests\LaranixTestCase;
 
 class RecaptchaTest extends LaranixTestCase
 {

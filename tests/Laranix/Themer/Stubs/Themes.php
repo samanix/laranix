@@ -1,5 +1,5 @@
 <?php
-namespace Tests\Laranix\Themes\Stubs;
+namespace Laranix\Tests\Laranix\Themes\Stubs;
 
 class Themes
 {

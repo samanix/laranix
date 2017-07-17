@@ -1,9 +1,9 @@
 <?php
-namespace Tests\Laranix\Networker;
+namespace Laranix\Tests\Laranix\Networker;
 
 use Laranix\Networker\Networker;
 use Laranix\Support\IO\Url\Settings;
-use Tests\LaranixTestCase;
+use Laranix\Tests\LaranixTestCase;
 use Illuminate\Config\Repository;
 
 class NetworkerTest extends LaranixTestCase

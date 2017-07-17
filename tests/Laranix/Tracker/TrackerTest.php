@@ -1,9 +1,9 @@
 <?php
-namespace Tests\Laranix\Tracker;
+namespace Laranix\Tests\Laranix\Tracker;
 
 use Laranix\Auth\User\User;
 use Laranix\Tracker\Tracker;
-use Tests\LaranixTestCase;
+use Laranix\Tests\LaranixTestCase;
 
 class TrackerTest extends LaranixTestCase
 {

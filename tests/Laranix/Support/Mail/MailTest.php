@@ -1,9 +1,9 @@
 <?php
-namespace Tests\Support\IO;
+namespace Laranix\Tests\Support\IO;
 
 use Laranix\Support\Mail\Mail;
 use Laranix\Support\Mail\MailSettings;
-use Tests\LaranixTestCase;
+use Laranix\Tests\LaranixTestCase;
 
 class MailTest extends LaranixTestCase
 {

@@ -1,5 +1,5 @@
 <?php
-namespace Tests\Laranix\Themer;
+namespace Laranix\Tests\Laranix\Themer;
 
 use Illuminate\Config\Repository;
 use Laranix\Support\Exception\KeyExistsException;
@@ -7,8 +7,8 @@ use Laranix\Support\Exception\NullValueException;
 use Laranix\Themer\Theme;
 use Laranix\Themer\ThemeRepository;
 use Laranix\Themer\ThemeSettings;
-use Tests\Laranix\Themes\Stubs\Themes;
-use Tests\LaranixTestCase;
+use Laranix\Tests\Laranix\Themes\Stubs\Themes;
+use Laranix\Tests\LaranixTestCase;
 
 class ThemeRepositoryTest extends LaranixTestCase
 {

@@ -1,7 +1,7 @@
 <?php
-namespace Tests\Laranix\Support\Database;
+namespace Laranix\Tests\Laranix\Support\Database;
 
-use Tests\LaranixTestCase;
+use Laranix\Tests\LaranixTestCase;
 
 class HasCompositePrimaryKeyTest extends LaranixTestCase
 {

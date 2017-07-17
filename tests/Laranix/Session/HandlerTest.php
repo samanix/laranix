@@ -1,12 +1,12 @@
 <?php
-namespace Tests\Laranix\Session;
+namespace Laranix\Tests\Laranix\Session;
 
 use Illuminate\Config\Repository;
 use Illuminate\Http\Request;
 use Laranix\Auth\User\User;
 use Laranix\Session\Handler;
 use Laranix\Session\Session;
-use Tests\LaranixTestCase;
+use Laranix\Tests\LaranixTestCase;
 use Mockery as m;
 
 class HandlerTest extends LaranixTestCase

@@ -1,7 +1,7 @@
 <?php
-namespace Tests\Http\Controllers;
+namespace Laranix\Tests\Http\Controllers;
 
-use Tests\LaranixTestCase;
+use Laranix\Tests\LaranixTestCase;
 
 class HomeTest extends LaranixTestCase
 {

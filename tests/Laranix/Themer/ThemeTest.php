@@ -1,10 +1,10 @@
 <?php
-namespace Tests\Laranix\Themer;
+namespace Laranix\Tests\Laranix\Themer;
 
 use Laranix\Support\IO\Url\Url;
 use Laranix\Themer\Theme;
 use Laranix\Themer\ThemeSettings;
-use Tests\LaranixTestCase;
+use Laranix\Tests\LaranixTestCase;
 
 class ThemeTest extends LaranixTestCase
 {

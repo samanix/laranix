@@ -1,5 +1,5 @@
 <?php
-namespace Tests;
+namespace Laranix\Tests;
 
 use Illuminate\Database\Eloquent\Factory;
 use Illuminate\Foundation\Testing\DatabaseMigrations;

@@ -1,13 +1,13 @@
 <?php
-namespace Tests\Laranix\Themer;
+namespace Laranix\Tests\Laranix\Themer;
 
 use Illuminate\Config\Repository;
 use Illuminate\Http\Request;
 use Laranix\Themer\Themer;
 use Laranix\Themer\ThemeRepository;
-use Tests\LaranixTestCase;
+use Laranix\Tests\LaranixTestCase;
 use Mockery as m;
-use Tests\Laranix\Themes\Stubs\Themes;
+use Laranix\Tests\Laranix\Themes\Stubs\Themes;
 
 class ThemerTest extends LaranixTestCase
 {

@@ -1,12 +1,12 @@
 <?php
-namespace Tests\Laranix\Auth\User;
+namespace Laranix\Tests\Laranix\Auth\User;
 
 use Carbon\Carbon;
 use Laranix\Auth\Group\Group;
 use Laranix\Auth\User\Cage\Cage;
 use Laranix\Auth\User\Groups\UserGroup;
 use Laranix\Auth\User\User;
-use Tests\LaranixTestCase;
+use Laranix\Tests\LaranixTestCase;
 
 class UserTest extends LaranixTestCase
 {

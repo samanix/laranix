@@ -1,9 +1,9 @@
 <?php
-namespace Tests\Laranix\Auth\Group;
+namespace Laranix\Tests\Laranix\Auth\Group;
 
 use Laranix\Auth\Group\Group;
 use Laranix\Auth\Group\GroupRepository;
-use Tests\LaranixTestCase;
+use Laranix\Tests\LaranixTestCase;
 
 class GroupRepositoryTest extends LaranixTestCase
 {

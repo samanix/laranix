@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Browser;
+namespace Laranix\Tests\Browser;
 
 use Laranix\Auth\User\User;
 use Laravel\Dusk\Browser;

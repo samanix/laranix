@@ -1,8 +1,8 @@
 <?php
-namespace Tests\Laranix\Support\IO;
+namespace Laranix\Tests\Laranix\Support\IO;
 
 use Laranix\Support\IO\Path;
-use Tests\LaranixTestCase;
+use Laranix\Tests\LaranixTestCase;
 
 class PathTest extends LaranixTestCase
 {

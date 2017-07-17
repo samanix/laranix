@@ -1,12 +1,12 @@
 <?php
-namespace Tests\Http\Controllers\Auth;
+namespace Laranix\Tests\Http\Controllers\Auth;
 
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Laranix\Auth\Password\Reset\Events\ForgotAttempt;
 use Laranix\Auth\Password\Reset\Mail as ResetMail;
 use Laranix\Auth\Password\Reset\Events\Created;
 use Laranix\Auth\User\User;
-use Tests\LaranixTestCase;
+use Laranix\Tests\LaranixTestCase;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Mail;
 

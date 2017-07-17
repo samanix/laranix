@@ -1,11 +1,11 @@
 <?php
-namespace Tests\Laranix\Auth\User\Cage;
+namespace Laranix\Tests\Laranix\Auth\User\Cage;
 
 use Laranix\Auth\User\Cage\CageRepository;
 use Laranix\Auth\User\Cage\Cage;
 use Laranix\Auth\User\Cage\Repository;
 use Laranix\Auth\User\User;
-use Tests\LaranixTestCase;
+use Laranix\Tests\LaranixTestCase;
 
 class CageRepositoryTest extends LaranixTestCase
 {

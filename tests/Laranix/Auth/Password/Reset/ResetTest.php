@@ -1,13 +1,13 @@
 <?php
-namespace Tests\Laranix\Auth\Password\Reset;
+namespace Laranix\Tests\Laranix\Auth\Password\Reset;
 
 use Laranix\Auth\Password\Reset\Reset;
 use Laranix\Auth\User\User;
-use Tests\LaranixTestCase;
+use Laranix\Tests\LaranixTestCase;
 
 /**
- * @see \Tests\Laranix\Auth\Email\Verification\VerificationTest
- * @see \Tests\Laranix\Auth\User\Token\TokenTest
+ * @see \Laranix\Tests\Laranix\Auth\Email\Verification\VerificationTest
+ * @see \Laranix\Tests\Laranix\Auth\User\Token\TokenTest
  */
 class ResetTest extends LaranixTestCase
 {

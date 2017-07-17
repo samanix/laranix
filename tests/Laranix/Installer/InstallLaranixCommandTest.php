@@ -1,7 +1,7 @@
 <?php
-namespace Tests\Laranix\Installer;
+namespace Laranix\Tests\Laranix\Installer;
 
-use Tests\LaranixTestCase;
+use Laranix\Tests\LaranixTestCase;
 
 class InstallLaranixCommandTest extends LaranixTestCase
 {

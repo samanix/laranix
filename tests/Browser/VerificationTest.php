@@ -1,5 +1,5 @@
 <?php
-namespace Tests\Browser;
+namespace Laranix\Tests\Browser;
 
 use Laranix\Auth\Email\Verification\Verification;
 use Laranix\Auth\User\User;

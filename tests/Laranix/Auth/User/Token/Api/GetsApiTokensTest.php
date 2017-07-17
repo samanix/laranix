@@ -1,7 +1,7 @@
 <?php
-namespace Tests\Auth\User\Token\Api;
+namespace Laranix\Tests\Auth\User\Token\Api;
 
-use Tests\LaranixTestCase;
+use Laranix\Tests\LaranixTestCase;
 use Laranix\Auth\User\Token\Api\GetsApiTokens;
 
 class GetsApiTokensTest extends LaranixTestCase

@@ -1,18 +1,18 @@
 <?php
-namespace Tests\Laranix\Themer\Scripts;
+namespace Laranix\Tests\Laranix\Themer\Scripts;
 
 use Illuminate\Log\Writer;
 use Illuminate\View\Factory;
 use Laranix\Support\Exception\KeyExistsException;
 use Laranix\Themer\Script\Script;
 use Laranix\Themer\Script\Settings;
-use Tests\LaranixTestCase;
+use Laranix\Tests\LaranixTestCase;
 use Mockery as m;
 use Illuminate\Config\Repository;
 use Illuminate\Http\Request;
 use Laranix\Themer\Themer;
 use Laranix\Themer\ThemeRepository;
-use Tests\Laranix\Themes\Stubs\Themes;
+use Laranix\Tests\Laranix\Themes\Stubs\Themes;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 
 class ScriptTest extends LaranixTestCase

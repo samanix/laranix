@@ -1,5 +1,5 @@
 <?php
-namespace Tests\Laranix\Auth\Email\Verification;
+namespace Laranix\Tests\Laranix\Auth\Email\Verification;
 
 use Illuminate\Config\Repository;
 use Illuminate\Contracts\Auth\Authenticatable;
@@ -14,15 +14,15 @@ use Laranix\Auth\User\Token\Token;
 use Laranix\Auth\User\User;
 use Laranix\Support\Exception\EmailExistsException;
 use Laranix\Support\Exception\NullValueException;
-use Tests\LaranixTestCase;
+use Laranix\Tests\LaranixTestCase;
 use Mockery as m;
 use Illuminate\Support\Facades\Event;
 use Laranix\Auth\Email\Verification\Events\Updated as UpdatedEvent;
 
 
 /**
- * @see \Tests\Laranix\Auth\Password\Reset\ManagerTest
- * @see \Tests\Laranix\Auth\User\Token\ManagerTest
+ * @see \Laranix\Tests\Laranix\Auth\Password\Reset\ManagerTest
+ * @see \Laranix\Tests\Laranix\Auth\User\Token\ManagerTest
  */
 class ManagerTest extends LaranixTestCase
 {

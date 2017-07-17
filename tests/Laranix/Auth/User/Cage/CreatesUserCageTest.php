@@ -1,10 +1,10 @@
 <?php
-namespace Tests\Laranix\Auth\User\Cage;
+namespace Laranix\Tests\Laranix\Auth\User\Cage;
 
 use Laranix\Auth\User\Cage\Settings;
 use Laranix\Auth\User\Cage\CreatesUserCage;
 use Laranix\Auth\User\User;
-use Tests\LaranixTestCase;
+use Laranix\Tests\LaranixTestCase;
 use Illuminate\Support\Facades\Event;
 use Laranix\Auth\User\Cage\Events\Created;
 

@@ -1,11 +1,11 @@
 <?php
-namespace Tests\Laranix\Auth\Email\Verification;
+namespace Laranix\Tests\Laranix\Auth\Email\Verification;
 
-use Tests\LaranixTestCase;
+use Laranix\Tests\LaranixTestCase;
 
 /**
- * @see \Tests\Laranix\Auth\Password\Reset\ResetTest
- * @see \Tests\Auth\User\Token\TokenTest
+ * @see \Laranix\Tests\Laranix\Auth\Password\Reset\ResetTest
+ * @see \Laranix\Tests\Auth\User\Token\TokenTest
  */
 class VerificationTest extends LaranixTestCase
 {

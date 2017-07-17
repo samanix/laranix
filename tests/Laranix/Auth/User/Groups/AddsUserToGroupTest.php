@@ -1,12 +1,12 @@
 <?php
-namespace Tests\Laranix\Auth\User\Groups;
+namespace Laranix\Tests\Laranix\Auth\User\Groups;
 
 use Laranix\Auth\Group\Group;
 use Laranix\Auth\User\Groups\Events\Added;
 use Laranix\Auth\User\Groups\Settings;
 use Laranix\Auth\User\Groups\AddsUserToGroup;
 use Laranix\Auth\User\User;
-use Tests\LaranixTestCase;
+use Laranix\Tests\LaranixTestCase;
 use Illuminate\Support\Facades\Event;
 
 class AddsUserToGroupTest extends LaranixTestCase

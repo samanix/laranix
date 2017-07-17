@@ -1,17 +1,17 @@
 <?php
-namespace Tests\Laranix\Themer\Image;
+namespace Laranix\Tests\Laranix\Themer\Image;
 
 use Illuminate\Log\Writer;
 use Illuminate\View\Factory;
 use Laranix\Support\Exception\NotImplementedException;
 use Laranix\Themer\Image\Image;
-use Tests\LaranixTestCase;
+use Laranix\Tests\LaranixTestCase;
 use Mockery as m;
 use Illuminate\Config\Repository;
 use Illuminate\Http\Request;
 use Laranix\Themer\Themer;
 use Laranix\Themer\ThemeRepository;
-use Tests\Laranix\Themes\Stubs\Themes;
+use Laranix\Tests\Laranix\Themes\Stubs\Themes;
 
 class ImageTest extends LaranixTestCase
 {

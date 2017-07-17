@@ -1,8 +1,8 @@
 <?php
-namespace Tests\Laranix\Support\IO;
+namespace Laranix\Tests\Laranix\Support\IO;
 
 use Laranix\Support\IO\Str\Settings;
-use Tests\LaranixTestCase;
+use Laranix\Tests\LaranixTestCase;
 use Laranix\Support\IO\Str\Str;
 
 class StrTest extends LaranixTestCase
