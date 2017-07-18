@@ -1,5 +1,5 @@
 <?php
-namespace Tests\Laranix\Auth\Password\Reset;
+namespace Laranix\Tests\Laranix\Auth\Password\Reset;
 
 use Illuminate\Config\Repository;
 use Illuminate\Contracts\Auth\Authenticatable;
@@ -12,7 +12,7 @@ use Laranix\Auth\Password\Reset\Reset;
 use Laranix\Auth\User\Token\Token;
 use Laranix\Auth\User\User;
 use Laranix\Support\Exception\NullValueException;
-use Tests\LaranixTestCase;
+use Laranix\Tests\LaranixTestCase;
 use Mockery as m;
 use Illuminate\Support\Facades\Event;
 use Laranix\Auth\Password\Reset\Events\Reset as ResetEvent;
@@ -20,8 +20,8 @@ use Laranix\Auth\Password\Reset\Events\Updated as UpdatedEvent;
 
 
 /**
- * @see \Tests\Laranix\Auth\Email\Verification\ManagerTest
- * @see \Tests\Laranix\Auth\User\Token\ManagerTest
+ * @see \Laranix\Tests\Laranix\Auth\Email\Verification\ManagerTest
+ * @see \Laranix\Tests\Laranix\Auth\User\Token\ManagerTest
  */
 class ManagerTest extends LaranixTestCase
 {

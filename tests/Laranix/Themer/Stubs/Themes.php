@@ -1,5 +1,5 @@
 <?php
-namespace Tests\Laranix\Themes\Stubs;
+namespace Laranix\Tests\Laranix\Themes\Stubs;
 
 class Themes
 {
@@ -43,6 +43,15 @@ class Themes
 
             'cookie' => 'cookie',
             'umask' => 0755,
+
+            'ignored' => [
+                'env1',
+                'env2',
+            ],
+        ],
+        'app' => [
+            'env' => 'testing',
+            'url' => 'http://bar.com',
         ],
     ];
 }

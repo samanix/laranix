@@ -68,6 +68,12 @@ class InstallLaranixCommand extends Command
         $this->confirmOverwrite = $this->optionSet('prompt');
 
         $this->installLaranix();
+
+        try {
+            exec('composer dump-autoload');
+        } catch (\Exception $e) {
+            $this->error('Failed to run `composer dump-autoload`, please run manually');
+        }
     }
 
     /**

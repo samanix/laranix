@@ -188,9 +188,9 @@ class Url
      * @param null|string $domain
      * @return string|null
      */
-    protected static function getDomain(?string $domain) : ?string
+    protected static function getDomain(?string $domain = null) : ?string
     {
-        $domain = $domain ?? $_SERVER['HTTP_HOST'] ?? $_SERVER['SERVER_NAME'] ?? null;
+        $domain = $domain ?? self::getAppUrl();
 
         if ($domain === null) {
             return null;

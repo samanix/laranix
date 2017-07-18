@@ -1,12 +1,12 @@
 <?php
-namespace Tests\Laranix\Tracker;
+namespace Laranix\Tests\Laranix\Tracker;
 
 use Illuminate\Config\Repository;
 use Laranix\Auth\User\User;
 use Laranix\Tracker\Settings;
 use Laranix\Tracker\Tracker;
 use Laranix\Tracker\TrackerRepository;
-use Tests\LaranixTestCase;
+use Laranix\Tests\LaranixTestCase;
 
 class TrackerRepositoryTest extends LaranixTestCase
 {

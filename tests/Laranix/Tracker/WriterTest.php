@@ -1,5 +1,5 @@
 <?php
-namespace Tests\Laranix\Tracker;
+namespace Laranix\Tests\Laranix\Tracker;
 
 use Illuminate\Config\Repository;
 use Illuminate\Http\Request;
@@ -7,7 +7,7 @@ use Laranix\Support\IO\Url\Url;
 use Laranix\Tracker\Events\BatchCreated;
 use Laranix\Tracker\Tracker;
 use Laranix\Tracker\Writer;
-use Tests\LaranixTestCase;
+use Laranix\Tests\LaranixTestCase;
 use Illuminate\Support\Facades\Event;
 use Laranix\Tracker\Events\Created;
 use Mockery as m;

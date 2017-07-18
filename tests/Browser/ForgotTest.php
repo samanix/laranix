@@ -1,5 +1,5 @@
 <?php
-namespace Tests\Browser;
+namespace Laranix\Tests\Browser;
 
 use Laravel\Dusk\Browser;
 

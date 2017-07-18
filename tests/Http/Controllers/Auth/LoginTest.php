@@ -1,9 +1,9 @@
 <?php
-namespace Tests\Http\Controllers\Auth;
+namespace Laranix\Tests\Http\Controllers\Auth;
 
 use Laranix\Auth\Events\Login\Restricted;
 use Laranix\Auth\User\User;
-use Tests\LaranixTestCase;
+use Laranix\Tests\LaranixTestCase;
 use Laranix\Support\IO\Url\Url;
 use Illuminate\Support\Facades\Event;
 

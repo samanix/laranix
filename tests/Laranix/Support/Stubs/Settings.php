@@ -1,5 +1,5 @@
 <?php
-namespace Tests\Laranix\Support\Stubs;
+namespace Laranix\Tests\Laranix\Support\Stubs;
 
 use Laranix\Support\Settings as BaseSettings;
 

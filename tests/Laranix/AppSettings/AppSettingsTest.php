@@ -1,8 +1,8 @@
 <?php
-namespace Tests\Laranix\AppSettings;
+namespace Laranix\Tests\Laranix\AppSettings;
 
 use Laranix\AppSettings\AppSettings;
-use Tests\LaranixTestCase;
+use Laranix\Tests\LaranixTestCase;
 use Illuminate\Config\Repository;
 
 class AppSettingsTest extends LaranixTestCase

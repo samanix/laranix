@@ -64,16 +64,18 @@ class Mail extends Mailable
         }
 
         if ($this->options->markdown === true) {
-            $this->markdown($this->options->view);
+            $this->markdown($this->options->view, $this->options->extraViewData ?? []);
+        } else {
+            $this->view($this->options->view, $this->options->extraViewData ?? []);
         }
 
-        if (isset($this->options->attachments)) {
-            if (is_array($this->options->attachments)) {
-                foreach ($this->options->attachments as $attachment) {
-                    $this->attach($attachment['file'], $attachment['options']);
-                }
-            } else {
-                $this->attach($this->options->attachments);
+        if ($this->options->textView !== null) {
+            $this->text($this->options->textView, $this->options->textExtraViewData ?? []);
+        }
+
+        if ($this->options->attachments !== null) {
+            foreach ($this->options->attachments as $id => $attachment) {
+                $this->attach($attachment['file'], $attachment['options'] ?? []);
             }
         }
     }

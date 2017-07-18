@@ -1,8 +1,8 @@
 <?php
-namespace Tests\Laranix\Auth\User\Groups;
+namespace Laranix\Tests\Laranix\Auth\User\Groups;
 
 use Laranix\Auth\User\Groups\UserGroup;
-use Tests\LaranixTestCase;
+use Laranix\Tests\LaranixTestCase;
 use Laranix\Auth\Group\Group;
 use Laranix\Auth\User\User;
 

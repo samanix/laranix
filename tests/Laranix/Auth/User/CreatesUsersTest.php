@@ -1,10 +1,10 @@
 <?php
-namespace Tests\Laranix\Auth\User;
+namespace Laranix\Tests\Laranix\Auth\User;
 
 use Laranix\Auth\User\CreatesUsers;
 use Laranix\Auth\User\Events\Created;
 use Laranix\Auth\User\User;
-use Tests\LaranixTestCase;
+use Laranix\Tests\LaranixTestCase;
 use Laranix\Auth\User\Settings;
 use Illuminate\Support\Facades\Event;
 

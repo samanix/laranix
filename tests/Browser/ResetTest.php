@@ -1,5 +1,5 @@
 <?php
-namespace Tests\Browser;
+namespace Laranix\Tests\Browser;
 
 use Laranix\Auth\Password\Reset\Reset;
 use Laranix\Auth\User\User;

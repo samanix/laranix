@@ -1,5 +1,5 @@
 <?php
-namespace Tests\Http\Controllers\Auth\Email\Verification;
+namespace Laranix\Tests\Http\Controllers\Auth\Email\Verification;
 
 use Laranix\Auth\Email\Events\Updated;
 use Laranix\Auth\Email\Verification\Events\VerifyAttempt;
@@ -10,7 +10,7 @@ use Laranix\Auth\Email\Verification\Events\Verified;
 use Laranix\Auth\Email\Verification\Verification;
 use Laranix\Auth\User\Token\Token;
 use Laranix\Auth\User\User;
-use Tests\LaranixTestCase;
+use Laranix\Tests\LaranixTestCase;
 use Laranix\Support\IO\Url\Url;
 use Illuminate\Support\Facades\Mail;
 use Laranix\Auth\Email\Verification\Mail as VerificationMail;

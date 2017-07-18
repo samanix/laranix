@@ -1,25 +1,79 @@
 # Laranix
 
+## About
 [Laranix](https://samanix.com/laranix) by [Samanix](https://samanix.com)
 
+Laranix provides extended functionality and more feature rich existing functions to Laravel.
+
+It was done as a package, albeit a large one, so that it is more easily updated with new Laravel versions.
+
+
+### Contributions
 Please use the [issue tracker](https://bitbucket.org/samanix-php/laranix/issues) to report any issues, or submit via [pull requests](https://bitbucket.org/samanix-php/laranix/pull-requests/)
  
 Contributions are encouraged via [pull requests](https://bitbucket.org/samanix-php/laranix/pull-requests/)
 
-For security related issues, please contact samanix@gmail.com
 
-## License
+### Security
+For security related issues, please contact <samanix@gmail.com>.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
 
+### License
 Laranix is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
 
+
+### Requirements
+* PHP 7.1+
+* [laravel/framework](https://github.com/laravel/framework) 5.4.*
+* [guzzlehttp/guzzle](https://github.com/guzzle/guzzle) 6.3.*
+* [andreasindal/laravel-markdown](https://github.com/andreasindal/laravel-markdown) 1.1.*
+
+
+### Features
+#### AntiSpam
+Provides recaptcha entry on forms (sign up with Google), as well as a sequence ID field, which will prevent the form being submitted twice.
+
+#### AppSettings
+Currently only provides a way to manage your App version, though you can add extra settings to it to access via the helper functions.
+
+#### Auth
+Custom auth package built on top of Laravels own, providing:
+
+* More feature rich User model 
+* User groups with group flags (permissions)
+* Password resets
+* Email verification
+* User cages - protect an area so a user cannot access it
+
+#### Installer
+Installs, publishes and copies files required for Laranix to run
+
+#### Networker
+Provides an easy way to link to your social media outlets, such as Twitter, Facebook, Instagram
+
+You can also add custom ones as you like
+
+#### Session
+Adds IP locking to sessions, not required if you don't want to use it
+ 
+#### Support
+Adds extra functionality, including:
+
+* Simple URL creator, that will always (try) and use the full URL - if it doesn't, somethings wrong with your setup
+* String formatting with named parameters (similar to C#)
+* Settings class, that allows you to use a class to determine parameters and their types
+
+#### Themer
+Provides themes and loads the files given, combines like for like files in to one automatically and updates if any file is added or changed
+
+#### Tracker
+Provides breadcrumb like tracking for user actions
 
 ## Installation
 ### Composer
 `composer require samanix\laranix`
 
-Or add to composer.json:
+Or add to composer.json and then run `composer update`:
 
 `"samanix\laranix": "1.0.*"`
 
@@ -84,6 +138,8 @@ The following commands are also run automatically if the required option is set:
     php artisan vendor:publish --provider="Indal\Markdown\MarkdownServiceProvider"
         
 If you skip these commands, you can run the artisan ones at a later time.
+
+**The command also attempts to run `composer dump-autoload`, if you get an error about this, please ensure you run manually afterwards.**
 
 ### Controller
 Laranix runs its own base controller, you can extend this class in your own controllers, by default its located at `App\Http\Controllers\Controller`. 
@@ -173,6 +229,7 @@ Other configurations you can edit are:
 * networker.php
 * tracker.php
 
+
 From other packages:
 * markdown.php
 
@@ -183,7 +240,6 @@ Run migrations using the `php artisan migrate` command.
 
 Seed your database with your default user groups using `php artisan db:seed --class=DefaultGroups`
 
-If you get a 'Class not found' error, run `composer dump-autoload` and then try again.
 
 ### Views
 Laranix provides several views to get you started, it also provides some mails in markdown format, so if you edit `config\laranixauth.php` to not use markdown on mails, you will have to edit the views in `resources/views/mail/auth/`.

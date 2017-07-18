@@ -1,9 +1,9 @@
 <?php
-namespace Tests\Laranix\Auth\User;
+namespace Laranix\Tests\Laranix\Auth\User;
 
 use Laranix\Auth\User\User;
 use Laranix\Auth\User\UserRepository;
-use Tests\LaranixTestCase;
+use Laranix\Tests\LaranixTestCase;
 
 class UserRepositoryTest extends LaranixTestCase
 {

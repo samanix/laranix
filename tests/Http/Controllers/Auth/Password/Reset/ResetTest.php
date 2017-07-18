@@ -1,5 +1,5 @@
 <?php
-namespace Tests\Http\Controllers\Auth;
+namespace Laranix\Tests\Http\Controllers\Auth;
 
 use Laranix\Auth\Password\Events\Updated;
 use Laranix\Auth\Password\Reset\Events\VerifyAttempt;
@@ -9,7 +9,7 @@ use Laranix\Auth\User\Token\Token;
 use Laranix\Auth\User\User;
 use Laranix\Auth\Password\Reset\Reset;
 use Laranix\Support\IO\Url\Url;
-use Tests\LaranixTestCase;
+use Laranix\Tests\LaranixTestCase;
 use Illuminate\Support\Facades\Event;
 
 class ResetTest extends LaranixTestCase

@@ -1,8 +1,13 @@
 $('div#main-menu a').each(function () {
-    if ($(this)[0].pathname == window.location.pathname) {
+
+    let cur_path = window.location.pathname.split('/')[1],
+        a_path = $(this)[0].pathname.split('/')[1];
+
+    if (cur_path === a_path) {
         $(this).addClass('active').removeAttr('href');
         return false;
     }
 });
 
-$('div#account-dropdown').removeClass('simple').dropdown();
+$('div#main-menu .dropdown').removeClass('simple').dropdown();
+

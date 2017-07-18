@@ -57,11 +57,7 @@ class Networker
 
         // Parse custom links
         foreach ($links['links'] as $key => $link) {
-            if (!isset($link['url']) || !isset($link['slug'])) {
-                continue;
-            }
-
-            $this->add($key, $link['url'], $link['slug']);
+            $this->add($key, $link['url'] ?? null, $link['slug'] ?? null);
         }
     }
 

@@ -1,9 +1,9 @@
 <?php
-namespace Tests\Laranix\Auth\User\Cage;
+namespace Laranix\Tests\Laranix\Auth\User\Cage;
 
 use Carbon\Carbon;
 use Laranix\Auth\User\User;
-use Tests\LaranixTestCase;
+use Laranix\Tests\LaranixTestCase;
 use Laranix\Auth\User\Cage\Cage;
 
 class CageTest extends LaranixTestCase

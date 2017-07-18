@@ -11,9 +11,10 @@ class MailSettings extends Settings
      * @var array|string
      */
     protected $required = [
-        'to'        => 'email|array',
-        'view'      => 'string',
-        'subject'   => 'string',
+        'to'            => 'email|array',
+        'view'          => 'string',
+        'subject'       => 'string',
+        'attachments'   => 'null|array'
     ];
 
     /*
@@ -70,12 +71,27 @@ class MailSettings extends Settings
     /**
      * @var bool
      */
-    public $markdown = false;
+    public $markdown = true;
 
     /**
      * @var string
      */
     public $view;
+
+    /**
+     * @var array
+     */
+    public $extraViewData;
+
+    /**
+     * @var string
+     */
+    public $textView;
+
+    /**
+     * @var array
+     */
+    public $textExtraViewData;
 
     /**
      * @var string
@@ -85,7 +101,7 @@ class MailSettings extends Settings
     /**
      * Attachments
      *
-     * @var array|string
+     * @var array|null
      */
     public $attachments;
 
@@ -98,6 +114,11 @@ class MailSettings extends Settings
      | Variables for use in the mail template
      |
      */
+    /**
+     * @var string
+     */
+    public $message;
+
     /**
      * @var int
      */

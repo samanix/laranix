@@ -1,10 +1,10 @@
 <?php
-namespace Tests\Laranix\Auth\Group;
+namespace Laranix\Tests\Laranix\Auth\Group;
 
 use Laranix\Auth\Group\CreatesGroup;
 use Laranix\Auth\Group\Events\Created;
 use Laranix\Auth\Group\Settings;
-use Tests\LaranixTestCase;
+use Laranix\Tests\LaranixTestCase;
 use Illuminate\Support\Facades\Event;
 
 class CreatesGroupTest extends LaranixTestCase

@@ -66,6 +66,7 @@ abstract class ThemerFile
     /**
      * Set the subdirectory in the theme for the file type
      *
+     * TODO Set as property?
      * @return string
      */
     abstract protected function getDirectory() : string;
@@ -73,6 +74,7 @@ abstract class ThemerFile
     /**
      * Set config key in themer config
      *
+     * TODO Set as property?
      * @return string
      */
     abstract protected function getConfigKey() : string;
@@ -96,6 +98,11 @@ abstract class ThemerFile
      * @var \Illuminate\Contracts\View\Factory
      */
     protected $viewFactory;
+
+    /**
+     * @var bool
+     */
+    protected $mergeFiles = true;
 
     /**
      * @var array
@@ -158,6 +165,8 @@ abstract class ThemerFile
         $this->logger       = $logger;
         $this->viewFactory  = $viewFactory;
         $this->files        = new Repository();
+        $this->mergeFiles   = !in_array($this->config->get('app.env', 'production'),
+                                       (array) $this->config->get('themer.ignored'));
 
         $this->directory    = $this->getDirectory();
         $this->configKey    = $this->getConfigKey();
@@ -202,7 +211,7 @@ abstract class ThemerFile
 
         $settings->hasRequired();
 
-        return $settings->url === null ? $this->addLocalResource($settings) : $this->addRemoteResource($settings);
+        return $settings->url === null && $this->mergeFiles ? $this->addLocalResource($settings) : $this->addRemoteResource($settings);
     }
 
     /**
@@ -259,6 +268,10 @@ abstract class ThemerFile
             ++$settings->order;
 
             return $this->addRemoteResource($settings);
+        }
+
+        if ($settings->url === null && !$this->mergeFiles) {
+            $settings->url = $this->getBaseUrl($settings->theme);
         }
 
         $this->files->add($settings->repositoryKey, $settings);
@@ -410,7 +423,7 @@ abstract class ThemerFile
      * @param \Laranix\Themer\Theme $theme
      * @return string
      */
-    protected function getBaseUrl(Theme $theme = null) : string
+    protected function getBaseUrl(?Theme $theme = null) : string
     {
         $theme = $theme ?? $this->getTheme();
 
@@ -421,7 +434,6 @@ abstract class ThemerFile
         return $this->webPaths[$theme->getKey()] = Url::url(new Settings([
             'domain'        => $theme->getWebPath(),
             'path'          => $this->directory,
-            'trailingSlash' => true,
         ]));
     }
 

@@ -213,6 +213,11 @@ class Controller extends BaseController
         }
 
         $this->addScripts($scriptsCollection);
+
+        $this->addStylesheet(new StyleSettings([
+            'key'   => 'formstyle',
+            'file'  => 'form.min.css',
+        ]));
     }
 
     /**

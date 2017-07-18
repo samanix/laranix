@@ -1,7 +1,7 @@
 <?php
-namespace Tests\Laranix\Support;
+namespace Laranix\Tests\Laranix\Support;
 
-use Tests\LaranixTestCase;
+use Laranix\Tests\LaranixTestCase;
 use Laranix\Support\IO\Repository;
 
 class RepositoryTest extends LaranixTestCase

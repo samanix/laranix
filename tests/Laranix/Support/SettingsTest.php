@@ -1,9 +1,9 @@
 <?php
-namespace Tests\Laranix\Support;
+namespace Laranix\Tests\Laranix\Support;
 
 use Laranix\Support\Exception\LaranixSettingsException;
-use Tests\LaranixTestCase;
-use Tests\Laranix\Support\Stubs\Settings;
+use Laranix\Tests\LaranixTestCase;
+use Laranix\Tests\Laranix\Support\Stubs\Settings;
 
 class SettingsTest extends LaranixTestCase
 {
@@ -302,7 +302,7 @@ class SettingsTest extends LaranixTestCase
      * Get settings
      *
      * @param array|null $options
-     * @return \Tests\Laranix\Support\Stubs\Settings
+     * @return \Laranix\Tests\Laranix\Support\Stubs\Settings
      */
     protected function getSettings(?array $options = [])
     {

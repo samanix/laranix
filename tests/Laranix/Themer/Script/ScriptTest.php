@@ -1,18 +1,18 @@
 <?php
-namespace Tests\Laranix\Themer\Scripts;
+namespace Laranix\Tests\Laranix\Themer\Scripts;
 
 use Illuminate\Log\Writer;
 use Illuminate\View\Factory;
 use Laranix\Support\Exception\KeyExistsException;
 use Laranix\Themer\Script\Script;
 use Laranix\Themer\Script\Settings;
-use Tests\LaranixTestCase;
+use Laranix\Tests\LaranixTestCase;
 use Mockery as m;
 use Illuminate\Config\Repository;
 use Illuminate\Http\Request;
 use Laranix\Themer\Themer;
 use Laranix\Themer\ThemeRepository;
-use Tests\Laranix\Themes\Stubs\Themes;
+use Laranix\Tests\Laranix\Themes\Stubs\Themes;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 
 class ScriptTest extends LaranixTestCase
@@ -142,6 +142,25 @@ class ScriptTest extends LaranixTestCase
 
         $this->assertCount(4, $script->files->get('scripts.remote.head'));
         $this->assertCount(2, $script->files->get('scripts.remote.body'));
+    }
+
+    /**
+     * Test adding file without merging
+     */
+    public function testAddFileWithoutMerging()
+    {
+        $this->config->set('app.env', 'env1');
+
+        $script = $this->createScript();
+
+        $this->loadLocalScripts($script);
+
+        $this->assertNull($script->files->get('scripts.local'));
+
+        $this->assertCount(5, $script->files->get('scripts.remote.head'));
+        $this->assertCount(1, $script->files->get('scripts.remote.body'));
+
+        $this->assertNotNull($script->files->get('scripts.remote.head.1')->url);
     }
 
     /**

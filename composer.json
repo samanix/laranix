@@ -1,6 +1,6 @@
 {
   "name": "samanix/laranix",
-  "description": "Samanix Laravel Extensions",
+  "description": "Laravel extended functionality",
   "minimum-stability": "dev",
   "license": "MIT",
   "authors": [
@@ -12,7 +12,7 @@
   "require": {
     "php": ">=7.1.0",
     "laravel/framework": "5.4.*",
-    "guzzlehttp/guzzle": "^6.0",
+    "guzzlehttp/guzzle": "6.3.*",
     "andreasindal/laravel-markdown": "1.1.*"
   },
   "require-dev": {
@@ -35,7 +35,7 @@
   },
   "autoload-dev": {
       "psr-4": {
-          "Tests\\": "tests/"
+          "Laranix\\Tests\\": "tests/"
       }
   }
 }

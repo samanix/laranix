@@ -1,11 +1,11 @@
 <?php
-namespace Tests\Laranix\Auth\User\Cage;
+namespace Laranix\Tests\Laranix\Auth\User\Cage;
 
 use Laranix\Auth\Group\Group;
 use Laranix\Auth\User\Groups\UserGroup;
 use Laranix\Auth\User\Groups\UserGroupRepository;
 use Laranix\Auth\User\User;
-use Tests\LaranixTestCase;
+use Laranix\Tests\LaranixTestCase;
 
 class UserGroupRepositoryTest extends LaranixTestCase
 {

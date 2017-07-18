@@ -1,12 +1,12 @@
 <?php
-namespace Tests\Http\Controllers\Auth;
+namespace Laranix\Tests\Http\Controllers\Auth;
 
 use Illuminate\Auth\Events\Registered;
 use Laranix\Auth\Group\Group;
 use Laranix\Auth\User\Events\Created;
 use Laranix\Auth\User\Groups\Events\Added;
 use Laranix\Auth\User\User;
-use Tests\LaranixTestCase;
+use Laranix\Tests\LaranixTestCase;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Mail;
 use Laranix\Auth\Email\Verification\Mail as VerificationMail;

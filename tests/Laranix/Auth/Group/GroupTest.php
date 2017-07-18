@@ -1,10 +1,10 @@
 <?php
-namespace Tests\Auth\Group;
+namespace Laranix\Tests\Auth\Group;
 
 use Laranix\Auth\Group\Group;
 use Laranix\Auth\User\Groups\UserGroup;
 use Laranix\Auth\User\User;
-use Tests\LaranixTestCase;
+use Laranix\Tests\LaranixTestCase;
 
 class GroupTest extends LaranixTestCase
 {

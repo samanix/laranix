@@ -1,9 +1,9 @@
 <?php
-namespace Tests\Laranix\Session;
+namespace Laranix\Tests\Laranix\Session;
 
 use Laranix\Auth\User\User;
 use Laranix\Session\Session;
-use Tests\LaranixTestCase;
+use Laranix\Tests\LaranixTestCase;
 use Illuminate\Http\Request;
 use Laranix\Session\Handler;
 use Illuminate\Config\Repository;

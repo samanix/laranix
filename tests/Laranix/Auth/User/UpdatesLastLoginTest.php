@@ -1,10 +1,10 @@
 <?php
-namespace Tests\Laranix\Auth\User;
+namespace Laranix\Tests\Laranix\Auth\User;
 
 use Carbon\Carbon;
 use Laranix\Auth\User\UpdatesLastLogin;
 use Laranix\Support\Exception\NullValueException;
-use Tests\LaranixTestCase;
+use Laranix\Tests\LaranixTestCase;
 
 class UpdatesLastLoginTest extends LaranixTestCase
 {

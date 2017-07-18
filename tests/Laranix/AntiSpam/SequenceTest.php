@@ -1,5 +1,5 @@
 <?php
-namespace Tests\Laranix\AntiSpam;
+namespace Laranix\Tests\Laranix\AntiSpam;
 
 use GuzzleHttp\Client as GuzzleClient;
 use Illuminate\Contracts\Session\Session;
@@ -9,7 +9,7 @@ use Laranix\AntiSpam\Sequence\Sequence;
 use Mockery as m;
 use Illuminate\Config\Repository;
 use Illuminate\Http\Request;
-use Tests\LaranixTestCase;
+use Laranix\Tests\LaranixTestCase;
 
 class SequenceTest extends LaranixTestCase
 {

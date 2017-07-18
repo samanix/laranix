@@ -1,18 +1,18 @@
 <?php
-namespace Tests\Laranix\Themer\Style;
+namespace Laranix\Tests\Laranix\Themer\Style;
 
 use Illuminate\Log\Writer;
 use Illuminate\View\Factory;
 use Laranix\Support\Exception\KeyExistsException;
 use Laranix\Themer\Style\Style;
 use Laranix\Themer\Style\Settings;
-use Tests\LaranixTestCase;
+use Laranix\Tests\LaranixTestCase;
 use Mockery as m;
 use Illuminate\Config\Repository;
 use Illuminate\Http\Request;
 use Laranix\Themer\Themer;
 use Laranix\Themer\ThemeRepository;
-use Tests\Laranix\Themes\Stubs\Themes;
+use Laranix\Tests\Laranix\Themes\Stubs\Themes;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 
 class StyleTest extends LaranixTestCase
@@ -144,6 +144,24 @@ class StyleTest extends LaranixTestCase
         $this->assertCount(5, $style->files->get('_added.foo'));
 
         $this->assertCount(6, $style->files->get('style.remote'));
+    }
+
+    /**
+     * Test adding file without merging
+     */
+    public function testAddFileWithoutMerging()
+    {
+        $this->config->set('app.env', 'env1');
+
+        $style = $this->createStyle();
+
+        $this->loadLocalStyle($style);
+
+        $this->assertNull($style->files->get('style.local'));
+
+        $this->assertCount(6, $style->files->get('style.remote'));
+
+        $this->assertNotNull($style->files->get('style.remote.1')->url);
     }
 
     /**

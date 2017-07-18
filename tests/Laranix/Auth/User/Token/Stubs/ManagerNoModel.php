@@ -1,5 +1,5 @@
 <?php
-namespace Tests\Laranix\Auth\User\Stubs\Token\Stubs;
+namespace Laranix\Tests\Laranix\Auth\User\Stubs\Token\Stubs;
 
 use Illuminate\Contracts\Auth\Authenticatable;
 use Laranix\Auth\User\Token\Manager as BaseManager;

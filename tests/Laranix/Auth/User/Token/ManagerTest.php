@@ -1,5 +1,5 @@
 <?php
-namespace Tests\Auth\User\Token;
+namespace Laranix\Tests\Auth\User\Token;
 
 use Illuminate\Config\Repository;
 use Illuminate\Contracts\Auth\Authenticatable;
@@ -7,13 +7,13 @@ use Illuminate\Mail\Mailer;
 use Laranix\AppSettings\AppSettings;
 use Laranix\Auth\User\Token\Token;
 use Laranix\Support\Exception\NullValueException;
-use Tests\LaranixTestCase;
+use Laranix\Tests\LaranixTestCase;
 use Mockery as m;
-use Tests\Laranix\Auth\User\Stubs\Token\Stubs\{ManagerNoConfig, ManagerNoMailTemplate, ManagerNoModel};
+use Laranix\Tests\Laranix\Auth\User\Stubs\Token\Stubs\{ManagerNoConfig, ManagerNoMailTemplate, ManagerNoModel};
 
 /**
- * @see \Tests\Laranix\Auth\Password\Reset\ManagerTest
- * @see \Tests\Laranix\Auth\Email\Verification\ManagerTest
+ * @see \Laranix\Tests\Laranix\Auth\Password\Reset\ManagerTest
+ * @see \Laranix\Tests\Laranix\Auth\Email\Verification\ManagerTest
  */
 class ManagerTest extends LaranixTestCase
 {

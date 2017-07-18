@@ -1,9 +1,9 @@
 <?php
-namespace Tests\Laranix\Auth\Password;
+namespace Laranix\Tests\Laranix\Auth\Password;
 
 use Laranix\Auth\Password\HashesPasswords;
 use Laranix\Support\Exception\NullValueException;
-use Tests\LaranixTestCase;
+use Laranix\Tests\LaranixTestCase;
 
 class HashesPasswordsTest extends LaranixTestCase
 {

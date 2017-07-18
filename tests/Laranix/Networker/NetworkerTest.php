@@ -1,9 +1,9 @@
 <?php
-namespace Tests\Laranix\Networker;
+namespace Laranix\Tests\Laranix\Networker;
 
 use Laranix\Networker\Networker;
 use Laranix\Support\IO\Url\Settings;
-use Tests\LaranixTestCase;
+use Laranix\Tests\LaranixTestCase;
 use Illuminate\Config\Repository;
 
 class NetworkerTest extends LaranixTestCase
@@ -44,21 +44,12 @@ class NetworkerTest extends LaranixTestCase
                         'url'   => 'http://foo.com',
                         'slug'  => '/bar',
                     ],
+                    'link2' => [
+                        'slug'  => 'foo',
+                    ],
                 ],
             ],
         ]));
-
-        $_SERVER['HTTP_HOST'] = 'bar.com';
-    }
-
-    /**
-     * Tear down
-     */
-    protected function tearDown()
-    {
-        parent::tearDown();
-
-        unset($_SERVER['HTTP_HOST'], $_SERVER['https']);
     }
 
     /**
@@ -115,7 +106,7 @@ class NetworkerTest extends LaranixTestCase
         $this->assertSame('https://url.com/foo', $this->networker->add('ur14', new Settings([ 'domain' => 'url.com', 'path' => 'foo', 'scheme' => 'https'])));
 
         $this->toggleHttps('on');
-        $this->assertSame('https://bar.com/baz', $this->networker->add('url5', new Settings([ 'path' => 'baz'])));
+        $this->assertSame(str_replace('http:', 'https:', config('app.url')) . '/baz', $this->networker->add('url5', new Settings([ 'path' => 'baz'])));
         $this->toggleHttps('off');
     }
 
@@ -128,6 +119,8 @@ class NetworkerTest extends LaranixTestCase
         $this->assertSame('https://facebook.com/foo', $this->networker->get('facebook'));
 
         $this->assertSame('http://foo.com/bar', $this->networker->get('link1'));
+
+        $this->assertSame(config('app.url') . '/foo', $this->networker->get('link2'));
     }
 
 }
