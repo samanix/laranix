@@ -74,8 +74,12 @@ class Mail extends Mailable
         }
 
         if ($this->options->attachments !== null) {
-            foreach ($this->options->attachments as $id => $attachment) {
-                $this->attach($attachment['file'], $attachment['options'] ?? []);
+            if (isset($this->options->attachments['file'])) {
+                $this->attach($this->options->attachments['file'], $this->options->attachments['options'] ?? []);
+            } else {
+                foreach ($this->options->attachments as $id => $attachment) {
+                    $this->attach($attachment['file'], $attachment['options'] ?? []);
+                }
             }
         }
     }
