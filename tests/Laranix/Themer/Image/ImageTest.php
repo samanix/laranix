@@ -54,7 +54,7 @@ class ImageTest extends LaranixTestCase
     {
         $this->expectException(NotImplementedException::class);
 
-        $this->image->add();
+        $this->image->add([]);
     }
 
     /**
@@ -103,7 +103,7 @@ class ImageTest extends LaranixTestCase
         $imgurl2 = $this->image->getWebUrl('samanix.png');
 
         $this->assertSame('<img src="' . $imgurl . '" alt="img" title="title" />', $this->image->display('laranix.png', ['alt' => 'img', 'title' => 'title']));
-        $this->assertSame('<img src="' . $imgurl . '" alt="img" title="title" />', $this->image->show('laranix.png'));
+        $this->assertSame('<img src="' . $imgurl . '" alt="laranix.png" />', $this->image->show('laranix.png'));
 
         $this->assertSame('<img src="' . $imgurl2 . '" alt="samanix.png" />', $this->image->show('samanix.png'));
     }
