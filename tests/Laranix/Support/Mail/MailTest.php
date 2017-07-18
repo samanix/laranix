@@ -12,10 +12,18 @@ class MailTest extends LaranixTestCase
      */
     public function testAutoSetupMail()
     {
+        $attachments = [
+            'file' => 'file1',
+            'options' => [
+                'as' => 'file.pdf'
+            ]
+        ];
+
         $settings = new MailSettings([
             'to'            => [['email' => 'foo@bar.com', 'name' => 'FooBar']],
             'view'          => 'hello.world',
             'subject'       => 'Subject',
+            'attachments'   => $attachments,
         ]);
 
         $this->assertNotNull(($mail = new Mail($settings))->options);
@@ -23,6 +31,8 @@ class MailTest extends LaranixTestCase
         $this->assertNull($mail->view);
         $this->assertSame('Subject', $mail->subject);
         $this->assertSame([['name' => 'FooBar', 'address' => 'foo@bar.com']], $mail->to);
+
+        $this->assertSame([$attachments], $mail->attachments);
     }
 
     /**

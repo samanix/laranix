@@ -11,7 +11,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Laranix\AntiSpam\{Sequence\Sequence,Recaptcha\Recaptcha};
 use Laranix\Themer\FileSettings as ThemerFileSettings;
 use Laranix\Themer\Image\Image;
-use Laranix\Themer\Script\Script;
+use Laranix\Themer\Script\{Script, Settings as ScriptSettings};
 use Laranix\Themer\Style\Style;
 use __UserAppNamespace__Services\Laranix\ThemerDefaultFileLoader;
 
@@ -203,13 +203,13 @@ class Controller extends BaseController
             ]
         ];
 
-        if (is_array($scripts)) {
-            $scriptsCollection = array_merge($formScripts, $scripts);
+        if ($scripts instanceof ScriptSettings || isset($scripts['key'])) {
+            $formScripts[] = $scripts;
         } else {
-            $scriptsCollection[] = $scripts;
+            array_push($formScripts, $scripts);
         }
 
-        $this->addScripts($scriptsCollection);
+        $this->addScripts($formScripts);
 
         $this->addStylesheet([
             'key'   => 'formstyle',

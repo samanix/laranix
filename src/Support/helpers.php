@@ -37,6 +37,21 @@ if (!function_exists('url_to')) {
     }
 }
 
+
+if (!function_exists('url_href')) {
+    /**
+     * Create an HTML a tag
+     *
+     * @param string $url
+     * @param array  $params
+     * @return string
+     */
+    function url_href(string $url, string $content, array $params = []) : string
+    {
+        return Url::href($url, $content, $params);
+    }
+}
+
 if (!function_exists('model_diff')) {
     /**
      * Works out differences between 2 model arrays and returns changed values
