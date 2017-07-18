@@ -18,8 +18,10 @@ class Image extends ThemerFile
      */
     public function display(string $image, array $params = [], bool $default = false) : ?string
     {
-        if ($this->files->has($image)) {
-            return $this->files->get($image);
+        $cacheKey = $this->cacheKey($image, $params, $default);
+
+        if ($this->files->has($cacheKey)) {
+            return $this->files->get($cacheKey);
         }
 
         $theme = $default ? $this->getDefaultTheme() : $this->getTheme();
@@ -46,7 +48,7 @@ class Image extends ThemerFile
 
         $img .= '/>';
 
-        return $this->files[$image] = $img;
+        return $this->files[$cacheKey] = $img;
     }
 
     /**
@@ -60,6 +62,19 @@ class Image extends ThemerFile
     public function show(string $image, array $params = [], bool $default = false) : ?string
     {
         return $this->display($image, $params, $default);
+    }
+
+    /**
+     * Cached image key
+     *
+     * @param string $image
+     * @param array  $params
+     * @param bool   $default
+     * @return string
+     */
+    protected function cacheKey(string $image, array $params = [], bool $default = false) : string
+    {
+        return hash('crc32', json_encode([$image, $params, $default]));
     }
 
     /**
