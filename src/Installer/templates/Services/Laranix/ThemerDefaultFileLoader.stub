@@ -14,7 +14,7 @@ class ThemerDefaultFileLoader
     protected static $defaultSheets = [
         'semantic-css' => [
             'file'  => 'semantic.min.css',
-            'url'   => 'https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/',
+            'url'   => 'https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.11/',
             'order' => 1,
         ],
         'app-css'   => [
@@ -36,7 +36,7 @@ class ThemerDefaultFileLoader
         ],
         'semantic-js' => [
             'file'  => 'semantic.min.js',
-            'url'   => 'https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/',
+            'url'   => 'https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.11/',
             'order' => 1,
         ],
         'app-main' =>  [
