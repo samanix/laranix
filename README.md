@@ -10,7 +10,7 @@ It was done as a package, albeit a large one, so that it is more easily updated 
 
 ### Contributions
 Please use the [issue tracker](https://bitbucket.org/samanix-php/laranix/issues) to report any issues, or submit via [pull requests](https://bitbucket.org/samanix-php/laranix/pull-requests/)
- 
+
 Contributions are encouraged via [pull requests](https://bitbucket.org/samanix-php/laranix/pull-requests/)
 
 
@@ -39,7 +39,7 @@ Currently only provides a way to manage your App version, though you can add ext
 #### Auth
 Custom auth package built on top of Laravels own, providing:
 
-* More feature rich User model 
+* More feature rich User model
 * User groups with group flags (permissions)
 * Password resets
 * Email verification
@@ -55,7 +55,7 @@ You can also add custom ones as you like
 
 #### Session
 Adds IP locking to sessions, not required if you don't want to use it
- 
+
 #### Support
 Adds extra functionality, including:
 
@@ -75,7 +75,7 @@ Provides breadcrumb like tracking for user actions
 
 Or add to composer.json and then run `composer update`:
 
-`"samanix\laranix": "1.0.*"`
+`"samanix\laranix": "1.1.*"`
 
 ### Add Service Providers
 Add the following to your `config/app.php` in the `providers` array:
@@ -83,23 +83,23 @@ Add the following to your `config/app.php` in the `providers` array:
     Laranix\Tracker\ServiceProvider::class,
     Laranix\AntiSpam\ServiceProvider::class,
     Laranix\AppSettings\ServiceProvider::class,
-	Laranix\Auth\Email\Verification\ServiceProvider::class,		
-    Laranix\Auth\Group\ServiceProvider::class,	
-    Laranix\Auth\Password\Reset\ServiceProvider::class,	
-    Laranix\Auth\User\Cage\ServiceProvider::class,	
-    Laranix\Auth\User\Groups\ServiceProvider::class,	
-    Laranix\Auth\User\ServiceProvider::class,	
-    Laranix\Auth\ServiceProvider::class,	
+	Laranix\Auth\Email\Verification\ServiceProvider::class,
+    Laranix\Auth\Group\ServiceProvider::class,
+    Laranix\Auth\Password\Reset\ServiceProvider::class,
+    Laranix\Auth\User\Cage\ServiceProvider::class,
+    Laranix\Auth\User\Groups\ServiceProvider::class,
+    Laranix\Auth\User\ServiceProvider::class,
+    Laranix\Auth\ServiceProvider::class,
     Laranix\Networker\ServiceProvider::class,
-	Laranix\Session\ServiceProvider::class,	
+	Laranix\Session\ServiceProvider::class,
     Laranix\Themer\ServiceProvider::class,
     Indal\Markdown\MarkdownServiceProvider::class
-    
+
 
 You can also comment our or remove:
 
     Illuminate\Auth\Passwords\PasswordResetServiceProvider::class,
-    
+
 There are a number of other packages provided with the dev install of Laranix, see the documentation for them for help:
 
     barryvdh/laravel-debugbar
@@ -111,17 +111,17 @@ Add the following to your `config/app.php` in then `aliases` array:
 
     'Recaptcha'     => Laranix\AntiSpam\Recaptcha\Facade::class,
     'Sequence'      => Laranix\AntiSpam\Sequence\Facade::class,
-    'AppSettings'   => Laranix\AppSettings\Facade::class,	
+    'AppSettings'   => Laranix\AppSettings\Facade::class,
     'Image'         => Laranix\Themer\Image\Facade::class,
     'Script'        => Laranix\Themer\Script\Facade::class,
     'Style'         => Laranix\Themer\Style\Facade::class,
-        
+
 ### Artisan Commands
-Open `app/Console/Kernel.php` and add `\Laranix\Installer\InstallLaranixCommand::class` to the `$commands` array.  
+Open `app/Console/Kernel.php` and add `\Laranix\Installer\InstallLaranixCommand::class` to the `$commands` array.
 
 * Make sure to remove the default Laravel user and password migrations from 'database/migrations/'
 * You can also remove from the relevant app folders:
-  * Any default Laravel controllers 
+  * Any default Laravel controllers
   * Any default Laravel views
   * Any default Laravel models
   * Any files/folders in resources/assets provided by default by Laravel
@@ -136,18 +136,18 @@ The following commands are also run automatically if the required option is set:
     php artisan vendor:publish --tag=laranix-migrations
     php artisan vendor:publish --tag=laravel-mail
     php artisan vendor:publish --provider="Indal\Markdown\MarkdownServiceProvider"
-        
+
 If you skip these commands, you can run the artisan ones at a later time.
 
 **The command also attempts to run `composer dump-autoload`, if you get an error about this, please ensure you run manually afterwards.**
 
 ### Controller
-Laranix runs its own base controller, you can extend this class in your own controllers, by default its located at `App\Http\Controllers\Controller`. 
+Laranix runs its own base controller, you can extend this class in your own controllers, by default its located at `App\Http\Controllers\Controller`.
 
 The base controller contains methods that can be called that will scaffold certain scenarios.
 
 ### Routes
-There are some routes provided for authentication as well as an entry page, you are free to change these, 
+There are some routes provided for authentication as well as an entry page, you are free to change these,
 but the routes should be named the same as Laranix relies on route names as opposed to paths.
 
 **When running `laranix:install`, the `web.php` routes file is overwritten entirely with Laranix routes. Take a backup first if required.**
@@ -155,7 +155,7 @@ but the routes should be named the same as Laranix relies on route names as oppo
 *It is only overwritten if the `-O|overwrite` parameter is set.*
 
 ### Services
-Add your global scripts and stylesheets to the `$defaultSheets` and `$defaultScripts` variable in the `App\Services\Laranix\ThemerDefaultFileLoader.php`. 
+Add your global scripts and stylesheets to the `$defaultSheets` and `$defaultScripts` variable in the `App\Services\Laranix\ThemerDefaultFileLoader.php`.
 
 Add any variables you want globally available in your views to the `App\Services\Laranix\GlobalViewVariables.php`.
 
@@ -176,8 +176,8 @@ Add the following to your `App\Providers\EventServiceProvider.php` inside the `$
     \Laranix\Auth\Password\Events\Updated::class => [
         \Laranix\Auth\Password\Listeners\Updated::class,
     ],
-    
-    
+
+
 Add the following to your `App\Providers\EventServiceProvider.php` inside the `$subscribe` array (create if it does not exist):
 
     \Laranix\Auth\Email\Verification\Events\Subscriber::class,
@@ -204,8 +204,8 @@ Open the `config\auth.php` and edit the `providers` array, add:
          'driver'   => 'eloquent',
          'model'    => Laranix\Auth\User\User::class,
     ],
-    
-Then change the `guards.web.provider` value to `laranixuser`. 
+
+Then change the `guards.web.provider` value to `laranixuser`.
 
 You may also wish to change the `guards.api.provider` to `laranixuser` too.
 
@@ -218,7 +218,7 @@ Add/edit the following settings to your `.env`:
     RECAPTCHA_KEY=site-key
     RECAPTCHA_SECRET=secret-key
     SESSION_DRIVER=laranix
-    
+
 #### Other files
 Other configurations you can edit are:
 
@@ -250,4 +250,4 @@ Remember to update `webpack.mix.js` if you roll your own theme settings.
 ### Tests
 Provided but will require a Laravel install to work. Copy out or add directories to the relevant phpunit.xml file.
 
-The `phpunit.xml` files are provided as examples only. 
+The `phpunit.xml` files are provided as examples only.
