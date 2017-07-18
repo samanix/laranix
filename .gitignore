@@ -21,3 +21,7 @@ npm-debug.log
 .env
 compiled*.js
 compiled*.css
+*.min.css
+*.css.map
+vars.css
+
