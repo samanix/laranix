@@ -20,8 +20,8 @@ class Image extends ThemerFile
     {
         $cacheKey = $this->cacheKey($image, $params, $default);
 
-        if ($this->files->has($cacheKey)) {
-            return $this->files->get($cacheKey);
+        if ($this->hasCachedImage($cacheKey)) {
+            return $this->getCachedImage($cacheKey);
         }
 
         $theme = $default ? $this->getDefaultTheme() : $this->getTheme();
@@ -36,19 +36,9 @@ class Image extends ThemerFile
             return null;
         }
 
-        $params = array_merge([
+        return $this->cacheImage($cacheKey, $this->createHtmlImageString($image, $theme, array_merge([
             'alt'   => $image,
-        ], $params);
-
-        $img = '<img src="' . $this->getWebUrl($image, $theme) . '" ';
-
-        foreach ($params as $key => $param) {
-            $img .= $key . '="' . $param . '" ';
-        }
-
-        $img .= '/>';
-
-        return $this->files[$cacheKey] = $img;
+        ], $params)));
     }
 
     /**
@@ -62,6 +52,65 @@ class Image extends ThemerFile
     public function show(string $image, array $params = [], bool $default = false) : ?string
     {
         return $this->display($image, $params, $default);
+    }
+
+    /**
+     * Create HTML image string
+     *
+     * @param string                $image
+     * @param \Laranix\Themer\Theme $theme
+     * @param array                 $params
+     * @return string
+     */
+    protected function createHtmlImageString(string $image, Theme $theme, array $params = [])
+    {
+        if (!empty($params)) {
+            $extra = [];
+
+            foreach ($params as $key => $param) {
+                $extra[] = $key . '="' . $param . '"';
+            }
+
+            $properties = implode(' ', $extra) . ' ';
+        }
+
+        return sprintf('<img src="%s" %s/>', $this->getWebUrl($image, $theme), $properties ?? '');
+    }
+
+     /**
+     * Check for cached image
+     *
+     * @param string $key
+     * @return bool
+     */
+    protected function hasCachedImage(string $key) : bool
+    {
+        return $this->files->has($key);
+    }
+
+    /**
+     * Get cached image
+     *
+     * @param string $key
+     * @return string
+     */
+    protected function getCachedImage(string $key) : string
+    {
+        return $this->files->get($key);
+    }
+
+    /**
+     * Store image in the cache
+     *
+     * @param string $key
+     * @param string $image
+     * @return string
+     */
+    protected function cacheImage($key, string $image) : string
+    {
+        $this->files->add($key, $image);
+
+        return $image;
     }
 
     /**
@@ -83,7 +132,7 @@ class Image extends ThemerFile
      * @param \Laranix\Themer\FileSettings $settings
      * @throws \Laranix\Support\Exception\NotImplementedException
      */
-    public function add(?FileSettings $settings = null)
+    public function add($settings)
     {
         throw new NotImplementedException('Method not required for ' . get_class($this));
     }
