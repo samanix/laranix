@@ -328,9 +328,9 @@ class Url
      * Check for cached url
      *
      * @param string $key
-     * @return null|string
+     * @return bool
      */
-    protected static function hasCachedUrl(string $key) : ?string
+    protected static function hasCachedUrl(string $key) : bool
     {
         return isset(self::$cached[$key]);
     }
@@ -361,18 +361,18 @@ class Url
     }
 
     /**
-     * Check for cached url
+     * Check for cached href
      *
      * @param string $key
-     * @return null|string
+     * @return bool
      */
-    protected static function hasCachedHref(string $key) : ?string
+    protected static function hasCachedHref(string $key) : bool
     {
         return isset(self::$cached[$key]);
     }
 
     /**
-     * Get cached url
+     * Get cached href
      *
      * @param string $key
      * @return string
@@ -383,7 +383,7 @@ class Url
     }
 
     /**
-     * Store url in the cache
+     * Store href in the cache
      *
      * @param string $key
      * @param string $url
