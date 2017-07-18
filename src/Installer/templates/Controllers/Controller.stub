@@ -11,8 +11,8 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Laranix\AntiSpam\{Sequence\Sequence,Recaptcha\Recaptcha};
 use Laranix\Themer\FileSettings as ThemerFileSettings;
 use Laranix\Themer\Image\Image;
-use Laranix\Themer\Script\{Script, Settings as ScriptSettings};
-use Laranix\Themer\Style\{Style, Settings as StyleSettings};
+use Laranix\Themer\Script\Script;
+use Laranix\Themer\Style\Style;
 use __UserAppNamespace__Services\Laranix\ThemerDefaultFileLoader;
 
 class Controller extends BaseController
@@ -188,36 +188,33 @@ class Controller extends BaseController
             'recaptcha' => $this->app->make(Recaptcha::class),
         ]);
 
-        $formScript = new ScriptSettings([
-            'key'   => 'form-base-script',
-            'file'  => 'forms/form.js',
-            'order' => 5,
-        ]);
-
-        $recaptchaScript = new ScriptSettings([
-            'key'   => 'recaptcha',
-            'file'  => 'api.js',
-            'url'   => 'https://www.google.com/recaptcha',
-            'order' => 10,
-            'async' => true,
-        ]);
-
-        $scriptsCollection = [
-            $formScript, $recaptchaScript
+        $formScripts = [
+            [
+                'key'   => 'form-base-script',
+                'file'  => 'forms/form.js',
+                'order' => 5,
+            ],
+            [
+                'key'   => 'recaptcha',
+                'file'  => 'api.js',
+                'url'   => 'https://www.google.com/recaptcha',
+                'order' => 10,
+                'async' => true,
+            ]
         ];
 
         if (is_array($scripts)) {
-            $scriptsCollection = array_merge($scriptsCollection, $scripts);
+            $scriptsCollection = array_merge($formScripts, $scripts);
         } else {
             $scriptsCollection[] = $scripts;
         }
 
         $this->addScripts($scriptsCollection);
 
-        $this->addStylesheet(new StyleSettings([
+        $this->addStylesheet([
             'key'   => 'formstyle',
             'file'  => 'form.min.css',
-        ]));
+        ]);
     }
 
     /**
@@ -291,10 +288,10 @@ class Controller extends BaseController
     /**
      * Add a stylesheet
      *
-     * @param \Laranix\Themer\Style\Settings $settings
+     * @param \Laranix\Themer\Style\Settings|array $settings
      * @return $this
      */
-    protected function addStylesheet(StyleSettings $settings)
+    protected function addStylesheet($settings)
     {
         $this->style->add($settings);
 
@@ -314,10 +311,10 @@ class Controller extends BaseController
     /**
      * Add a script
      *
-     * @param \Laranix\Themer\FileSettings $settings
+     * @param \Laranix\Themer\FileSettings|array $settings
      * @return $this
      */
-    protected function addScript(ThemerFileSettings $settings)
+    protected function addScript($settings)
     {
         $this->scripts->add($settings);
 

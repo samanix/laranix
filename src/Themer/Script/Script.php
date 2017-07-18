@@ -158,6 +158,16 @@ class Script extends ThemerFile
     }
 
     /**
+     * Set settings class name
+     *
+     * @return string|null
+     */
+    protected function getSettingsClass(): ?string
+    {
+        return Settings::class;
+    }
+
+    /**
      * Get location for scripts
      *
      * @param bool $head

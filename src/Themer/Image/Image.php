@@ -194,4 +194,14 @@ class Image extends ThemerFile
     {
         return 'image';
     }
+
+    /**
+     * Set settings class name
+     *
+     * @return string|null
+     */
+    protected function getSettingsClass(): ?string
+    {
+        return null;
+    }
 }

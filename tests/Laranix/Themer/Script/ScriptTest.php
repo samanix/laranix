@@ -3,6 +3,7 @@ namespace Laranix\Tests\Laranix\Themer\Scripts;
 
 use Illuminate\Log\Writer;
 use Illuminate\View\Factory;
+use Laranix\Support\Exception\InvalidInstanceException;
 use Laranix\Support\Exception\KeyExistsException;
 use Laranix\Themer\Script\Script;
 use Laranix\Themer\Script\Settings;
@@ -40,6 +41,34 @@ class ScriptTest extends LaranixTestCase
         $request->shouldReceive('hasCookie')->andReturn(false);
 
         $this->themer = new Themer($this->config, $request, new ThemeRepository($this->config));
+    }
+
+    /**
+     * Test adding file with array settings
+     */
+    public function testAddFileWithArraySettings()
+    {
+        $script = $this->createScript();
+
+        $script->add([
+            'key'   => 'foo',
+            'file'  => 'script.js',
+            'order' => 1
+        ]);
+
+        $this->assertTrue($script->files->has('_added.foo.foo'));
+    }
+
+    /**
+     * Test adding file when not an array or settings instance
+     */
+    public function testAddFileWithInvalidSettings()
+    {
+        $this->expectException(InvalidInstanceException::class);
+
+        $script = $this->createScript();
+
+        $script->add('string');
     }
 
     /**

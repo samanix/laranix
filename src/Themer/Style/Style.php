@@ -140,4 +140,14 @@ class Style extends ThemerFile
     {
         return 'style';
     }
+
+    /**
+     * Set settings class name
+     *
+     * @return string|null
+     */
+    protected function getSettingsClass(): ?string
+    {
+        return Settings::class;
+    }
 }

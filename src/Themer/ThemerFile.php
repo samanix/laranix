@@ -5,6 +5,7 @@ use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Contracts\Logging\Log as Logger;
 use Illuminate\Contracts\Config\Repository as Config;
 use Illuminate\Contracts\View\Factory as ViewFactory;
+use Laranix\Support\Exception\InvalidInstanceException;
 use Laranix\Support\IO\Path;
 use Laranix\Support\IO\Url\Url;
 use Laranix\Support\IO\Url\Settings;
@@ -66,7 +67,6 @@ abstract class ThemerFile
     /**
      * Set the subdirectory in the theme for the file type
      *
-     * TODO Set as property?
      * @return string
      */
     abstract protected function getDirectory() : string;
@@ -74,10 +74,16 @@ abstract class ThemerFile
     /**
      * Set config key in themer config
      *
-     * TODO Set as property?
      * @return string
      */
     abstract protected function getConfigKey() : string;
+
+    /**
+     * Set settings class name
+     *
+     * @return string|null
+     */
+    abstract protected function getSettingsClass() : ?string;
 
     /**
      * @var \Laranix\Themer\Themer
@@ -129,6 +135,13 @@ abstract class ThemerFile
     protected $configKey;
 
     /**
+     * File settings class name
+     *
+     * @var string
+     */
+    protected $settingsClass;
+
+    /**
      * File load order
      *
      * @var int
@@ -168,17 +181,27 @@ abstract class ThemerFile
         $this->mergeFiles   = !in_array($this->config->get('app.env', 'production'),
                                        (array) $this->config->get('themer.ignored'));
 
-        $this->directory    = $this->getDirectory();
-        $this->configKey    = $this->getConfigKey();
+        $this->directory        = $this->getDirectory();
+        $this->configKey        = $this->getConfigKey();
+        $this->settingsClass    = $this->getSettingsClass();
     }
 
     /**
      * Add and track a new file
      *
-     * @param \Laranix\Themer\FileSettings $settings
+     * @param \Laranix\Themer\FileSettings|array $settings
+     * @throws \Laranix\Support\Exception\InvalidInstanceException
      */
-    public function add(FileSettings $settings)
+    public function add($settings)
     {
+        if (is_array($settings)) {
+            $settings = new $this->settingsClass($settings);
+        }
+
+        if (!$settings instanceof FileSettings) {
+            throw new InvalidInstanceException('Settings is not a valid instance of ' . FileSettings::class);
+        }
+
         $settings->theme = $this->getThemeToUse($settings);
 
         $addKey = sprintf('_added.%s.%s', $settings->theme->getName(), $settings->key);

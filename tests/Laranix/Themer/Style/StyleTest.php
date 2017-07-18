@@ -3,6 +3,7 @@ namespace Laranix\Tests\Laranix\Themer\Style;
 
 use Illuminate\Log\Writer;
 use Illuminate\View\Factory;
+use Laranix\Support\Exception\InvalidInstanceException;
 use Laranix\Support\Exception\KeyExistsException;
 use Laranix\Themer\Style\Style;
 use Laranix\Themer\Style\Settings;
@@ -40,6 +41,34 @@ class StyleTest extends LaranixTestCase
         $request->shouldReceive('hasCookie')->andReturn(false);
 
         $this->themer = new Themer($this->config, $request, new ThemeRepository($this->config));
+    }
+
+    /**
+     * Test adding file with array settings
+     */
+    public function testAddFileWithArraySettings()
+    {
+        $style = $this->createStyle();
+
+        $style->add([
+            'key'   => 'foo',
+            'file'  => 'style.css',
+            'order' => 1
+        ]);
+
+        $this->assertTrue($style->files->has('_added.foo.foo'));
+    }
+
+    /**
+     * Test adding file when not an array or settings instance
+     */
+    public function testAddFileWithInvalidSettings()
+    {
+        $this->expectException(InvalidInstanceException::class);
+
+        $style = $this->createStyle();
+
+        $style->add('string');
     }
 
     /**
