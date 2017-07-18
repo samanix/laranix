@@ -115,6 +115,11 @@ class MailSettings extends Settings
      |
      */
     /**
+     * @var string
+     */
+    public $message;
+
+    /**
      * @var int
      */
     public $userId;
