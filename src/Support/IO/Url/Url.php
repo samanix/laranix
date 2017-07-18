@@ -19,6 +19,11 @@ class Url
     protected static $cached = [];
 
     /**
+     * @var array
+     */
+    protected static $cachedHref = [];
+
+    /**
      * Generate a URL.
      *
      * @param \Laranix\Support\IO\Url\Settings|string $settings
@@ -115,6 +120,35 @@ class Url
     public static function self() : string
     {
         return self::parseStringUrl($_SERVER['REQUEST_URI'] ?? null);
+    }
+
+    /**
+     * HTML tagged URL
+     *
+     * @param string $url
+     * @param string $content
+     * @param array  $params
+     * @return string
+     */
+    public static function href(string $url, string $content, array $params = []) : string
+    {
+        $cacheKey = self::cacheKey([$url, $content, $params]);
+
+        if (self::hasCachedHref($cacheKey)) {
+            return self::getCachedHref($cacheKey);
+        }
+
+        if (!empty($params)) {
+            $extra = [];
+
+            foreach ($params as $key => $param) {
+                $extra[] = $key . '="' . $param . '"';
+            }
+
+            $properties = ' ' . implode(' ', $extra);
+        }
+
+        return self::cacheHref($cacheKey, sprintf('<a href="%s"%s>%s</a>', $url, $properties ?? '', $content));
     }
 
     /**
@@ -320,6 +354,42 @@ class Url
      * @return string
      */
     protected static function cacheUrl($key, string $url) : string
+    {
+        self::$cached[$key] = $url;
+
+        return $url;
+    }
+
+    /**
+     * Check for cached url
+     *
+     * @param string $key
+     * @return null|string
+     */
+    protected static function hasCachedHref(string $key) : ?string
+    {
+        return isset(self::$cached[$key]);
+    }
+
+    /**
+     * Get cached url
+     *
+     * @param string $key
+     * @return string
+     */
+    protected static function getCachedHref(string $key) : string
+    {
+        return self::$cached[$key];
+    }
+
+    /**
+     * Store url in the cache
+     *
+     * @param string $key
+     * @param string $url
+     * @return string
+     */
+    protected static function cacheHref($key, string $url) : string
     {
         self::$cached[$key] = $url;
 
