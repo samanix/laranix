@@ -132,13 +132,10 @@ class Login extends Controller
         $guard      = $this->guard();
         /** @var User $user */
         $user       = $guard->user();
-
         $session    = $this->getSessionData();
 
         $guard->logout();
-
-        $session->flush();
-        $session->regenerate();
+        $session->invalidate();
 
         if (!$redirect) {
             return null;
