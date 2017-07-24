@@ -4,7 +4,7 @@ $('div#main-menu a').each(function () {
         a_path = $(this)[0].pathname.split('/')[1];
 
     if (cur_path === a_path) {
-        $(this).addClass('active').removeAttr('href');
+        $(this).addClass('active');
         return false;
     }
 });
