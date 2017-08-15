@@ -1,1 +1,1 @@
-<input type="hidden" name="{{ $sequence['field_name'] }}" value="{{ $sequence['field_value'] }}" />
+<input type="hidden" name="{{ $sequence['fieldName'] }}" value="{{ $sequence['fieldValue'] }}" />
