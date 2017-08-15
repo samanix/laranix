@@ -2,6 +2,7 @@
 namespace Laranix\Support;
 
 use Laranix\Support\Exception\LaranixSettingsException;
+use Laranix\Support\IO\Str\Str;
 
 abstract class Settings
 {
@@ -124,8 +125,15 @@ abstract class Settings
         $valid = false;
 
         if (is_array($type)) {
-            foreach ($type as $value) {
-                if ($valid = $this->isValid($property, $value)) {
+            // If its optional and unset, we can ignore it
+            if (isset($type['optional'])) {
+                if ($this->{$property} === null) {
+                    return;
+                }
+            }
+
+            foreach ($type as $allowed => $index) {
+                if ($valid = $this->isValid($property, $allowed)) {
                     break;
                 }
             }
@@ -134,10 +142,26 @@ abstract class Settings
         }
 
         if (!$valid) {
-            $types = is_array($type) ? implode('|', $type) : $type;
+            if (is_array($type)) {
+                if (isset($type['optional'])) {
+                    $optional = 'optional';
+                    unset($type['optional']);
+                }
 
-            throw new LaranixSettingsException(sprintf("Expected '%s' for '%s' in %s, got %s",
-                                                       $types, $property, get_class($this), gettype($this->$property)));
+                $types = implode('|', array_keys($type));
+            } else {
+                $types = $type;
+            }
+
+            $str = "Expected '{{types}}' for {{optional}} property '{{property}}' in {{class}}, got '{{actualtype}}'";
+
+            throw new LaranixSettingsException(Str::format($str, [
+                'types'     => $types,
+                'optional'  => $optional ?? null,
+                'property'  => $property,
+                'class'     => get_class($this),
+                'actualtype'=> gettype($this->{$property}),
+            ]));
         }
     }
 
@@ -184,7 +208,7 @@ abstract class Settings
     {
         $type = $type ?? $this->getRequiredType($property);
 
-        return strpos($type, '|') !== false ? explode('|', $type) : $type;
+        return strpos($type, '|') !== false ? array_flip(explode('|', $type)) : $type;
     }
 
     /**

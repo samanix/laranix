@@ -20,4 +20,6 @@ class Settings extends BaseSettings
     public $null;
 
     public $instanceof;
+
+    public $optional;
 }

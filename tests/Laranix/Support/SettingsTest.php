@@ -247,6 +247,7 @@ class SettingsTest extends LaranixTestCase
     public function testValueDoesNotHaveRequiredTypeEmail()
     {
         $this->expectException(LaranixSettingsException::class);
+        $this->expectExceptionMessage("Expected 'email' for property 'bool' in Laranix\Tests\Laranix\Support\Stubs\Settings, got 'boolean'");
 
         $settings = $this->getSettings();
         $settings->setRequired([
@@ -282,6 +283,7 @@ class SettingsTest extends LaranixTestCase
     public function testValueAllowedMultipleTypesWithInvalidType()
     {
         $this->expectException(LaranixSettingsException::class);
+        $this->expectExceptionMessage("Expected 'string|bool|int' for property 'string' in Laranix\Tests\Laranix\Support\Stubs\Settings, got 'array'");
 
         $settings = $this->getSettings([
             'string'    => [],
@@ -293,6 +295,55 @@ class SettingsTest extends LaranixTestCase
             'string'    => 'string|bool|int',
             'bool'      => 'array|string|bool',
             'array'     => 'array|url|email',
+        ]);
+
+        $settings->hasRequired();
+    }
+
+     /**
+     * Test setting optional setting
+     */
+    public function testOptionalSetting()
+    {
+        $settings = $this->getSettings([
+            'optional'  => 'this is a string',
+        ]);
+
+        $settings->setRequired([
+            'optional'  => 'optional|string',
+        ]);
+
+        $this->assertTrue($settings->hasRequired());
+    }
+
+    /**
+     * Test setting unset optional setting
+     */
+    public function testOptionalSettingUnset()
+    {
+        $settings = $this->getSettings();
+
+        $settings->setRequired([
+            'optional'  => 'optional|string',
+        ]);
+
+        $this->assertTrue($settings->hasRequired());
+    }
+
+    /**
+     * Test setting optional setting
+     */
+    public function testOptionalSettingBadType()
+    {
+        $this->expectException(LaranixSettingsException::class);
+        $this->expectExceptionMessage("Expected 'array' for optional property 'optional' in Laranix\Tests\Laranix\Support\Stubs\Settings, got 'string'");
+
+        $settings = $this->getSettings([
+            'optional'  => 'this is a string',
+        ]);
+
+        $settings->setRequired([
+            'optional'  => 'optional|array',
         ]);
 
         $settings->hasRequired();
@@ -315,6 +366,7 @@ class SettingsTest extends LaranixTestCase
             'array'         => [],
             'null'          => null,
             'instanceof'    => new Settings(),
+            'optional'      => null,
         ], $options));
     }
 }
