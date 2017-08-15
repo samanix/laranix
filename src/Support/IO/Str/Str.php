@@ -20,7 +20,7 @@ class Str
             $options = new Settings();
         }
 
-        $options->hasRequired();
+        $options->hasRequiredSettings();
 
         return self::parseString($string, $values, $options);
     }

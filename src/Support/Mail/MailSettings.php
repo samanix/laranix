@@ -14,7 +14,7 @@ class MailSettings extends Settings
         'to'            => 'email|array',
         'view'          => 'string',
         'subject'       => 'string',
-        'attachments'   => 'null|array'
+        'attachments'   => 'optional|array'
     ];
 
     /*

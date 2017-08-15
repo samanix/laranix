@@ -27,7 +27,7 @@ class Mail extends Mailable
     public function __construct(?MailSettings $options = null)
     {
         if ($options !== null) {
-            $options->hasRequired();
+            $options->hasRequiredSettings();
             $this->options = $options;
             $this->setupMail();
         }

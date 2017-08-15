@@ -124,7 +124,7 @@ class Writer implements TrackWriter
      */
     protected function getPayload(Settings $settings) : array
     {
-        $settings->hasRequired();
+        $settings->hasRequiredSettings();
 
         $now = Carbon::now()->toDateTimeString();
 

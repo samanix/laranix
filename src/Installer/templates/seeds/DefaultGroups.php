@@ -20,7 +20,7 @@ class DefaultGroups extends Seeder
          * @var \Laranix\Auth\Group\Settings $group
          */
         foreach ($groups as $name => $group) {
-            $group->hasRequired();
+            $group->hasRequiredSettings();
 
             $insertGroups[] = [
                 'group_name'    => $group->name,

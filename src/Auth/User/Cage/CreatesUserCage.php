@@ -15,7 +15,7 @@ trait CreatesUserCage
             $values = new Settings($values);
         }
 
-        $values->hasRequired();
+        $values->hasRequiredSettings();
 
         $config = $this->config ?? config();
 

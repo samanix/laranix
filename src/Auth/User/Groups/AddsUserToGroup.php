@@ -15,7 +15,7 @@ trait AddsUserToGroup
             $values = new Settings($values);
         }
 
-        $values->hasRequired();
+        $values->hasRequiredSettings();
 
         /** @var \Laranix\Auth\User\Groups\UserGroup $usergroup */
         return UserGroup::createNew([

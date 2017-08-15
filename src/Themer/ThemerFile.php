@@ -232,7 +232,7 @@ abstract class ThemerFile
             return false;
         }
 
-        $settings->hasRequired();
+        $settings->hasRequiredSettings();
 
         return $settings->url === null && $this->mergeFiles ? $this->addLocalResource($settings) : $this->addRemoteResource($settings);
     }

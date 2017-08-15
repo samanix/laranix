@@ -15,7 +15,7 @@ trait CreatesGroup
             $values = new Settings($values);
         }
 
-        $values->hasRequired();
+        $values->hasRequiredSettings();
 
         return Group::createNew([
             'group_name'    => $values->name,
