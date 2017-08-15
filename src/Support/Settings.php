@@ -101,14 +101,6 @@ abstract class Settings
     {
         $types = array_flip($allowed);
 
-        if (empty($types) || isset($types['null'])) {
-            if ($this->{$property} !== null) {
-                throw new LaranixSettingsException(sprintf("'%s' is required but not set in %s", $property, get_class($this)));
-            }
-
-            return;
-        }
-
         $optional = false;
         $valid = false;
 
