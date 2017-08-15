@@ -20,7 +20,7 @@ class SequenceTest extends LaranixTestCase
     {
         list($config, $request, $view, $guzzle) = $this->getConstructorArgs(false);
 
-        $sequence = new Sequence($config, $request, $view, $guzzle);
+        $sequence = new Sequence($config, $request, $view);
 
         $this->assertFalse($sequence->enabled());
         $this->assertNull($sequence->render());
@@ -35,7 +35,7 @@ class SequenceTest extends LaranixTestCase
     {
         list($config, $request, $view, $guzzle) = $this->getConstructorArgs(true, 'disabled1');
 
-        $sequence = new Sequence($config, $request, $view, $guzzle);
+        $sequence = new Sequence($config, $request, $view);
 
         $this->assertFalse($sequence->enabled());
         $this->assertNull($sequence->render());
@@ -59,7 +59,7 @@ class SequenceTest extends LaranixTestCase
 
         $request->shouldReceive('session')->andReturn($session);
 
-        $this->assertSame('output', (new Sequence($config, $request, $view, $guzzle))->render());
+        $this->assertSame('output', (new Sequence($config, $request, $view))->render());
     }
 
     /**
@@ -73,7 +73,7 @@ class SequenceTest extends LaranixTestCase
         $view->shouldReceive('make')->withAnyArgs()->andReturnSelf();
         $view->shouldReceive('render')->withNoArgs()->andReturn('foo');
 
-        $recaptcha = new Sequence($config, $request, $view, $guzzle);
+        $recaptcha = new Sequence($config, $request, $view);
 
         $this->expectException(\Illuminate\Contracts\Filesystem\FileNotFoundException::class);
         $recaptcha->render();
@@ -88,7 +88,7 @@ class SequenceTest extends LaranixTestCase
 
         $request->shouldReceive('has')->andReturn(false);
 
-        $this->assertFalse((new Sequence($config, $request, $view, $guzzle))->verify());
+        $this->assertFalse((new Sequence($config, $request, $view))->verify());
     }
 
     /**
@@ -105,7 +105,7 @@ class SequenceTest extends LaranixTestCase
 
         $request->shouldReceive('session')->withNoArgs()->andReturn($session);
 
-        $this->assertFalse((new Sequence($config, $request, $view, $guzzle))->verify());
+        $this->assertFalse((new Sequence($config, $request, $view))->verify());
     }
 
     /**
@@ -140,7 +140,7 @@ class SequenceTest extends LaranixTestCase
         $request->shouldReceive('session')->withNoArgs()->andReturn($session);
         $request->shouldReceive('get')->withAnyArgs()->andReturn($data['value']);
 
-        $this->assertFalse((new Sequence($config, $request, $view, $guzzle))->verify());
+        $this->assertFalse((new Sequence($config, $request, $view))->verify());
     }
 
     /**
@@ -175,7 +175,7 @@ class SequenceTest extends LaranixTestCase
         $request->shouldReceive('session')->withNoArgs()->andReturn($session);
         $request->shouldReceive('get')->withAnyArgs()->andReturn($data['value']);
 
-        $this->assertTrue((new Sequence($config, $request, $view, $guzzle))->verify());
+        $this->assertTrue((new Sequence($config, $request, $view))->verify());
     }
 
     /**
@@ -187,7 +187,7 @@ class SequenceTest extends LaranixTestCase
 
         $this->get('/foo', ['referer' => 'https://foo.com/recaptcha']);
 
-        $redirect = (new Sequence($config, $request, $view, $guzzle))->redirect();
+        $redirect = (new Sequence($config, $request, $view))->redirect();
 
         $this->assertSame(302, $redirect->getStatusCode());
         $this->assertInstanceOf(RedirectResponse::class, $redirect);
