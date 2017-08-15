@@ -48,6 +48,10 @@ class Str
                                    $options->unparsedReplacement, $output);
         }
 
+        if ($options->removeExtraSpaces) {
+            $output = preg_replace('/\s+/', ' ', $output);
+        }
+
         return trim($output);
     }
 }
