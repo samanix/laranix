@@ -154,12 +154,14 @@ class SettingsTest extends LaranixTestCase
             'email',
             'int' => 'int',
             'bool',
+            'optional',
         ]);
 
         $settings->setRequiredTypes([
             'bool'      => 'bool',
             'string'    => 'string',
             'email'     => 'email',
+            'optional'  => 'null',
         ]);
 
         $this->assertTrue($settings->hasRequiredSettings());

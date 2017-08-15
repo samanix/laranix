@@ -298,7 +298,7 @@ class ScriptTest extends LaranixTestCase
     {
         $settings = new Settings($options);
 
-        $settings->hasRequired();
+        $settings->hasRequiredSettings();
 
         return $settings;
     }
