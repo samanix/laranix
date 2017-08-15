@@ -35,7 +35,7 @@ class Recaptcha extends AntiSpam
      * @param string $formId
      * @return array
      */
-    protected function getViewData(string $formId) : array
+    protected function getViewData(?string $formId = null) : array
     {
         return [
             'recaptcha' => [
@@ -85,15 +85,5 @@ class Recaptcha extends AntiSpam
         ]);
 
         return json_decode($response->getBody());
-    }
-
-    /**
-     * Get the name of the javascript file that contains the recaptcha callback function.
-     *
-     * @return string
-     */
-    public function getCallbackScript() : string
-    {
-        return $this->config->get('antispam.recaptcha.js_callback', 'recaptcha_callback.js');
     }
 }

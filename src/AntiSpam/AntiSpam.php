@@ -50,7 +50,7 @@ abstract class AntiSpam
      * @param string $formId
      * @return array
      */
-    abstract protected function getViewData(string $formId) : array;
+    abstract protected function getViewData(?string $formId = null) : array;
 
     /**
      * Verify form request.
@@ -89,12 +89,12 @@ abstract class AntiSpam
     /**
      * Render view.
      *
-     * @param string        $formId
+     * @param string|null   $formId
      * @param string|null   $view
      * @return string
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
-    public function render(string $formId, string $view = null) : ?string
+    public function render(?string $formId = null, ?string $view = null) : ?string
     {
         if (!$this->enabled()) {
             return null;

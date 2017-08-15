@@ -18,12 +18,12 @@ class Sequence extends AntiSpam
      * @param string $formId
      * @return array
      */
-    protected function getViewData(string $formId) : array
+    protected function getViewData(?string $formId = null) : array
     {
         return [
             'sequence' => [
-                'field_name'    => $this->config->get('antispam.sequence.field_name', '__sequence_id'),
-                'field_value'   => $this->createSequenceNumber(),
+                'fieldName'    => $this->config->get('antispam.sequence.field_name', '__sequence_id'),
+                'fieldValue'   => $this->createSequenceNumber(),
             ],
         ];
     }
