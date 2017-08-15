@@ -1,4 +1,4 @@
-form_name = 'login';
+form_id = 'login';
 
 validation_fields = {
     email: {

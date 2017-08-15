@@ -1,4 +1,4 @@
-form_name = 'pass-reset';
+form_id = 'pass-reset';
 
 validation_fields = {
     token: {

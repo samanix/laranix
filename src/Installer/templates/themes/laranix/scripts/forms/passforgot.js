@@ -1,4 +1,4 @@
-form_name = 'pass-forgot';
+form_id = 'pass-forgot';
 
 validation_fields = {
     email: {

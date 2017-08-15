@@ -1,4 +1,4 @@
-form_name = 'verify-email-refresh';
+form_id = 'verify-email-refresh';
 
 validation_fields = {
     email: {

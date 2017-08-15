@@ -1,4 +1,4 @@
-form_name = 'register';
+form_id = 'register';
 
 validation_fields = {
     fname: {

@@ -1,59 +1,44 @@
-let form_name, validation_fields,
-    $_form, $_form_button, $_recaptchaDone, $_recaptchaField,
-    $_has_checkboxes = false;
+let form_id, form_validation_fields;
 
-function recaptcha_callback() {
-    $_recaptchaDone = true;
-    document.getElementById('recaptcha-error').innerHTML = '';
-}
 
-$(document).ready(function () {
-    $_form = $('form#' + form_name + '-form');
-    $_form_button = $('button#submit-' + form_name + '-form');
-    $_recaptchaDone = true;
-    $_recaptchaField = document.getElementById('recaptcha-field');
-
-    if ($_recaptchaField !== null) {
-        $_recaptchaField.style.display = 'block';
-        $_recaptchaDone = false;
-    }
-
-    $_form_inputs = $_form.find(':input');
+window.addEventListener('DOMContentLoaded', function() {
+    let $_form = $('form#' + form_id + '-form'),
+        $_form_inputs = $_form.find(':input'),
+        _form_has_checkboxes = false;
 
     $_form_inputs.each(function () {
         $(this).removeAttr('required minlength maxlength');
 
         if ($(this).is(':checkbox')) {
             $(this).addClass('hidden');
-            $_has_checkboxes = true;
+            _form_has_checkboxes = true;
         }
     });
 
-    if ($_has_checkboxes) {
+    if (_form_has_checkboxes) {
         $('.ui.checkbox').checkbox();
     }
 
-    validate_form();
-});
+    if (_recaptcha_enabled) {
+        grecaptcha.render(form_id + '-recaptcha-render', {
+            sitekey: '6Lc88CwUAAAAAINt_FlOLiDMi0hK5CBFDhEh5MsV',
+            size: 'invisible',
+            callback: function (token) {
+                document.getElementById(form_id + '-form').submit();
+            }
+        });
+    }
 
-// Validate the form
-function validate_form() {
-    let form_validation = {
+    let _form_validation = {
         inline: true,
         on: 'blur',
         onSuccess: function (e, validation_fields) {
-            if (!$_recaptchaDone) {
-                e.preventDefault();
-                $_form.form('add errors', ['Please complete the captcha']);
-
-                return false;
-            }
-
-            $_form_button.prop('disabled', true);
+            e.preventDefault();
+            grecaptcha.execute();
         }
     };
 
-    form_validation.fields = validation_fields;
+    _form_validation.fields = form_validation_fields;
 
-    $_form.form(form_validation);
-}
+    $_form.form(_form_validation);
+});

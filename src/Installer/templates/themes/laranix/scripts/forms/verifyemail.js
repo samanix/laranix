@@ -1,4 +1,4 @@
-form_name = 'verify-email';
+form_id = 'verify-email';
 
 validation_fields = {
     token: {
