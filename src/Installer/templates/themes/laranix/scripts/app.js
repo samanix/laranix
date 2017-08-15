@@ -1,4 +1,4 @@
-$('div#main-menu a').each(function () {
+$('.main-menu a').each(function () {
 
     let cur_path = window.location.pathname.split('/')[1],
         a_path = $(this)[0].pathname.split('/')[1];
@@ -9,5 +9,5 @@ $('div#main-menu a').each(function () {
     }
 });
 
-$('div#main-menu .dropdown').removeClass('simple').dropdown();
+$('.main-menu .dropdown').removeClass('simple').dropdown();
 
