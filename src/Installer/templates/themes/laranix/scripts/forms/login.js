@@ -1,6 +1,6 @@
-form_id = 'login';
+formId = 'login';
 
-form_validation_fields = {
+formValidationFields = {
     email: {
         identifier: 'email',
         rules: [

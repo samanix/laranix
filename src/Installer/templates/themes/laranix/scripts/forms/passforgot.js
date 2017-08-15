@@ -1,6 +1,6 @@
-form_id = 'pass-forgot';
+formId = 'pass-forgot';
 
-form_validation_fields = {
+formValidationFields = {
     email: {
         identifier: 'email',
         rules: [

@@ -1,6 +1,6 @@
-form_id = 'register';
+formId = 'register';
 
-form_validation_fields = {
+formValidationFields = {
     fname: {
         identifier: 'first_name',
         rules: [
