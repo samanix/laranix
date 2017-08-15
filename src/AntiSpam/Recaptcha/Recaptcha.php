@@ -32,13 +32,15 @@ class Recaptcha extends AntiSpam
     /**
      * Get view data.
      *
+     * @param string $formId
      * @return array
      */
-    protected function getViewData() : array
+    protected function getViewData(string $formId) : array
     {
         return [
             'recaptcha' => [
-                'key' => $this->config->get('antispam.recaptcha.key', ''),
+                'siteKey'   => $this->config->get('antispam.recaptcha.key', ''),
+                'formId'    => $formId,
             ],
         ];
     }
