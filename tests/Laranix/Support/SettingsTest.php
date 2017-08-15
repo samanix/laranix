@@ -21,44 +21,69 @@ class SettingsTest extends LaranixTestCase
     }
 
     /**
-     * Test has required
+     * Test has required settings
      */
-    public function testHasRequired()
+    public function testHasRequiredSettings()
     {
         $settings = $this->getSettings();
 
-        $this->assertTrue($settings->hasRequired());
+        $this->assertTrue($settings->hasRequiredSettings());
 
-        $settings->setRequired([
+        $settings->setRequiredProperties([
             'string'    => 'string',
             'email'     => 'email',
             'int'       => 'int',
             'array'     => 'array',
         ]);
 
-        $this->assertTrue($settings->hasRequired());
+        $this->assertTrue($settings->hasRequiredSettings());
+
+        $settings->setRequiredProperties(['*']);
+
+        $this->assertTrue($settings->hasRequiredSettings());
     }
 
-
     /**
-     * Test auto setting required parameters
+     * Test setting all parameters required
      */
-    public function testAutoSetAllRequired()
+    public function testSetAllPropertiesRequired()
     {
         $settings = $this->getSettings();
 
-        $settings->setRequired('all');
+        $settings->setRequiredProperties(['*']);
 
         $required = get_object_vars($settings);
-        unset($required['required'], $required['requiredTypes'], $required['requiredExcept']);
+        unset($required['required'],
+              $required['requiredTypes'],
+              $required['ignored'],
+              $required['requiredParsed'],
+              $required['allRequired']);
 
-        $this->assertSame($required, $settings->getRequired());
+        $this->assertSame($required, $settings->getRequiredProperties());
     }
 
     /**
-     * Test all required set
+     * Test for missing required settings
      */
-    public function testHasRequiredSettings()
+    public function testThrowsExceptionWhenRequiredValueHasBadType()
+    {
+        $this->expectException(LaranixSettingsException::class);
+
+        $settings = $this->getSettings();
+
+        $settings->string = null;
+
+        $settings->setRequiredProperties(['*']);
+
+        $settings->setRequiredPropertyTypes('string', 'string');
+
+        $settings->hasRequiredSettings();
+    }
+
+    /**
+     * Test required by type
+     */
+    public function testHasRequiredByRequiredTypeArray()
     {
         $settings = $this->getSettings();
 
@@ -66,106 +91,65 @@ class SettingsTest extends LaranixTestCase
             'string'        => 'string',
             'email'         => 'email',
             'url'           => 'url',
-            'int'           => 'int',
-            'bool'          => 'bool',
-            'array'         => 'array',
-            'null'          => 'null',
             'instanceof'    => Settings::class
         ]);
 
-        $this->assertTrue($settings->hasRequired());
-
-        $settings->setRequired(['*']);
-
-        $this->assertTrue($settings->hasRequired());
-
-        $settings->setRequired('all');
-
-        $this->assertTrue($settings->hasRequired());
+        $this->assertTrue($settings->hasRequiredSettings());
     }
 
     /**
-     * Test for missing required settings
-     */
-    public function testThrowsExceptionWhenRequiredValueMissing()
-    {
-        $this->expectException(LaranixSettingsException::class);
-
-        $settings = $this->getSettings();
-
-        $settings->setRequired('all');
-
-        $settings->hasRequired();
-    }
-
-    /**
-     * Test for missing required settings
-     */
-    public function testThrowsExceptionWhenRequiredValueMissingWithStarArray()
-    {
-        $this->expectException(LaranixSettingsException::class);
-
-        $settings = $this->getSettings();
-
-        $settings->setRequired(['*']);
-
-        $settings->hasRequired();
-    }
-
-    /**
-     * Test required by type in array
-     */
-    public function testHasRequiredByRequiredArray()
-    {
-        $settings = $this->getSettings();
-
-        $settings->setRequired(['string' => 'string', 'email' => 'email', 'url' => 'url', 'instanceof' => Settings::class]);
-
-        $this->assertTrue($settings->hasRequired());
-    }
-
-    /**
-     * Test by requiredtypes array
+     * Test by required types array
      */
     public function testHasRequiredByRequiredTypesArray()
     {
         $settings = $this->getSettings();
 
-        $settings->setRequired(['string', 'email', 'url']);
+        $settings->setRequiredProperties(['string', 'email', 'url']);
 
-        $settings->setRequiredTypes(['string' => 'string', 'email' => 'email', 'url' => 'url']);
+        $settings->setRequiredTypes([
+            'string'    => 'string',
+            'email'     => 'email',
+            'url'       => 'url'
+        ]);
 
-        $this->assertTrue($settings->hasRequired());
+        $this->assertTrue($settings->hasRequiredSettings());
     }
 
     /**
-     * Test has required with exceptions set
+     * Test has required with ignored properties set
      */
-    public function testHasRequiredTypeWithExceptions()
+    public function testHasRequiredTypeWithIgnored()
     {
         $settings = $this->getSettings();
-        $settings->setRequired('all');
+        $settings->setRequiredProperties(['*']);
 
         $settings->setRequiredTypes([
             'url'           => 'url',
             'int'           => 'int',
             'array'         => 'array',
             'null'          => 'null',
-            'instanceof'    => Settings::class
+            'instanceof'    => Settings::class,
+            'string'        => 'any',
         ]);
 
-        $settings->setRequiredExcept(['string', 'bool', 'email']);
+        $settings->setIgnoredProperties([
+            'string',
+            'bool',
+            'email'
+        ]);
 
-        $this->assertTrue($settings->hasRequired());
+        $this->assertSame(['string', 'bool', 'email'], $settings->getIgnoredProperties());
+        $this->assertTrue($settings->hasRequiredSettings());
     }
 
     /**
-     * Test has required from mixed sources
+     * Test has required types from mixed sources
      */
-    public function testHasRequiredMixedSources()
+    public function testHasRequiredWithMixedSourceTypes()
     {
         $settings = $this->getSettings();
-        $settings->setRequired([
+
+        $settings->setRequiredProperties([
             'string',
             'email',
             'int' => 'int',
@@ -178,89 +162,30 @@ class SettingsTest extends LaranixTestCase
             'email'     => 'email',
         ]);
 
-        $this->assertTrue($settings->hasRequired());
+        $this->assertTrue($settings->hasRequiredSettings());
     }
 
     /**
      * Test setting wrong type for string
      */
-    public function testValueDoesNotHaveRequiredTypeString()
+    public function testPropertyDoesNotHaveValidType()
     {
         $this->expectException(LaranixSettingsException::class);
+        $this->expectExceptionMessage("Expected 'bool' for property 'string' in Laranix\Tests\Laranix\Support\Stubs\Settings, got 'string'");
 
         $settings = $this->getSettings();
-        $settings->setRequired([
+
+        $settings->setRequiredProperties([
             'string' => 'bool',
-        ]);
+        ])->hasRequiredSettings();
 
-        $settings->hasRequired();
+        $settings->getParsedRequiredProperties();
     }
 
     /**
-     * Test setting wrong type for bool
+     * Test setting multiple allowed types
      */
-    public function testValueDoesNotHaveRequiredTypeBool()
-    {
-        $this->expectException(LaranixSettingsException::class);
-
-        $settings = $this->getSettings();
-        $settings->setRequired([
-            'bool' => 'int',
-        ]);
-
-        $settings->hasRequired();
-    }
-
-    /**
-     * Test setting wrong type for array
-     */
-    public function testValueDoesNotHaveRequiredTypeArray()
-    {
-        $this->expectException(LaranixSettingsException::class);
-
-        $settings = $this->getSettings();
-        $settings->setRequired([
-            'array' => 'int',
-        ]);
-
-        $settings->hasRequired();
-    }
-
-    /**
-     * Test setting wrong type for url
-     */
-    public function testValueDoesNotHaveRequiredTypeUrl()
-    {
-        $this->expectException(LaranixSettingsException::class);
-
-        $settings = $this->getSettings();
-        $settings->setRequired([
-            'string' => 'url',
-        ]);
-
-        $settings->hasRequired();
-    }
-
-    /**
-     * Test setting wrong type for email
-     */
-    public function testValueDoesNotHaveRequiredTypeEmail()
-    {
-        $this->expectException(LaranixSettingsException::class);
-        $this->expectExceptionMessage("Expected 'email' for property 'bool' in Laranix\Tests\Laranix\Support\Stubs\Settings, got 'boolean'");
-
-        $settings = $this->getSettings();
-        $settings->setRequired([
-            'bool' => 'email',
-        ]);
-
-        $settings->hasRequired();
-    }
-
-    /**
-     * Test setting multiple types
-     */
-    public function testValueAllowedMultipleTypes()
+    public function testPropertyAllowedMultipleTypes()
     {
         $settings = $this->getSettings([
             'string'    => [],
@@ -268,13 +193,13 @@ class SettingsTest extends LaranixTestCase
             'array'     => null,
         ]);
 
-        $settings->setRequired([
+        $settings->setRequiredTypes([
             'string'    => 'array|string',
             'bool'      => 'int|string|bool',
             'array'     => 'array|null',
         ]);
 
-        $this->assertTrue($settings->hasRequired());
+        $this->assertTrue($settings->hasRequiredSettings());
     }
 
     /**
@@ -291,43 +216,39 @@ class SettingsTest extends LaranixTestCase
             'array'     => null,
         ]);
 
-        $settings->setRequired([
+        $settings->setRequiredTypes([
             'string'    => 'string|bool|int',
             'bool'      => 'array|string|bool',
             'array'     => 'array|url|email',
         ]);
 
-        $settings->hasRequired();
+        $settings->hasRequiredSettings();
     }
 
      /**
      * Test setting optional setting
      */
-    public function testOptionalSetting()
+    public function testOptionalPropertyValue()
     {
         $settings = $this->getSettings([
             'optional'  => 'this is a string',
         ]);
 
-        $settings->setRequired([
-            'optional'  => 'optional|string',
-        ]);
+        $settings->setRequiredPropertyTypes('optional', 'optional|string');
 
-        $this->assertTrue($settings->hasRequired());
+        $this->assertTrue($settings->hasRequiredSettings());
     }
 
     /**
-     * Test setting unset optional setting
+     * Test setting optional setting with no value
      */
-    public function testOptionalSettingUnset()
+    public function testOptionalPropertyValueWithNoValue()
     {
         $settings = $this->getSettings();
 
-        $settings->setRequired([
-            'optional'  => 'optional|string',
-        ]);
+        $settings->setRequiredPropertyTypes('optional', 'optional|null');
 
-        $this->assertTrue($settings->hasRequired());
+        $this->assertTrue($settings->hasRequiredSettings());
     }
 
     /**
@@ -342,11 +263,9 @@ class SettingsTest extends LaranixTestCase
             'optional'  => 'this is a string',
         ]);
 
-        $settings->setRequired([
-            'optional'  => 'optional|array',
-        ]);
+        $settings->setRequiredPropertyTypes('optional', 'optional|array');
 
-        $settings->hasRequired();
+        $settings->hasRequiredSettings();
     }
 
     /**

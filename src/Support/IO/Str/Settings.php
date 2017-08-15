@@ -10,12 +10,7 @@ class Settings extends BaseSettings
      *
      * @var array|string
      */
-    protected $required = ['*'];
-
-    /**
-     * @var array
-     */
-    protected $requiredTypes = [
+    protected $required = [
         'removeUnparsed'        => 'bool',
         'unparsedReplacement'   => 'string',
         'leftSeparator'         => 'string',
