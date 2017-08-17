@@ -1,11 +1,12 @@
 <?php
 namespace Laranix\Themer\Script;
 
-use Laranix\Themer\FileSettings;
+use Laranix\Support\IO\Str\Str;
+use Laranix\Themer\ResourceSettings;
 use Laranix\Themer\Theme;
-use Laranix\Themer\ThemerFile;
+use Laranix\Themer\ThemerResource;
 
-class Script extends ThemerFile
+class Script extends ThemerResource
 {
     /**
      * Processed scripts, stored so as not to double compile in head/body
@@ -15,76 +16,76 @@ class Script extends ThemerFile
     protected $processedScripts;
 
     /**
-     * Get repository key for remote files
+     * Get repository key for remote resources
      *
-     * @param \Laranix\Themer\FileSettings|Settings $settings
+     * @param \Laranix\Themer\ResourceSettings|Settings $settings
      * @return string
      */
-    protected function getRemoteRepositoryKey(FileSettings $settings) : string
+    protected function getRemoteResourceRepositoryKey(ResourceSettings $settings) : string
     {
         return sprintf('scripts.remote.%s.%d', $this->getLocation($settings->head), $settings->order);
     }
 
     /**
-     * Get repository key for local files
+     * Get repository key for local resources
      *
-     * @param \Laranix\Themer\FileSettings $settings
+     * @param \Laranix\Themer\ResourceSettings $settings
      * @return string
      */
-    protected function getLocalRepositoryKey(FileSettings $settings) : string
+    protected function getLocalResourceRepositoryKey(ResourceSettings $settings) : string
     {
         return sprintf('scripts.local.%s.%s.%d', $settings->theme->getKey(), $this->getAttributes($settings), $settings->order);
     }
 
     /**
-     * Get repository key for remote files
+     * Get repository key for remote resources
      *
-     * @param \Laranix\Themer\FileSettings $settings
+     * @param \Laranix\Themer\ResourceSettings $settings
      * @return string
      */
-    protected function getCompiledLocalRepositoryKey(FileSettings $settings) : string
+    protected function getCompiledLocalResourceRepositoryKey(ResourceSettings $settings) : string
     {
         return sprintf('compiled.%s.%s', $settings->theme->getKey(), $this->getAttributes($settings));
     }
 
     /**
-     * Process files
+     * Process resources
      *
      * @param array $options
      * @return array|null
      */
-    protected function getFilePayload(array $options = []) : ?array
+    protected function getResourcePayload(array $options = []) : ?array
     {
         $location = $this->getLocation($options['head'] ?? true);
 
         if ($this->processedScripts === null) {
-            $local  = $this->parseFiles($this->files->get('compiled'));
-            $remote = $this->files->get('scripts.remote');
+            $local  = $this->parseLocalResources($this->resources->get('compiled'));
+            $remote = $this->resources->get('scripts.remote');
 
             $this->processedScripts = [
-                'head' => [ 'scripts' => $this->mergeFileArrays($local['head'] ?? null, $remote['head'] ?? null) ],
-                'body' => [ 'scripts' => $this->mergeFileArrays($local['body'] ?? null, $remote['body'] ?? null) ],
+                'head'  => $this->mergeResourceArrays($local['head'] ?? null, $remote['head'] ?? null),
+                'body'  => $this->mergeResourceArrays($local['body'] ?? null, $remote['body'] ?? null),
             ];
 
-            if ($this->processedScripts['head']['scripts'] !== null) {
-                ksort($this->processedScripts['head']['scripts']);
+            if ($this->processedScripts['head'] !== null) {
+                ksort($this->processedScripts['head']);
             }
 
-            if ($this->processedScripts['body']['scripts'] !== null) {
-                ksort($this->processedScripts['body']['scripts']);
+            if ($this->processedScripts['body'] !== null) {
+                ksort($this->processedScripts['body']);
             }
         }
 
-        return $this->processedScripts[$location]['scripts'] !== null ? $this->processedScripts[$location] : null;
+        return $this->processedScripts[$location] !== null ? $this->processedScripts[$location] : null;
     }
 
     /**
-     * Group files together by type
+     * Group resources together by type
      *
      * @param array $compiled
      * @return array|null
      */
-    protected function parseFiles(?array $compiled): ?array
+    protected function parseLocalResources(?array $compiled): ?array
     {
         if ($compiled === null) {
             return null;
@@ -99,16 +100,16 @@ class Script extends ThemerFile
             $theme = $this->getTheme($themeName);
 
             foreach ($attr as $type => $script) {
-                $compiledFile       = sprintf('compiled_%s.js', $this->crc($type . $script));
-                $compiledFilePath   = $this->getFilePath($compiledFile, $theme);
+                $compiledResource           = sprintf('compiled_%s.js', $this->crc($type . $script));
+                $compiledResourceFilePath   = $this->getResourcePath($compiledResource, $theme);
 
-                if (!is_file($compiledFilePath)) {
-                    $this->mergeFiles($theme, sprintf('scripts.local.%s.%s', $theme->getKey(), $type), $compiledFilePath);
+                if (!is_file($compiledResourceFilePath)) {
+                    $this->mergeResources($theme, sprintf('scripts.local.%s.%s', $theme->getKey(), $type), $compiledResourceFilePath);
                 }
 
                 $location = $this->getLocation(strpos($type, 'head') !== false);
 
-                $scripts[$location][] = $this->createFileSettings($theme, $type, $compiledFile);
+                $scripts[$location][] = $this->createLocalResourceFileSettings($theme, $type, $compiledResource);
 
             }
         }
@@ -117,28 +118,58 @@ class Script extends ThemerFile
     }
 
     /**
-     * Create and return settings for file.
+     * Creates output for resources
+     *
+     * @param array|null $resources
+     * @return string|null
+     */
+    protected function createResourceOutput(?array $resources) : ?string
+    {
+        if (empty($resources)) {
+            return null;
+        }
+
+        $output = [];
+
+        foreach ($resources as $resource) {
+            $str = /** @lang text */
+                '<script type="application/javascript" src="{{url}}"{{async}}{{defer}}{{crossorigin}}{{integrity}}></script>';
+
+            $output[] = Str::format($str, [
+                'url'           => url_create(null, $resource->url, $resource->filename),
+                'async'         => $resource->async ? ' async' : null,
+                'defer'         => $resource->defer ? ' defer' : null,
+                'crossorigin'   => $resource->crossorigin !== null ? ' crossorigin="' . $resource->crossorigin . '"' : null,
+                'integrity'     => $resource->integrity !== null ? ' integrity="' . $resource->integrity . '"' : null,
+            ]);
+        }
+
+        return implode("\n", $output);
+    }
+
+    /**
+     * Create and return settings for resource.
      *
      * @param \Laranix\Themer\Theme $theme
      * @param string                $type
-     * @param string                $file
-     * @return \Laranix\Themer\FileSettings|\Laranix\Themer\Script\Settings
+     * @param string                $resource
+     * @return \Laranix\Themer\ResourceSettings|\Laranix\Themer\Script\Settings
      */
-    protected function createFileSettings(Theme $theme, string $type, string $file): FileSettings
+    protected function createLocalResourceFileSettings(Theme $theme, string $type, string $resource): ResourceSettings
     {
         return new Settings([
-            'key'   => $this->crc(sprintf('%s%s%s', $theme->getKey(), $type, $file)),
-            'file'  => $file,
-            'url'   => $this->getBaseUrl($theme),
-            'theme' => $theme,
-            'async' => strpos($type, 'async') !== false,
-            'defer' => strpos($type, 'defer') !== false,
-            'order' => ++$this->order,
+            'key'       => $this->crc(sprintf('%s%s%s', $theme->getKey(), $type, $resource)),
+            'resource'  => $resource,
+            'url'       => $this->getBaseUrl($theme),
+            'theme'     => $theme,
+            'async'     => strpos($type, 'async') !== false,
+            'defer'     => strpos($type, 'defer') !== false,
+            'order'     => ++$this->order,
         ]);
     }
 
     /**
-     * Set the subdirectory in the theme for the file type
+     * Set the subdirectory in the theme for the resource type
      *
      * @return string
      */
@@ -181,10 +212,10 @@ class Script extends ThemerFile
     /**
      * Get parameters for script (async, defer)
      *
-     * @param \Laranix\Themer\FileSettings|Settings $settings
+     * @param \Laranix\Themer\ResourceSettings|Settings $settings
      * @return string
      */
-    protected function getAttributes(FileSettings $settings) : string
+    protected function getAttributes(ResourceSettings $settings) : string
     {
         $attributes = [
             $this->getLocation($settings->head),

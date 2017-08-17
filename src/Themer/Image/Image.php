@@ -2,11 +2,11 @@
 namespace Laranix\Themer\Image;
 
 use Laranix\Support\Exception\NotImplementedException;
-use Laranix\Themer\FileSettings;
+use Laranix\Themer\ResourceSettings;
 use Laranix\Themer\Theme;
-use Laranix\Themer\ThemerFile;
+use Laranix\Themer\ThemerResource;
 
-class Image extends ThemerFile
+class Image extends ThemerResource
 {
     /**
      * Display an image
@@ -85,7 +85,7 @@ class Image extends ThemerFile
      */
     protected function hasCachedImage(string $key) : bool
     {
-        return $this->files->has($key);
+        return $this->resources->has($key);
     }
 
     /**
@@ -96,7 +96,7 @@ class Image extends ThemerFile
      */
     protected function getCachedImage(string $key) : string
     {
-        return $this->files->get($key);
+        return $this->resources->get($key);
     }
 
     /**
@@ -108,7 +108,7 @@ class Image extends ThemerFile
      */
     protected function cacheImage($key, string $image) : string
     {
-        $this->files->add($key, $image);
+        $this->resources->add($key, $image);
 
         return $image;
     }
@@ -127,9 +127,9 @@ class Image extends ThemerFile
     }
 
     /**
-     * Add and track a new file
+     * Add and track a new resource
      *
-     * @param \Laranix\Themer\FileSettings $settings
+     * @param \Laranix\Themer\ResourceSettings $settings
      * @throws \Laranix\Support\Exception\NotImplementedException
      */
     public function add($settings)
@@ -138,94 +138,106 @@ class Image extends ThemerFile
     }
 
     /**
-     * Render the view
+     * Output the processed resources
      *
      * @param array|null  $options
      * @param string|null $view
      * @return null|string
      * @throws \Laranix\Support\Exception\NotImplementedException
      */
-    public function render(?array $options = [], string $view = null) : ?string
+    public function output(?array $options = [], string $view = null) : ?string
     {
         throw new NotImplementedException('Method not required for ' . get_class($this));
     }
 
     /**
-     * Get repository key for remote files
+     * Get repository key for remote resources
      *
-     * @param \Laranix\Themer\FileSettings $settings
+     * @param \Laranix\Themer\ResourceSettings $settings
      * @return string
      * @throws \Laranix\Support\Exception\NotImplementedException
      */
-    protected function getRemoteRepositoryKey(FileSettings $settings): string
+    protected function getRemoteResourceRepositoryKey(ResourceSettings $settings): string
     {
         throw new NotImplementedException('Method not required for ' . get_class($this));
     }
 
     /**
-     * Get repository key for local files
+     * Get repository key for local resources
      *
-     * @param \Laranix\Themer\FileSettings $settings
+     * @param \Laranix\Themer\ResourceSettings $settings
      * @return string
      * @throws \Laranix\Support\Exception\NotImplementedException
      */
-    protected function getLocalRepositoryKey(FileSettings $settings): string
+    protected function getLocalResourceRepositoryKey(ResourceSettings $settings): string
     {
         throw new NotImplementedException('Method not required for ' . get_class($this));
     }
 
     /**
-     * Get repository key for remote files
+     * Get repository key for remote resources
      *
-     * @param \Laranix\Themer\FileSettings $settings
+     * @param \Laranix\Themer\ResourceSettings $settings
      * @return string
      * @throws \Laranix\Support\Exception\NotImplementedException
      */
-    protected function getCompiledLocalRepositoryKey(FileSettings $settings): string
+    protected function getCompiledLocalResourceRepositoryKey(ResourceSettings $settings): string
     {
         throw new NotImplementedException('Method not required for ' . get_class($this));
     }
 
     /**
-     * Process files
+     * Process resources
      *
      * @param array $options
      * @return array|null
      * @throws \Laranix\Support\Exception\NotImplementedException
      */
-    protected function getFilePayload(array $options = []): ?array
+    protected function getResourcePayload(array $options = []): ?array
     {
         throw new NotImplementedException('Method not required for ' . get_class($this));
     }
 
     /**
-     * Group files together by type
+     * Group resources together by type
      *
-     * @param array $files
+     * @param array $compiled
      * @return array|null
      * @throws \Laranix\Support\Exception\NotImplementedException
      */
-    protected function parseFiles(?array $files): ?array
+    protected function parseLocalResources(?array $compiled): ?array
     {
         throw new NotImplementedException('Method not required for ' . get_class($this));
     }
 
     /**
-     * Create and return settings for file.
+     * Creates output for resources
+     *
+     * @param array|null $resources
+     * @return string|null
+     * @throws \Laranix\Support\Exception\NotImplementedException
+     */
+    protected function createResourceOutput(?array $resources) : ?string
+    {
+        throw new NotImplementedException('Method not required for ' . get_class($this));
+    }
+
+    /**
+     * Create and return settings for resource.
      *
      * @param \Laranix\Themer\Theme $theme
      * @param string                $type
-     * @param string                $file
-     * @return \Laranix\Themer\FileSettings
+     * @param string                $resource
+     * @return \Laranix\Themer\ResourceSettings
      * @throws \Laranix\Support\Exception\NotImplementedException
      */
-    protected function createFileSettings(Theme $theme, string $type, string $file): FileSettings
+    protected function createLocalResourceFileSettings(Theme $theme, string $type, string $resource): ResourceSettings
     {
         throw new NotImplementedException('Method not required for ' . get_class($this));
     }
 
     /**
-     * Set the subdirectory in the theme for the file type
+     * Set the subdirectory in the theme for the resource type
      *
      * @return string
      */

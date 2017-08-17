@@ -1,10 +1,8 @@
 <?php
 namespace Laranix\Themer;
 
-use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Contracts\Logging\Log as Logger;
 use Illuminate\Contracts\Config\Repository as Config;
-use Illuminate\Contracts\View\Factory as ViewFactory;
 use Laranix\Support\Exception\InvalidInstanceException;
 use Laranix\Support\IO\Path;
 use Laranix\Support\IO\Url\Url;
@@ -12,60 +10,68 @@ use Laranix\Support\IO\Url\Settings;
 use Laranix\Support\IO\Repository;
 
 
-abstract class ThemerFile
+abstract class ThemerResource
 {
     /**
-     * Get repository key for remote files
+     * Get repository key for remote resources
      *
-     * @param \Laranix\Themer\FileSettings $settings
+     * @param \Laranix\Themer\ResourceSettings $settings
      * @return string
      */
-    abstract protected function getRemoteRepositoryKey(FileSettings $settings) : string;
+    abstract protected function getRemoteResourceRepositoryKey(ResourceSettings $settings) : string;
 
     /**
-     * Get repository key for local files
+     * Get repository key for local resources
      *
-     * @param \Laranix\Themer\FileSettings $settings
+     * @param \Laranix\Themer\ResourceSettings $settings
      * @return string
      */
-    abstract protected function getLocalRepositoryKey(FileSettings $settings) : string;
+    abstract protected function getLocalResourceRepositoryKey(ResourceSettings $settings) : string;
 
     /**
-     * Get repository key for remote files
+     * Get repository key for remote resources
      *
-     * @param \Laranix\Themer\FileSettings $settings
+     * @param \Laranix\Themer\ResourceSettings $settings
      * @return string
      */
-    abstract protected function getCompiledLocalRepositoryKey(FileSettings $settings) : string;
+    abstract protected function getCompiledLocalResourceRepositoryKey(ResourceSettings $settings) : string;
 
     /**
-     * Process files
+     * Process resources
      *
      * @param array $options
      * @return array|null
      */
-    abstract protected function getFilePayload(array $options = []) : ?array;
+    abstract protected function getResourcePayload(array $options = []) : ?array;
 
     /**
-     * Group files together by type
+     * Group resources together by type
      *
      * @param array $compiled
      * @return array|null
      */
-    abstract protected function parseFiles(?array $compiled) : ?array;
+    abstract protected function parseLocalResources(?array $compiled) : ?array;
 
     /**
-     * Create and return settings for file.
+     * Creates output for resources
+     *
+     * @param array|null $resources
+     * @return string|null
+     */
+    abstract protected function createResourceOutput(?array $resources) : ?string;
+
+    /**
+     * Create and return settings for resource.
      *
      * @param \Laranix\Themer\Theme $theme
      * @param string                $type
-     * @param string                $file
-     * @return \Laranix\Themer\FileSettings
+     * @param string                $resource
+     * @return \Laranix\Themer\ResourceSettings
      */
-    abstract protected function createFileSettings(Theme $theme, string $type, string $file) : FileSettings;
+    abstract protected function createLocalResourceFileSettings(Theme $theme, string $type, string $resource) : ResourceSettings;
 
     /**
-     * Set the subdirectory in the theme for the file type
+     * Set the subdirectory in the theme for the resource type
      *
      * @return string
      */
@@ -108,7 +114,7 @@ abstract class ThemerFile
     /**
      * @var bool
      */
-    protected $mergeFiles = true;
+    protected $mergeResources = true;
 
     /**
      * @var array
@@ -135,14 +141,14 @@ abstract class ThemerFile
     protected $configKey;
 
     /**
-     * File settings class name
+     * Resource settings class name
      *
      * @var string
      */
     protected $settingsClass;
 
     /**
-     * File load order
+     * Resource load order
      *
      * @var int
      */
@@ -156,30 +162,28 @@ abstract class ThemerFile
     protected $crcCache = [];
 
     /**
-     * File repository
+     * Resource repository
      *
      * @var \Laranix\Support\IO\Repository
      */
-    public $files;
+    public $resources;
 
     /**
-     * ThemerFile constructor.
+     * ThemerResource constructor.
      *
      * @param \Laranix\Themer\Themer                  $themer
      * @param \Illuminate\Contracts\Config\Repository $config
      * @param \Illuminate\Contracts\Logging\Log       $logger
-     * @param \Illuminate\Contracts\View\Factory      $viewFactory
      * @throws \Laranix\Support\Exception\NullValueException
      */
-    public function __construct(Themer $themer, Config $config, Logger $logger, ViewFactory $viewFactory)
+    public function __construct(Themer $themer, Config $config, Logger $logger)
     {
-        $this->themer       = $themer;
-        $this->config       = $config;
-        $this->logger       = $logger;
-        $this->viewFactory  = $viewFactory;
-        $this->files        = new Repository();
-        $this->mergeFiles   = !in_array($this->config->get('app.env', 'production'),
-                                       (array) $this->config->get('themer.ignored'));
+        $this->themer         = $themer;
+        $this->config         = $config;
+        $this->logger         = $logger;
+        $this->resources      = new Repository();
+        $this->mergeResources = !in_array($this->config->get('app.env', 'production'),
+                                          (array) $this->config->get('themer.ignored'));
 
         $this->directory        = $this->getDirectory();
         $this->configKey        = $this->getConfigKey();
@@ -187,9 +191,9 @@ abstract class ThemerFile
     }
 
     /**
-     * Add and track a new file
+     * Add and track a new resource
      *
-     * @param \Laranix\Themer\FileSettings|array $settings
+     * @param \Laranix\Themer\ResourceSettings|array $settings
      * @throws \Laranix\Support\Exception\InvalidInstanceException
      */
     public function add($settings)
@@ -198,21 +202,21 @@ abstract class ThemerFile
             $settings = new $this->settingsClass($settings);
         }
 
-        if (!$settings instanceof FileSettings) {
-            throw new InvalidInstanceException('Settings is not a valid instance of ' . FileSettings::class);
+        if (!$settings instanceof ResourceSettings) {
+            throw new InvalidInstanceException('Settings is not a valid instance of ' . ResourceSettings::class);
         }
 
         $settings->theme = $this->getThemeToUse($settings);
 
         $addKey = sprintf('_added.%s.%s', $settings->theme->getName(), $settings->key);
 
-        if ($this->files->has($addKey)) {
+        if ($this->resources->has($addKey)) {
             $this->logger->warning("Key already exists in Themer: '{$settings->key}'");
             return;
         }
 
         if ($this->addResource($settings)) {
-            $this->files->add($addKey, true);
+            $this->resources->add($addKey, true);
 
             ++$this->order;
         }
@@ -221,12 +225,12 @@ abstract class ThemerFile
     /**
      * Add a resource
      *
-     * @param \Laranix\Themer\FileSettings $settings
+     * @param \Laranix\Themer\ResourceSettings $settings
      * @return bool
      */
-    protected function addResource(FileSettings $settings)
+    protected function addResource(ResourceSettings $settings)
     {
-        $settings = $this->prepareFileSettings($settings);
+        $settings = $this->prepareResourceSettings($settings);
 
         if ($settings === null) {
             return false;
@@ -234,16 +238,16 @@ abstract class ThemerFile
 
         $settings->hasRequiredSettings();
 
-        return $settings->url === null && $this->mergeFiles ? $this->addLocalResource($settings) : $this->addRemoteResource($settings);
+        return $settings->url === null && $this->mergeResources ? $this->addLocalResource($settings) : $this->addRemoteResource($settings);
     }
 
     /**
      * Prepare settings
      *
-     * @param \Laranix\Themer\FileSettings $settings
-     * @return \Laranix\Themer\FileSettings|null
+     * @param \Laranix\Themer\ResourceSettings $settings
+     * @return \Laranix\Themer\ResourceSettings|null
      */
-    protected function prepareFileSettings(FileSettings $settings) : ?FileSettings
+    protected function prepareResourceSettings(ResourceSettings $settings) : ?ResourceSettings
     {
         if ($settings->order === -1) {
             $settings->order = $this->order;
@@ -253,26 +257,26 @@ abstract class ThemerFile
             return $settings;
         }
 
-        $settings->filePath = $this->getFilePath($settings->file, $settings->theme);
-        $settings->exists   = is_file($settings->filePath);
+        $settings->resourcePath = $this->getResourcePath($settings->filename, $settings->theme);
+        $settings->exists       = is_file($settings->resourcePath);
 
         if ($settings->automin) {
-            $settings->file = $this->searchForMinified($settings);
+            $settings->filename = $this->searchForMinifiedResource($settings);
         }
 
         if (!$settings->exists) {
             if ($settings->defaultFallback && !$this->themeIsDefault($settings->theme)) {
                 $settings->theme = $this->getDefaultTheme();
 
-                return $this->prepareFileSettings($settings);
+                return $this->prepareResourceSettings($settings);
             }
 
-            $this->missing($settings->file, $settings->theme);
+            $this->missing($settings->filename, $settings->theme);
 
             return null;
         }
 
-        $settings->mtime = filemtime($this->getFilePath($settings->file, $settings->theme));
+        $settings->mtime = filemtime($this->getResourcePath($settings->filename, $settings->theme));
 
         return $settings;
     }
@@ -280,24 +284,24 @@ abstract class ThemerFile
     /**
      * Add remote resource
      *
-     * @param \Laranix\Themer\FileSettings $settings
+     * @param \Laranix\Themer\ResourceSettings $settings
      * @return bool
      */
-    protected function addRemoteResource(FileSettings $settings): bool
+    protected function addRemoteResource(ResourceSettings $settings): bool
     {
-        $settings->repositoryKey = $this->getRemoteRepositoryKey($settings);
+        $settings->repositoryKey = $this->getRemoteResourceRepositoryKey($settings);
 
-        if ($this->files->has($settings->repositoryKey)) {
+        if ($this->resources->has($settings->repositoryKey)) {
             ++$settings->order;
 
             return $this->addRemoteResource($settings);
         }
 
-        if ($settings->url === null && !$this->mergeFiles) {
+        if ($settings->url === null && !$this->mergeResources) {
             $settings->url = $this->getBaseUrl($settings->theme);
         }
 
-        $this->files->add($settings->repositoryKey, $settings);
+        $this->resources->add($settings->repositoryKey, $settings);
 
         return true;
     }
@@ -305,99 +309,85 @@ abstract class ThemerFile
     /**
      * Add local resource
      *
-     * @param \Laranix\Themer\FileSettings $settings
+     * @param \Laranix\Themer\ResourceSettings $settings
      * @return bool
      */
-    protected function addLocalResource(FileSettings $settings): bool
+    protected function addLocalResource(ResourceSettings $settings): bool
     {
-        $settings->repositoryKey = $this->getLocalRepositoryKey($settings);
+        $settings->repositoryKey = $this->getLocalResourceRepositoryKey($settings);
 
-        if ($this->files->has($settings->repositoryKey)) {
+        if ($this->resources->has($settings->repositoryKey)) {
             ++$settings->order;
 
             return $this->addLocalResource($settings);
         }
 
-        $this->files->add($settings->repositoryKey, $settings);
+        $this->resources->add($settings->repositoryKey, $settings);
 
-        $compileKey = $this->getCompiledLocalRepositoryKey($settings);
+        $compileKey = $this->getCompiledLocalResourceRepositoryKey($settings);
 
-        if (!$this->files->has($compileKey)) {
-            $this->files->add($compileKey, '');
+        if (!$this->resources->has($compileKey)) {
+            $this->resources->add($compileKey, '');
         }
 
-        $this->files[$compileKey] .= $this->crc($settings->file . $settings->theme->getKey() . $settings->mtime);
+        $this->resources[$compileKey] .= $this->crc($settings->filename . $settings->theme->getKey() . $settings->mtime);
 
         return true;
     }
 
     /**
-     * Search for minified version of file
+     * Search for minified version of resource
      *
-     * @param \Laranix\Themer\FileSettings $settings
-     * @param string                       $min
+     * @param \Laranix\Themer\ResourceSettings $settings
+     * @param string                           $min
      * @return string
      */
-    protected function searchForMinified(FileSettings $settings, string $min = 'min') : string
+    protected function searchForMinifiedResource(ResourceSettings $settings, string $min = 'min') : string
     {
-        if (strpos($settings->file, ".{$min}.") !== false) {
-            return $settings->file;
+        if (strpos($settings->filename, ".{$min}.") !== false) {
+            return $settings->filename;
         }
 
-        $pathinfo = pathinfo($settings->filePath);
+        $pathinfo = pathinfo($settings->resourcePath);
 
-        $minFile = "{$pathinfo['filename']}.{$min}.{$pathinfo['extension']}";
+        $minResource = "{$pathinfo['filename']}.{$min}.{$pathinfo['extension']}";
 
-        return $this->exists($minFile, $settings->theme) ? $minFile : $settings->file;
+        return $this->exists($minResource, $settings->theme) ? $minResource : $settings->filename;
     }
 
     /**
-     * Render the view
+     * Output the processed resources
      *
      * @param array|null  $options
-     * @param string|null $view
      * @return null|string
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
-    public function render(?array $options = [], string $view = null) : ?string
+    public function output(?array $options = []) : ?string
     {
-        $view = $view ?? $this->config->get("themer.views.{$this->configKey}", "layout.themer.{$this->configKey}");
-
-        if ($this->viewFactory->exists($view)) {
-            $data = $this->getFilePayload($options);
-
-            if (empty($data) || $data === null) {
-                return null;
-            }
-
-            return $this->viewFactory->make($view, $data)->render();
-        }
-
-        throw new FileNotFoundException("View '{$view}' not found");
+        return $this->createResourceOutput($this->getResourcePayload($options));
     }
 
     /**
-     * Check if file exists
+     * Check if resource exists
      *
-     * @param string                $file
+     * @param string                $resource
      * @param \Laranix\Themer\Theme $theme
      * @return bool
      */
-    protected function exists(string $file, Theme $theme = null) : bool
+    protected function exists(string $resource, Theme $theme = null) : bool
     {
-        return is_file($this->getFilePath($file, $theme));
+        return is_file($this->getResourcePath($resource, $theme));
     }
 
     /**
-     * Get path to a file
+     * Get path to a resource
      *
-     * @param string                $file
+     * @param string                $resource
      * @param \Laranix\Themer\Theme $theme
      * @return string
      */
-    public function getFilePath(string $file, Theme $theme = null) : string
+    public function getResourcePath(string $resource, Theme $theme = null) : string
     {
-        return $this->createPath($this->getBasePath($theme), $file);
+        return $this->createPath($this->getBasePath($theme), $resource);
     }
 
     /**
@@ -429,15 +419,15 @@ abstract class ThemerFile
     }
 
     /**
-     * Get URL to web file
+     * Get URL to web resource
      *
-     * @param string                $file
+     * @param string                $resource
      * @param \Laranix\Themer\Theme $theme
      * @return string
      */
-    public function getWebUrl(string $file, Theme $theme = null) : string
+    public function getWebUrl(string $resource, Theme $theme = null) : string
     {
-        return $this->createPath($this->getBaseUrl($theme), $file);
+        return $this->createPath($this->getBaseUrl($theme), $resource);
     }
 
     /**
@@ -461,16 +451,16 @@ abstract class ThemerFile
     }
 
     /**
-     * Log missing file
+     * Log missing resource
      *
-     * @param string                $file
+     * @param string                $resource
      * @param \Laranix\Themer\Theme $theme
      */
-    protected function missing(string $file, Theme $theme = null)
+    protected function missing(string $resource, Theme $theme = null)
     {
         $path = $this->getBasePath();
 
-        $message = "{$file} not found in {$path}";
+        $message = "{$resource} not found in {$path}";
 
         if (!$this->themeIsDefault($theme)) {
             $default = $this->getBasePath($this->getDefaultTheme());
@@ -516,10 +506,10 @@ abstract class ThemerFile
     /**
      * Get theme to use
      *
-     * @param \Laranix\Themer\FileSettings $settings
+     * @param \Laranix\Themer\ResourceSettings $settings
      * @return \Laranix\Themer\Theme
      */
-    protected function getThemeToUse(FileSettings $settings) : Theme
+    protected function getThemeToUse(ResourceSettings $settings) : Theme
     {
         if ($settings->theme instanceof Theme) {
             return $settings->theme;
@@ -529,31 +519,31 @@ abstract class ThemerFile
     }
 
     /**
-     * Merge files
+     * Merge resources
      *
      * @param \Laranix\Themer\Theme $theme
      * @param string                $key
-     * @param string                $compileFileName
+     * @param string                $compileResourceFileName
      */
-    protected function mergeFiles(Theme $theme, string $key, string $compileFileName)
+    protected function mergeResources(Theme $theme, string $key, string $compileResourceFileName)
     {
-        $files = $this->files->get($key);
+        $resources = $this->resources->get($key);
 
-        if ($files === null) {
+        if ($resources === null) {
             return;
         }
 
-        ksort($files);
+        ksort($resources);
 
         ob_start();
 
-        foreach ($files as $file) {
-            include $this->getFilePath($file->file, $theme);
+        foreach ($resources as $resource) {
+            include $this->getResourcePath($resource->resource, $theme);
         }
 
-        $compileFile = fopen($compileFileName, 'w');
-        fwrite($compileFile, ob_get_contents());
-        fclose($compileFile);
+        $compileResource = fopen($compileResourceFileName, 'w');
+        fwrite($compileResource, ob_get_contents());
+        fclose($compileResource);
 
         ob_end_clean();
     }
@@ -564,7 +554,7 @@ abstract class ThemerFile
      * @param array ...$arrays
      * @return array|null
      */
-    protected function mergeFileArrays(...$arrays) : ?array
+    protected function mergeResourceArrays(...$arrays) : ?array
     {
         $merged = [];
 
@@ -573,9 +563,9 @@ abstract class ThemerFile
                 continue;
             }
 
-            /** @var FileSettings $file */
-            foreach ($array as $file) {
-                $this->mergeWithOrder($file, $merged);
+            /** @var ResourceSettings $resource */
+            foreach ($array as $resource) {
+                $this->mergeWithOrder($resource, $merged);
             }
         }
 
@@ -583,7 +573,7 @@ abstract class ThemerFile
     }
 
     /**
-     * Merge files to one array preserving order
+     * Merge resources to one array preserving order
      *
      * @param $settings
      * @param $merge

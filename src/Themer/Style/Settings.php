@@ -1,7 +1,7 @@
 <?php
 namespace Laranix\Themer\Style;
 
-use Laranix\Themer\FileSettings as BaseSettings;
+use Laranix\Themer\ResourceSettings as BaseSettings;
 
 class Settings extends BaseSettings
 {
@@ -10,7 +10,7 @@ class Settings extends BaseSettings
      *
      * @var string|array
      *
-     * TODO Array option, brackets, and/not/or operators
+     * TODO Array option, brackets, and/not/or operators - perhaps an array of a subsettings file?
      */
     public $media = 'all';
 }
