@@ -1,5 +1,0 @@
-@if ($stylesheets !== null)
-    @foreach($stylesheets as $style)
-        <link rel="stylesheet" type="text/css" media="{{ $style->media }}" href="{{ url_create(null, $style->url, $style->file) }}" />
-    @endforeach
-@endif
