@@ -328,4 +328,15 @@ abstract class Settings
 
         return $this;
     }
+
+    /**
+     * Get required property types
+     *
+     * @param string $property
+     * @return array|null
+     */
+    public function getRequiredPropertyTypes(string $property) : ?array
+    {
+        return $this->getParsedRequiredProperties()[$property] ?? null;
+    }
 }

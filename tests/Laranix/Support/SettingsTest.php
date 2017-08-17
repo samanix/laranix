@@ -271,6 +271,24 @@ class SettingsTest extends LaranixTestCase
     }
 
     /**
+     * Set required types by array
+     */
+    public function testSetRequiredTypesByArray()
+    {
+        $settings = $this->getSettings([
+            'optional' => [],
+        ]);
+
+        $settings->setRequiredPropertyTypes('string', ['string', 'array']);
+        $settings->setRequiredTypes([
+            'string'    => ['string', 'array'],
+            'optional'  => ['bool', 'array'],
+        ]);
+
+        $this->assertSame(['bool', 'array'], $settings->getRequiredPropertyTypes('optional'));
+    }
+
+    /**
      * Get settings
      *
      * @param array|null $options
