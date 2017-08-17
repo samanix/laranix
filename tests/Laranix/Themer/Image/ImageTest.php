@@ -2,7 +2,6 @@
 namespace Laranix\Tests\Laranix\Themer\Image;
 
 use Illuminate\Log\Writer;
-use Illuminate\View\Factory;
 use Laranix\Support\Exception\NotImplementedException;
 use Laranix\Themer\Image\Image;
 use Laranix\Tests\LaranixTestCase;
@@ -21,7 +20,7 @@ class ImageTest extends LaranixTestCase
     protected $config;
 
     /**
-     * @var \Laranix\Themer\ThemerFile|Image
+     * @var \Laranix\Themer\ThemerResource|Image
      */
     protected $image;
 
@@ -44,13 +43,13 @@ class ImageTest extends LaranixTestCase
 
         $this->themer = new Themer($this->config, $request, new ThemeRepository($this->config));
 
-        $this->image = new Image($this->themer, $this->config, m::mock(Writer::class), m::mock(Factory::class));
+        $this->image = new Image($this->themer, $this->config, m::mock(Writer::class));
     }
 
     /**
-     * Test adding a file
+     * Test adding a resource
      */
-    public function testAddFile()
+    public function testAddResource()
     {
         $this->expectException(NotImplementedException::class);
 
@@ -58,30 +57,30 @@ class ImageTest extends LaranixTestCase
     }
 
     /**
-     * Test render file
+     * Test output resource
      */
-    public function testRenderFile()
+    public function testOutputResource()
     {
         $this->expectException(NotImplementedException::class);
 
-        $this->image->render();
+        $this->image->output();
     }
 
     /**
-     * Test file list
+     * Test resource list
      */
-    public function testFileList()
+    public function testResourceList()
     {
-        $this->assertInstanceOf(\Laranix\Support\IO\Repository::class, $this->image->files);
+        $this->assertInstanceOf(\Laranix\Support\IO\Repository::class, $this->image->resources);
     }
 
     /**
-     * Test get file path
+     * Test get resource path
      */
-    public function testGetFilePath()
+    public function testGetResourcePath()
     {
-        $this->assertSame(realpath(__DIR__ . '/../Stubs/themes/foo/images/laranix.png'), $this->image->getFilePath('laranix.png'));
-        $this->assertSame(realpath(__DIR__ . '/../Stubs/themes/bar/images/samanix.png'), $this->image->getFilePath('samanix.png', $this->themer->getTheme('bar')));
+        $this->assertSame(realpath(__DIR__ . '/../Stubs/themes/foo/images/laranix.png'), $this->image->getResourcePath('laranix.png'));
+        $this->assertSame(realpath(__DIR__ . '/../Stubs/themes/bar/images/samanix.png'), $this->image->getResourcePath('samanix.png', $this->themer->getTheme('bar')));
     }
 
     /**

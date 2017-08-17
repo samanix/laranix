@@ -2,7 +2,6 @@
 namespace Laranix\Tests\Laranix\Themer\Style;
 
 use Illuminate\Log\Writer;
-use Illuminate\View\Factory;
 use Laranix\Support\Exception\InvalidInstanceException;
 use Laranix\Support\Exception\KeyExistsException;
 use Laranix\Themer\Style\Style;
@@ -44,25 +43,25 @@ class StyleTest extends LaranixTestCase
     }
 
     /**
-     * Test adding file with array settings
+     * Test adding resource with array settings
      */
-    public function testAddFileWithArraySettings()
+    public function testAddResourceWithArraySettings()
     {
         $style = $this->createStyle();
 
         $style->add([
             'key'   => 'foo',
-            'file'  => 'style.css',
+            'filename'  => 'style.css',
             'order' => 1
         ]);
 
-        $this->assertTrue($style->files->has('_added.foo.foo'));
+        $this->assertTrue($style->resources->has('_added.foo.foo'));
     }
 
     /**
-     * Test adding file when not an array or settings instance
+     * Test adding resource when not an array or settings instance
      */
-    public function testAddFileWithInvalidSettings()
+    public function testAddResourceWithInvalidSettings()
     {
         $this->expectException(InvalidInstanceException::class);
 
@@ -72,67 +71,67 @@ class StyleTest extends LaranixTestCase
     }
 
     /**
-     * Test adding a file
+     * Test adding a resource
      */
-    public function testAddLocalFile()
+    public function testAddLocalResource()
     {
         $style = $this->createStyle();
 
         $this->loadLocalStyle($style);
 
-        $this->assertTrue($style->files->has('_added.foo.foo'));
-        $this->assertTrue($style->files->has('_added.bar.baz'));
-        $this->assertCount(4, $style->files->get('_added.foo'));
-        $this->assertCount(2, $style->files->get('_added.bar'));
+        $this->assertTrue($style->resources->has('_added.foo.foo'));
+        $this->assertTrue($style->resources->has('_added.bar.baz'));
+        $this->assertCount(4, $style->resources->get('_added.foo'));
+        $this->assertCount(2, $style->resources->get('_added.bar'));
 
-        $this->assertCount(2, $style->files->get('style.local.foo.' . $this->crc('print')));
-        $this->assertCount(1, $style->files->get('style.local.foo.' . $this->crc('screen and (max-width:1000px)')));
-        $this->assertCount(2, $style->files->get('style.local.foo.' . $this->crc('all')));
-        $this->assertCount(1, $style->files->get('style.local.bar.' . $this->crc('all')));
+        $this->assertCount(2, $style->resources->get('style.local.foo.' . $this->crc('print')));
+        $this->assertCount(1, $style->resources->get('style.local.foo.' . $this->crc('screen and (max-width:1000px)')));
+        $this->assertCount(2, $style->resources->get('style.local.foo.' . $this->crc('all')));
+        $this->assertCount(1, $style->resources->get('style.local.bar.' . $this->crc('all')));
     }
 
     /**
-     * Add files with auto ordering
+     * Add resources with auto ordering
      */
-    public function testAddFileWithAutomaticOrdering()
+    public function testAddResourceWithAutomaticOrdering()
     {
         $style = $this->createStyle();
 
         $this->loadLocalStyle($style);
 
-        $this->assertSame(1, $style->files->get('style.local.foo.' . $this->crc('all') . '.1')->order);
-        $this->assertSame(2, $style->files->get('style.local.foo.' . $this->crc('all') . '.2')->order);
+        $this->assertSame(1, $style->resources->get('style.local.foo.' . $this->crc('all') . '.1')->order);
+        $this->assertSame(2, $style->resources->get('style.local.foo.' . $this->crc('all') . '.2')->order);
 
-        $this->assertSame(4, $style->files->get('style.local.foo.' . $this->crc('print') . '.4')->order);
+        $this->assertSame(4, $style->resources->get('style.local.foo.' . $this->crc('print') . '.4')->order);
     }
 
     /**
-     * Add files with auto minification search
+     * Add resources with auto minification search
      */
-    public function testAddFileWithAutoMin()
+    public function testAddResourceWithAutoMin()
     {
         $style = $this->createStyle();
 
         $this->loadLocalStyle($style);
 
-        $this->assertSame('style.min.css', $style->files->get('style.local.foo.' . $this->crc('print') . '.3')->file);
-        $this->assertSame('foostyle.css', $style->files->get('style.local.foo.' . $this->crc('screen and (max-width:1000px)') . '.10')->file);
+        $this->assertSame('style.min.css', $style->resources->get('style.local.foo.' . $this->crc('print') . '.3')->filename);
+        $this->assertSame('foostyle.css', $style->resources->get('style.local.foo.' . $this->crc('screen and (max-width:1000px)') . '.10')->filename);
     }
 
     /**
-     * Add a file that doesn't exist in given theme, but does in default
+     * Add a resource that doesn't exist in given theme, but does in default
      */
-    public function testAddFileWithDefaultFallback()
+    public function testAddResourceWithDefaultFallback()
     {
         $style = $this->createStyle();
 
         $this->loadLocalStyle($style);
 
-        $this->assertTrue($this->themer->themeIsDefault($style->files->get('style.local.foo.' . $this->crc('screen and (max-width:1000px)') . '.10')->theme));
+        $this->assertTrue($this->themer->themeIsDefault($style->resources->get('style.local.foo.' . $this->crc('screen and (max-width:1000px)') . '.10')->theme));
     }
 
     /**
-     * Test adding same file twice
+     * Test adding same resource twice
      */
     public function testAddKeyWhenKeyExists()
     {
@@ -140,8 +139,8 @@ class StyleTest extends LaranixTestCase
 
         $style = $this->createStyle();
 
-        $settings = $this->getSettings(['key' => 'foo', 'file' => 'style.css', 'order' => 1]);
-        $settings2 = $this->getSettings(['key' => 'foo', 'file' => 'style2.css', 'order' => 1]);
+        $settings = $this->getSettings(['key' => 'foo', 'filename' => 'style.css', 'order' => 1]);
+        $settings2 = $this->getSettings(['key' => 'foo', 'filename' => 'style2.css', 'order' => 1]);
 
         $style->add($settings);
         $style->add($settings2);
@@ -156,7 +155,7 @@ class StyleTest extends LaranixTestCase
 
         $style = $this->createStyle(FileNotFoundException::class);
 
-        $style->add($this->getSettings(['key' => 'foo',   'file' => 'foostyle.css',  'themeName' => 'bar',  'defaultFallback' => false]));
+        $style->add($this->getSettings(['key' => 'foo',   'filename' => 'foostyle.css',  'themeName' => 'bar',  'defaultFallback' => false]));
     }
 
     /**
@@ -168,17 +167,17 @@ class StyleTest extends LaranixTestCase
 
         $this->loadRemoteStyle($style);
 
-        $this->assertTrue($style->files->has('_added.foo.remote_foo'));
-        $this->assertTrue($style->files->has('_added.foo.remote_baz'));
-        $this->assertCount(5, $style->files->get('_added.foo'));
+        $this->assertTrue($style->resources->has('_added.foo.remote_foo'));
+        $this->assertTrue($style->resources->has('_added.foo.remote_baz'));
+        $this->assertCount(5, $style->resources->get('_added.foo'));
 
-        $this->assertCount(6, $style->files->get('style.remote'));
+        $this->assertCount(6, $style->resources->get('style.remote'));
     }
 
     /**
-     * Test adding file without merging
+     * Test adding resources without merging
      */
-    public function testAddFileWithoutMerging()
+    public function testAddResourceWithoutMerging()
     {
         $this->config->set('app.env', 'env1');
 
@@ -186,58 +185,57 @@ class StyleTest extends LaranixTestCase
 
         $this->loadLocalStyle($style);
 
-        $this->assertNull($style->files->get('style.local'));
+        $this->assertNull($style->resources->get('style.local'));
 
-        $this->assertCount(6, $style->files->get('style.remote'));
+        $this->assertCount(6, $style->resources->get('style.remote'));
 
-        $this->assertNotNull($style->files->get('style.remote.1')->url);
+        $this->assertNotNull($style->resources->get('style.remote.1')->url);
     }
 
     /**
-     * View should render null with no scripts
+     * Output should be null with no scripts
      */
-    public function testRenderWhenNoScriptsAdded()
+    public function testOutputWhenNoScriptsAdded()
     {
-        $this->assertNull($this->createStyleWithView(true)->render());
+        $this->assertNull($this->createStyle()->output());
     }
 
     /**
-     * Non existent view should throw exception
+     * Test output
      */
-    public function testRenderWhenNoViewSet()
+    public function testOutputReturnsExpected()
     {
-        $this->expectException(FileNotFoundException::class);
+        $style = $this->createStyle();
 
-        $this->createStyleWithView(false)->render([], 'noviewhere');
+        $style->add(['key' => 'foo1', 'filename' => 'style1.css', 'url' => 'http://url.com', ]);
+        $style->add(['key' => 'foo2', 'filename' => 'style2.css', 'url' => 'http://url.com', 'media' => 'screen and (min-width: 768px)']);
+        $style->add(['key' => 'foo3', 'filename' => 'style3.css', 'url' => 'http://url.com', 'integrity' => 'sha1-123']);
+
+        $expect = /** @lang text */
+            <<<EXPECTED
+<link rel="stylesheet" type="text/css" href="http://url.com/style1.css" media="all" />
+<link rel="stylesheet" type="text/css" href="http://url.com/style2.css" media="screen and (min-width: 768px)" />
+<link rel="stylesheet" type="text/css" href="http://url.com/style3.css" media="all" integrity="sha1-123" />
+EXPECTED;
+
+        $this->assertSame($expect, $style->output());
     }
 
     /**
-     * Test render
+     * Test get resource path
      */
-    public function testRenderReturnsExpected()
-    {
-        $style = $this->createStyleWithView(true);
-
-        $this->loadLocalStyle($style);
-
-        $this->assertSame('rendered', $style->render());
-    }
-
-    /**
-     * Test get file path
-     */
-    public function testGetFilePath()
+    public function testGetResourcePath()
     {
         $script = $this->createStyle();
 
         $this->assertSame(realpath(__DIR__ . '/../Stubs/themes/foo/style/style.css'),
-                          $script->getFilePath('style.css'));
+                          $script->getResourcePath('style.css'));
 
         $this->assertSame(realpath(__DIR__ . '/../Stubs/themes/bar/style/style2.css'),
-                          $script->getFilePath('style2.css', $this->themer->getTheme('bar')));
+                          $script->getResourcePath('style2.css', $this->themer->getTheme('bar')));
 
         $this->assertSame(realpath(__DIR__ . '/../Stubs/themes/bar/style/style.min.css'),
-                          $script->getFilePath('style.min.css', $this->themer->getTheme('bar')));
+                          $script->getResourcePath('style.min.css', $this->themer->getTheme('bar')));
     }
 
     /**
@@ -266,25 +264,7 @@ class StyleTest extends LaranixTestCase
         $writer = m::mock(Writer::class);
         $writer->shouldReceive('warning')->andThrow($throw);
 
-        return new Style($this->themer, $this->config, $writer, m::mock(Factory::class));
-    }
-
-    /**
-     * @param $exists
-     * @return \Laranix\Themer\Style\Style
-     */
-    protected function createStyleWithView(bool $exists = false)
-    {
-        $writer = m::mock(Writer::class);
-        $writer->shouldReceive('warning')->andThrow(KeyExistsException::class);
-
-        $viewfactory = m::mock(Factory::class);
-
-        $viewfactory->shouldReceive('exists')->andReturn($exists);
-        $viewfactory->shouldReceive('make')->andReturnSelf();
-        $viewfactory->shouldReceive('render')->andReturn('rendered');
-
-        return new Style($this->themer, $this->config, $writer, $viewfactory);
+        return new Style($this->themer, $this->config, $writer);
     }
 
     /**
@@ -310,12 +290,12 @@ class StyleTest extends LaranixTestCase
     protected function loadLocalStyle(Style $style)
     {
         $local = [
-            'foo'       => $this->getSettings(['key' => 'foo',      'file' => 'style.css',  'order' => 1]),
-            'bar'       => $this->getSettings(['key' => 'bar',      'file' => 'style2.css',  'order' => 1]),
-            'baz'       => $this->getSettings(['key' => 'baz',      'file' => 'style.css', 'order' => 2, 'themeName' => 'bar']),
-            'foobar'    => $this->getSettings(['key' => 'foobar',   'file' => 'style.css', 'automin' => true, 'media' => 'print']),
-            'barbaz'    => $this->getSettings(['key' => 'barbaz',   'file' => 'style2.css',  'media' => 'print']),
-            'foobaz'    => $this->getSettings(['key' => 'foobaz',   'file' => 'foostyle.css',  'themeName' => 'bar',  'order' => 10,  'automin' => true, 'media' => 'screen and (max-width:1000px)']),
+            'foo'       => $this->getSettings(['key' => 'foo',      'filename' => 'style.css',  'order' => 1]),
+            'bar'       => $this->getSettings(['key' => 'bar',      'filename' => 'style2.css',  'order' => 1]),
+            'baz'       => $this->getSettings(['key' => 'baz',      'filename' => 'style.css', 'order' => 2, 'themeName' => 'bar']),
+            'foobar'    => $this->getSettings(['key' => 'foobar',   'filename' => 'style.css', 'automin' => true, 'media' => 'print']),
+            'barbaz'    => $this->getSettings(['key' => 'barbaz',   'filename' => 'style2.css',  'media' => 'print']),
+            'foobaz'    => $this->getSettings(['key' => 'foobaz',   'filename' => 'foostyle.css',  'themeName' => 'bar',  'order' => 10,  'automin' => true, 'media' => 'screen and (max-width:1000px)']),
         ];
 
         foreach ($local as $key => $setting) {
@@ -331,12 +311,12 @@ class StyleTest extends LaranixTestCase
     protected function loadRemoteStyle(Style $style)
     {
         $remote = [
-            'remote_foo'       => $this->getSettings(['key' => 'remote_foo',      'file' => 'style.css',    'url' => 'http://foo.com', 'order' => 1]),
-            'remote_bar'       => $this->getSettings(['key' => 'remote_bar',      'file' => 'style2.css',   'url' => 'http://foo.com/foo', 'order' => 1]),
-            'remote_baz'       => $this->getSettings(['key' => 'remote_baz',      'file' => 'style.css',    'url' => 'http://foo.com/baz/', 'order' => 2]),
-            'remote_foobar'    => $this->getSettings(['key' => 'remote_foobar',   'file' => 'style.css',    'url' => 'http://foo.com/style', 'automin' => true, 'media' => 'print']),
-            'remote_barbaz'    => $this->getSettings(['key' => 'remote_barbaz',   'file' => 'style2.css',   'url' => '//foo.com', 'media' => 'print']),
-            'remote_foobaz'    => $this->getSettings(['key' => 'remote_foobaz',   'file' => 'foostyle.css', 'url' => 'http://foo.com/20', 'themeName' => 'bar',  'order' => 10,  'automin' => true, 'media' => 'screen and (max-width:1024px)']),
+            'remote_foo'       => $this->getSettings(['key' => 'remote_foo',      'filename' => 'style.css',    'url' => 'http://foo.com', 'order' => 1]),
+            'remote_bar'       => $this->getSettings(['key' => 'remote_bar',      'filename' => 'style2.css',   'url' => 'http://foo.com/foo', 'order' => 1]),
+            'remote_baz'       => $this->getSettings(['key' => 'remote_baz',      'filename' => 'style.css',    'url' => 'http://foo.com/baz/', 'order' => 2]),
+            'remote_foobar'    => $this->getSettings(['key' => 'remote_foobar',   'filename' => 'style.css',    'url' => 'http://foo.com/style', 'automin' => true, 'media' => 'print']),
+            'remote_barbaz'    => $this->getSettings(['key' => 'remote_barbaz',   'filename' => 'style2.css',   'url' => '//foo.com', 'media' => 'print']),
+            'remote_foobaz'    => $this->getSettings(['key' => 'remote_foobaz',   'filename' => 'foostyle.css', 'url' => 'http://foo.com/20', 'themeName' => 'bar',  'order' => 10,  'automin' => true, 'media' => 'screen and (max-width:1024px)']),
         ];
 
         foreach ($remote as $key => $setting) {
