@@ -14,14 +14,14 @@
 
         <title>@yield('pagetitle', $appsettings->name()) - {{ $appsettings->name() }}</title>
 
-        {!! $style->render() !!}
+        {!! $style->output() !!}
 
         <script type="application/javascript">
             let siteUrl = "{{ $config->get('app.url') }}",
                 siteLocale = "{{ $config->get('app.locale') }}";
         </script>
 
-        {!! $scripts->render() !!}
+        {!! $scripts->output() !!}
 
     </head>
     <body>
@@ -43,7 +43,7 @@
             @include('layout.footer')
         </div>
 
-        {!! $scripts->render(['head' => false]) !!}
+        {!! $scripts->output(['head' => false]) !!}
         @stack('inlinejs')
 
     </body>
