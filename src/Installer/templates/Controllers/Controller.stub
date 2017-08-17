@@ -9,7 +9,7 @@ use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Laranix\AntiSpam\{Sequence\Sequence,Recaptcha\Recaptcha};
-use Laranix\Themer\FileSettings as ThemerFileSettings;
+use Laranix\Themer\ResourceSettings as ThemerFileSettings;
 use Laranix\Themer\Image\Image;
 use Laranix\Themer\Script\{Script, Settings as ScriptSettings};
 use Laranix\Themer\Style\Style;
@@ -45,12 +45,12 @@ class Controller extends BaseController
     protected $config;
 
     /**
-     * @var \Laranix\Themer\ThemerFile
+     * @var \Laranix\Themer\ThemerResource
      */
     protected $style;
 
     /**
-     * @var \Laranix\Themer\ThemerFile
+     * @var \Laranix\Themer\ThemerResource
      */
     protected $scripts;
 
@@ -311,7 +311,7 @@ class Controller extends BaseController
     /**
      * Add a script
      *
-     * @param \Laranix\Themer\FileSettings|array $settings
+     * @param \Laranix\Themer\ResourceSettings|array $settings
      * @return $this
      */
     protected function addScript($settings)
