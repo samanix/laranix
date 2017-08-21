@@ -9,9 +9,16 @@ class Settings extends BaseSettings
      * @var array
      */
     protected $required = [
-        'filename'  => 'string',
-        'alt'       => 'string',
+        'image' => 'string',
+        'alt'   => 'string',
     ];
+
+    /**
+     * Image file
+     *
+     * @var string
+     */
+    public $image;
 
     /**
      * Alt tag for image
