@@ -1,5 +1,0 @@
-@if ($scripts !== null)
-    @foreach($scripts as $script)
-        <script type="application/javascript" src="{{ url_create(null, $script->url, $script->file) }}" {{ ($script->async ? 'async' : '') }}{{ ($script->defer ? ' defer' : '') }}></script>
-    @endforeach
-@endif

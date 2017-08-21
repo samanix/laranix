@@ -35,7 +35,7 @@ class Theme
     {
         $this->settings = $settings;
 
-        $settings->hasRequired();
+        $settings->hasRequiredSettings();
     }
 
     /**

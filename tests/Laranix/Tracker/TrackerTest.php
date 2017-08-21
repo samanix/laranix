@@ -79,6 +79,15 @@ class TrackerTest extends LaranixTestCase
     }
 
     /**
+     * Test get raw ip attribute
+     */
+    public function testGetRawIpv4Attribute()
+    {
+        $this->assertSame(ip2long('1.1.1.2'), Tracker::find(2)->rawIpv4);
+        $this->assertSame(ip2long('1.1.1.5'), Tracker::find(5)->rawIpv4);
+    }
+
+    /**
      * Test get user agent attribute
      */
     public function testGetAgentAttribute()

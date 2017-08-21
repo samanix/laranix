@@ -13,16 +13,6 @@ use Laranix\Tests\LaranixTestCase;
 class RecaptchaTest extends LaranixTestCase
 {
     /**
-     * Test callback script returned matches config
-     */
-    public function testGetCallbackScript()
-    {
-        list($config, $request, $view, $guzzle) = $this->getConstructorArgs();
-
-        $this->assertSame('fooscript', (new Recaptcha($config, $request, $view, $guzzle))->getCallbackScript());
-    }
-
-    /**
      * Test when recaptcha disabled
      */
     public function testWhenEnabledIsFalse()
@@ -32,7 +22,7 @@ class RecaptchaTest extends LaranixTestCase
         $recaptcha = new Recaptcha($config, $request, $view, $guzzle);
 
         $this->assertFalse($recaptcha->enabled());
-        $this->assertNull($recaptcha->render());
+        $this->assertNull($recaptcha->render('form'));
         $this->assertTrue($recaptcha->verify());
         $this->assertNull($recaptcha->redirect());
     }
@@ -47,7 +37,7 @@ class RecaptchaTest extends LaranixTestCase
         $recaptcha = new Recaptcha($config, $request, $view, $guzzle);
 
         $this->assertFalse($recaptcha->enabled());
-        $this->assertNull($recaptcha->render());
+        $this->assertNull($recaptcha->render('form'));
         $this->assertTrue($recaptcha->verify());
         $this->assertNull($recaptcha->redirect());
     }
@@ -99,7 +89,7 @@ class RecaptchaTest extends LaranixTestCase
         $view->shouldReceive('make')->andReturnSelf();
         $view->shouldReceive('render')->andReturn('output');
 
-        $this->assertSame('output', (new Recaptcha($config, $request, $view, $guzzle))->render());
+        $this->assertSame('output', (new Recaptcha($config, $request, $view, $guzzle))->render('form'));
     }
 
     /**
@@ -115,7 +105,7 @@ class RecaptchaTest extends LaranixTestCase
 
         $this->expectException(\Illuminate\Contracts\Filesystem\FileNotFoundException::class);
 
-        (new Recaptcha($config, $request, $view, $guzzle))->render();
+        (new Recaptcha($config, $request, $view, $guzzle))->render('form');
     }
 
     /**
@@ -189,6 +179,7 @@ class RecaptchaTest extends LaranixTestCase
     /**
      * @param bool   $enabled
      * @param string $env
+     * @param bool   $guests_only
      * @return array
      */
     protected function getConstructorArgs(bool $enabled = true, string $env = 'testing', bool $guests_only = false)

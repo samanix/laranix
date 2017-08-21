@@ -15,7 +15,7 @@ trait CreatesUsers
             $values = new Settings($values);
         }
 
-        $values->hasRequired();
+        $values->hasRequiredSettings();
 
         return User::createNew([
             'email'             => $values->email,

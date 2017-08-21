@@ -1,6 +1,6 @@
-form_name = 'verify-email';
+formId = 'verify-email';
 
-validation_fields = {
+formValidationFields = {
     token: {
         identifier: 'token',
         rules: [

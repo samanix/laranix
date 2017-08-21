@@ -40,9 +40,6 @@ return [
             'debug',
         ],
 
-        // Name of js file that contains the callback function
-        'js_callback' => 'recaptcha_callback.js',
-
         // If true, will force all users to complete
         // Otherwise, will allow logged in users to skip
         'guests_only' => false,

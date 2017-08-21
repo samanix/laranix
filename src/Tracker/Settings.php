@@ -17,12 +17,12 @@ class Settings extends BaseSettings
      * @var array|string
      */
     protected $required = [
-        'user'      => 'int|null',
+        'user'      => 'optional|int',
         'type'      => 'string',
-        'typeId'    => 'int|null',
-        'itemId'    => 'int|null',
+        'typeId'    => 'optional|int',
+        'itemId'    => 'optional|int',
         'trackType' => 'int',
-        'data'      => 'string|null',
+        'data'      => 'optional|string',
     ];
 
     /**
@@ -93,7 +93,6 @@ class Settings extends BaseSettings
      * @var string
      */
     protected $url = null;
-
 
     /**
      * Settings constructor.

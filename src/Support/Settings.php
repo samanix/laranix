@@ -2,51 +2,49 @@
 namespace Laranix\Support;
 
 use Laranix\Support\Exception\LaranixSettingsException;
+use Laranix\Support\IO\Str\Str;
 
 abstract class Settings
 {
-//    /** TODO
-//     * Set callbacks, fired when property is set
-//     *
-//     * @var array
-//     */
-//    //protected $setCallbacks = [];
-
-//    /** TODO
-//     * Allowed types when parameter not required
-//     *
-//     * @var array
-//     */
-//    protected $allowedTypes = [];
-
     /**
-     * Names of required properties
+     * Required properties
      *
-     * @var array|string
+     * @var array
      */
     protected $required = [];
 
     /**
-     * If using a large options file, you can ignore settings here
-     *
-     * @var array
-     */
-    protected $requiredExcept = [];
-
-    /**
-     * If all is specified, you can set types by property name here
+     * Required types (if not set in $this->required)
      *
      * @var array
      */
     protected $requiredTypes = [];
 
     /**
+     * Ignored properties
+     * Useful if all are set to required but you want
+     * to exclude some
+     *
+     * @var array
+     */
+    protected $ignored = [];
+
+    /**
+     * Required properties and types parsed in to one array
+     *
+     * @var array
+     */
+    protected $requiredParsed;
+
+    /**
+     * If all properties are required
+     *
      * @var bool
      */
     protected $allRequired = false;
 
     /**
-     * SettingsBase constructor.
+     * Settings constructor.
      *
      * @param array $values
      */
@@ -54,11 +52,11 @@ abstract class Settings
     {
         $this->assignPropertyValues($values);
 
-        $this->setRequired($this->required);
+        $this->setRequiredProperties($this->required);
     }
 
     /**
-     * Assign attributes to properties
+     * Assign values to properties
      *
      * @param array $values
      */
@@ -72,30 +70,20 @@ abstract class Settings
     }
 
     /**
-     * Check for required parameters
+     * Check the settings have all required settings with valid types
      *
-     * @return bool
-     * @throws \Laranix\Support\Exception\LaranixSettingsException
+     * @param   bool $refresh
+     * @return  bool
      */
-    public function hasRequired()
+    public function hasRequiredSettings(bool $refresh = false)
     {
-        $required = $this->getRequired();
+        $required = $this->getParsedRequiredProperties($refresh);
 
-        if (empty($required) || $required === null) {
+        if (!$this->allRequired && (empty($required) || $required === null)) {
             return true;
         }
 
-        $ignore = array_flip($this->getRequiredExcept());
-
-        foreach ($required as $index => $type) {
-            $property = is_int($index) ? $type : $index;
-
-            if (isset($ignore[$property])) {
-                continue;
-            }
-
-            $allowed = is_int($index) || $this->allRequired ? null : $type;
-
+        foreach ($required as $property => $allowed) {
             $this->validateProperty($property, $allowed);
         }
 
@@ -103,46 +91,42 @@ abstract class Settings
     }
 
     /**
-     * Check property is valid
+     * Validate the property against its allowed types
      *
-     * @param string      $property
-     * @param string|null $allowedTypes
+     * @param string $property
+     * @param array  $allowed
      * @throws \Laranix\Support\Exception\LaranixSettingsException
      */
-    protected function validateProperty(string $property, ?string $allowedTypes = null)
+    protected function validateProperty(string $property, array $allowed)
     {
-        $type = $this->getPropertyType($property, $allowedTypes);
+        $types = array_flip($allowed);
 
-        if ($type === null || $type === 'null') {
-            if(!is_null($this->{$property})) {
-                throw new LaranixSettingsException(sprintf("'%s' is required but not set in %s", $property, get_class($this)));
-            }
-
-            return;
-        }
-
+        $optional = false;
         $valid = false;
 
-        if (is_array($type)) {
-            foreach ($type as $value) {
-                if ($valid = $this->isValid($property, $value)) {
-                    break;
-                }
+        if (isset($types['optional'])) {
+            if ($this->{$property} === null) {
+                return;
             }
-        } else {
-            $valid = $this->isValid($property, $type);
+
+            unset($types['optional']);
+
+            $optional = true;
+        }
+
+        foreach ($allowed as $index => $type) {
+            if ($valid = $this->isValid($property, $type)) {
+                break;
+            }
         }
 
         if (!$valid) {
-            $types = is_array($type) ? implode('|', $type) : $type;
-
-            throw new LaranixSettingsException(sprintf("Expected '%s' for '%s' in %s, got %s",
-                                                       $types, $property, get_class($this), gettype($this->$property)));
+            $this->throwInvalidException($property, $types, $optional);
         }
     }
 
     /**
-     * Check value is valid
+     * Check property is valid against type
      *
      * @param string $property
      * @param string $type
@@ -151,131 +135,208 @@ abstract class Settings
     protected function isValid(string $property, string $type) : bool
     {
         switch ($type) {
+            case 'any':
+            case 'notnull':
+            case 'isset':
+            case 'set':
+                return true;
             case 'string':
-                return is_string($this->$property);
+                return is_string($this->{$property});
             case 'email':
-                return filter_var($this->$property, FILTER_VALIDATE_EMAIL) !== false;
+                return filter_var($this->{$property}, FILTER_VALIDATE_EMAIL) !== false;
             case 'url':
-                return filter_var($this->$property, FILTER_VALIDATE_URL) !== false;
+                return filter_var($this->{$property}, FILTER_VALIDATE_URL) !== false;
             case 'int':
-                return is_int($this->$property);
+                return is_int($this->{$property});
             case 'bool':
             case 'boolean':
-                return is_bool($this->$property);
+                return is_bool($this->{$property});
             case 'array':
-                return is_array($this->$property);
+                return is_array($this->{$property});
             case 'null':
-                return $this->$property === null;
+                return $this->{$property} === null;
             case 'is':
             case 'instanceof':
             default:
-                return $this->$property instanceof $type;
+                return $this->{$property} instanceof $type;
         }
     }
 
     /**
-     * Get expected property type(s)
+     * Throw exception when invalid type detected
      *
-     * @param string      $property
-     * @param string|null $type
-     * @return array|null|string
+     * @param string $property
+     * @param array  $types
+     * @param bool   $optional
+     * @throws \Laranix\Support\Exception\LaranixSettingsException
      */
-    protected function getPropertyType(string $property, string $type = null)
+    protected function throwInvalidException(string $property, array $types, bool $optional = false)
     {
-        $type = $type ?? $this->getRequiredType($property);
+        $str = "Expected '{{types}}' for {{optional}} property '{{property}}' in {{class}}, got '{{actualtype}}'";
 
-        return strpos($type, '|') !== false ? explode('|', $type) : $type;
+        throw new LaranixSettingsException(Str::format($str, [
+            'types'     => implode('|', array_keys($types)),
+            'optional'  => $optional ? 'optional' : null,
+            'property'  => $property,
+            'class'     => get_class($this),
+            'actualtype'=> gettype($this->{$property}),
+        ]));
     }
 
     /**
-     * Set required
+     * Parse required properties + types
      *
-     * @param array|string $required
+     * @param   bool    $refresh
+     * @return  array
+     */
+    protected function parseRequiredProperties(bool $refresh = false)
+    {
+        if ($this->requiredParsed !== null && !$refresh) {
+            return $this->requiredParsed;
+        }
+
+        $ignored = array_flip($this->getIgnoredProperties());
+
+        foreach ($this->required as $index => $item) {
+            $property = is_int($index) ? $item : $index;
+            $type = 'any';
+
+            if (isset($ignored[$property])) {
+                continue;
+            }
+
+            if (isset($this->requiredTypes[$property])) {
+                $type = $this->requiredTypes[$property];
+            } elseif (!is_int($index) && $item !== '*' && !$this->allRequired) {
+                $type = $item;
+            }
+
+            $this->requiredParsed[$property] = $this->parseAllowedTypes($type);
+        }
+
+        return $this->requiredParsed;
+    }
+
+    /**
+     * Get allowed types
+     *
+     * @param $types
+     * @return array
+     */
+    protected function parseAllowedTypes($types) : array
+    {
+        return is_array($types) ? $types : explode('|', $types);
+    }
+
+    /**
+     * Get required properties
+     *
+     * @return array
+     */
+    public function getRequiredProperties() : array
+    {
+        return $this->required ?? [];
+    }
+
+        /**
+     * Set required properties
+     *
+     * @param array $required
      * @return $this
      */
-    public function setRequired($required)
+    public function setRequiredProperties(array $required)
     {
         if (empty($required)) {
             return $this;
         }
 
-        if ($required === 'all' || (isset($required[0]) && $required[0] === '*')) {
+        if (isset($required[0]) && $required[0] === '*') {
+            $this->required = get_object_vars($this);
             $this->allRequired = true;
-            $required = get_object_vars($this);
-        } elseif (!is_array($required)) {
-            $required = [$required];
+        } else {
+            $this->required = $required;
         }
 
-        unset($required['required'], $required['requiredTypes'], $required['requiredExcept'], $required['allRequired']);
-
-        $this->required = $required;
+        unset($this->required['required'],
+              $this->required['requiredTypes'],
+              $this->required['ignored'],
+              $this->required['requiredParsed'],
+              $this->required['allRequired']);
 
         return $this;
     }
 
     /**
-     * Get required
+     * Get ignored properties
      *
      * @return array
      */
-    public function getRequired() : array
+    public function getIgnoredProperties() : array
     {
-        return $this->required ?? [];
+        return $this->ignored ?? [];
     }
 
     /**
-     * Set requirement exceptions
+     * Set ignored properties
      *
-     * @param array $requiredExcept
+     * @param array $ignored
      * @return $this
      */
-    public function setRequiredExcept(array $requiredExcept)
+    public function setIgnoredProperties(array $ignored)
     {
-        $this->requiredExcept = $requiredExcept;
+        $this->ignored = $ignored;
 
         return $this;
     }
 
     /**
-     * Get requirement exceptions
-     * @return array
+     * Get required properties and their type
+     *
+     * @param   bool $refresh
+     * @return  array
      */
-    public function getRequiredExcept() : array
+    public function getParsedRequiredProperties(bool $refresh = false) : ?array
     {
-        return $this->requiredExcept ?? [];
+        return $this->parseRequiredProperties($refresh);
     }
 
     /**
      * Set required types
      *
-     * @param array $requiredTypes
+     * @param array $types
      * @return $this
      */
-    public function setRequiredTypes(array $requiredTypes)
+    public function setRequiredTypes(array $types)
     {
-        $this->requiredTypes = $requiredTypes;
+        $this->required = array_merge($this->required, $types);
+        $this->requiredTypes = $types;
 
         return $this;
     }
 
     /**
-     * Get required types
+     * Set required types for property
      *
-     * @return array|null
+     * @param string $property
+     * @param        $types
+     * @return $this
      */
-    public function getRequiredTypes() : array
+    public function setRequiredPropertyTypes(string $property, $types)
     {
-        return $this->requiredTypes ?? [];
+        $this->required[$property] = $types;
+        $this->requiredTypes[$property] = $types;
+
+        return $this;
     }
 
     /**
-     * Get required type for property
+     * Get required property types
      *
      * @param string $property
-     * @return null|string
+     * @return array|null
      */
-    public function getRequiredType(string $property) : ?string
+    public function getRequiredPropertyTypes(string $property) : ?array
     {
-        return $this->requiredTypes[$property] ?? null;
+        return $this->getParsedRequiredProperties()[$property] ?? null;
     }
 }

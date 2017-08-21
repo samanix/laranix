@@ -1,4 +1,4 @@
-<div class="ui inverted menu" id="main-menu">
+<div class="ui inverted menu main-menu">
     <a class="item" href="{{ url_to('/') }}">Home</a>
     <a class="item" href="{{ url_to('about') }}">About</a>
     <a class="item" href="{{ url_to('contact') }}">Contact</a>
@@ -26,5 +26,5 @@
                 </div>
             </div>
         </div>
-    @endif
+    @endifK
 </div>

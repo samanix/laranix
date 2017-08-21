@@ -88,6 +88,16 @@ class Tracker extends Model
     }
 
     /**
+     * Get ip attribute
+     *
+     * @return int
+     */
+    public function getRawIpv4Attribute() : int
+    {
+        return $this->getAttributeFromArray('ipv4');
+    }
+
+    /**
      * Get user agent
      *
      * @return string

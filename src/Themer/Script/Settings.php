@@ -1,7 +1,7 @@
 <?php
 namespace Laranix\Themer\Script;
 
-use Laranix\Themer\FileSettings as BaseSettings;
+use Laranix\Themer\ResourceSettings as BaseSettings;
 
 class Settings extends BaseSettings
 {

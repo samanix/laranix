@@ -37,7 +37,6 @@ if (!function_exists('url_to')) {
     }
 }
 
-
 if (!function_exists('url_href')) {
     /**
      * Create an HTML a tag

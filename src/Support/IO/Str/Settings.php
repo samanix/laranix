@@ -10,16 +10,12 @@ class Settings extends BaseSettings
      *
      * @var array|string
      */
-    protected $required = ['*'];
-
-    /**
-     * @var array
-     */
-    protected $requiredTypes = [
+    protected $required = [
         'removeUnparsed'        => 'bool',
         'unparsedReplacement'   => 'string',
         'leftSeparator'         => 'string',
         'rightSeparator'        => 'string',
+        'removeExtraSpaces'     => 'bool',
     ];
 
     /**
@@ -49,4 +45,11 @@ class Settings extends BaseSettings
      * @var string
      */
     public $rightSeparator = '}}';
+
+    /**
+     * Remove double or extra spaces in string
+     *
+     * @var bool
+     */
+    public $removeExtraSpaces = true;
 }

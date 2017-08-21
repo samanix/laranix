@@ -1,6 +1,7 @@
 <?php
 namespace Laranix\Auth\User\Cage;
 
+use Illuminate\Http\Request;
 use Laranix\Support\Settings as BaseSettings;
 
 class Settings extends BaseSettings
@@ -17,6 +18,7 @@ class Settings extends BaseSettings
         'reason'    => 'string',
         'issuer'    => 'int',
         'user'      => 'int',
+        'ipv4'      => 'optional|int',
     ];
 
     /**
@@ -64,9 +66,38 @@ class Settings extends BaseSettings
     public $user;
 
     /**
+     * User IP where cage triggered
+     *
+     * @var int
+     */
+    public $ipv4;
+
+    /**
      * Cage status.
      *
      * @var int
      */
     public $status = Cage::CAGE_ACTIVE;
+
+    /**
+     * Settings constructor.
+     *
+     * @param array                    $attributes
+     */
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+
+        $this->parseDefaults();
+    }
+
+    /**
+     * Parse default values
+     */
+    protected function parseDefaults()
+    {
+        if (isset($this->ipv4) && !is_int($this->ipv4)) {
+            $this->ipv4 = ip2long($this->ipv4);
+        }
+    }
 }

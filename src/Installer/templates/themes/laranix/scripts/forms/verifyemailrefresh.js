@@ -1,6 +1,6 @@
-form_name = 'verify-email-refresh';
+formId = 'verify-email-refresh';
 
-validation_fields = {
+formValidationFields = {
     email: {
         identifier: 'email',
         rules: [

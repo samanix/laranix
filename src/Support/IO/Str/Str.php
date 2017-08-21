@@ -20,7 +20,7 @@ class Str
             $options = new Settings();
         }
 
-        $options->hasRequired();
+        $options->hasRequiredSettings();
 
         return self::parseString($string, $values, $options);
     }
@@ -37,7 +37,7 @@ class Str
     protected static function parseString(string $string, array $values, Settings $options) : string
     {
         $output = str_replace(array_map(function ($value) use ($options) {
-            return sprintf('%s%s%s', $options->leftSeparator, $value, $options->rightSeparator);
+            return $options->leftSeparator . $value . $options->rightSeparator;
         }, array_keys($values)), array_values($values), $string);
 
         if ($options->removeUnparsed
@@ -46,6 +46,10 @@ class Str
 
             $output = preg_replace(sprintf('/%s([a-zA-Z0-9_\\.\\-]+)%s/', $options->leftSeparator, $options->rightSeparator),
                                    $options->unparsedReplacement, $output);
+        }
+
+        if ($options->removeExtraSpaces) {
+            $output = preg_replace('/\s+/', ' ', $output);
         }
 
         return trim($output);

@@ -3,15 +3,15 @@ namespace Laranix\Themer;
 
 use Laranix\Support\Settings as SettingsBase;
 
-abstract class FileSettings extends SettingsBase
+abstract class ResourceSettings extends SettingsBase
 {
     /**
      * @var array
      */
     protected $required = [
-        'key'   => 'string',
-        'file'  => 'string',
-        'order' => 'int',
+        'key'       => 'string',
+        'filename'  => 'string',
+        'order'     => 'int',
     ];
 
     /**
@@ -26,7 +26,7 @@ abstract class FileSettings extends SettingsBase
      *
      * @var string
      */
-    public $file;
+    public $filename;
 
     /**
      * URL of file if remote
@@ -63,6 +63,20 @@ abstract class FileSettings extends SettingsBase
      */
     public $themeName;
 
+    /**
+     * Set the CORS settings attribute
+     *
+     * @var string|null
+     */
+    public $crossorigin;
+
+    /**
+     * SRI Hash
+     *
+     * @var string|null
+     */
+    public $integrity;
+
 //    /**
 //     * TODO Can be worked around by using remote script instead (manually set url)
 //     * If true, will merge with other files of same type
@@ -86,10 +100,10 @@ abstract class FileSettings extends SettingsBase
      *
      * @var string
      */
-    public $filePath;
+    public $resourcePath;
 
     /**
-     * Stores existence state of file
+     * Stores existence state of resource
      *
      * @var bool
      */

@@ -47,9 +47,10 @@ abstract class AntiSpam
     /**
      * Get view data.
      *
+     * @param string $formId
      * @return array
      */
-    abstract protected function getViewData() : array;
+    abstract protected function getViewData(?string $formId = null) : array;
 
     /**
      * Verify form request.
@@ -88,11 +89,12 @@ abstract class AntiSpam
     /**
      * Render view.
      *
-     * @param string|null $view
+     * @param string|null   $formId
+     * @param string|null   $view
      * @return string
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
-    public function render(string $view = null) : ?string
+    public function render(?string $formId = null, ?string $view = null) : ?string
     {
         if (!$this->enabled()) {
             return null;
@@ -101,7 +103,7 @@ abstract class AntiSpam
         $useView = $view !== null ? $view : $this->view;
 
         if ($this->viewFactory->exists($useView)) {
-            return $this->viewFactory->make($useView, $this->getViewData())->render();
+            return $this->viewFactory->make($useView, $this->getViewData($formId))->render();
         }
 
         throw new FileNotFoundException("View '{$useView}' not found");

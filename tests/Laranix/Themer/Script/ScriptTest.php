@@ -2,7 +2,6 @@
 namespace Laranix\Tests\Laranix\Themer\Scripts;
 
 use Illuminate\Log\Writer;
-use Illuminate\View\Factory;
 use Laranix\Support\Exception\InvalidInstanceException;
 use Laranix\Support\Exception\KeyExistsException;
 use Laranix\Themer\Script\Script;
@@ -44,25 +43,25 @@ class ScriptTest extends LaranixTestCase
     }
 
     /**
-     * Test adding file with array settings
+     * Test adding resource with array settings
      */
-    public function testAddFileWithArraySettings()
+    public function testAddResourceWithArraySettings()
     {
         $script = $this->createScript();
 
         $script->add([
-            'key'   => 'foo',
-            'file'  => 'script.js',
-            'order' => 1
+            'key'       => 'foo',
+            'filename'  => 'script.js',
+            'order'     => 1
         ]);
 
-        $this->assertTrue($script->files->has('_added.foo.foo'));
+        $this->assertTrue($script->resources->has('_added.foo.foo'));
     }
 
     /**
-     * Test adding file when not an array or settings instance
+     * Test adding resource when not an array or settings instance
      */
-    public function testAddFileWithInvalidSettings()
+    public function testAddResourceWithInvalidSettings()
     {
         $this->expectException(InvalidInstanceException::class);
 
@@ -72,63 +71,63 @@ class ScriptTest extends LaranixTestCase
     }
 
     /**
-     * Test adding a file
+     * Test adding a resource
      */
-    public function testAddLocalFile()
+    public function testAddLocalResource()
     {
         $script = $this->createScript();
 
         $this->loadLocalScripts($script);
 
-        $this->assertTrue($script->files->has('_added.foo.foo'));
-        $this->assertTrue($script->files->has('_added.bar.baz'));
-        $this->assertCount(4, $script->files->get('_added.foo'));
-        $this->assertCount(2, $script->files->get('_added.bar'));
+        $this->assertTrue($script->resources->has('_added.foo.foo'));
+        $this->assertTrue($script->resources->has('_added.bar.baz'));
+        $this->assertCount(4, $script->resources->get('_added.foo'));
+        $this->assertCount(2, $script->resources->get('_added.bar'));
 
 
-        $this->assertCount(1, $script->files->get('scripts.local.foo.body_async'));
+        $this->assertCount(1, $script->resources->get('scripts.local.foo.body_async'));
     }
 
     /**
-     * Add files with auto ordering
+     * Add resources with auto ordering
      */
-    public function testAddFileWithAutomaticOrdering()
+    public function testAddResourceWithAutomaticOrdering()
     {
         $script = $this->createScript();
 
         $this->loadLocalScripts($script);
 
-        $this->assertSame(2, $script->files->get('scripts.local.foo.head_defer.2')->order);
-        $this->assertSame(3, $script->files->get('scripts.local.foo.head.3')->order);
+        $this->assertSame(2, $script->resources->get('scripts.local.foo.head_defer.2')->order);
+        $this->assertSame(3, $script->resources->get('scripts.local.foo.head.3')->order);
     }
 
     /**
-     * Add files with auto minification search
+     * Add resources with auto minification search
      */
-    public function testAddFileWithAutoMin()
+    public function testAddResourceWithAutoMin()
     {
         $script = $this->createScript();
 
         $this->loadLocalScripts($script);
 
-        $this->assertSame('script.min.js', $script->files->get('scripts.local.foo.head.3')->file);
-        $this->assertSame('fooscript.js', $script->files->get('scripts.local.foo.head_defer.10')->file);
+        $this->assertSame('script.min.js', $script->resources->get('scripts.local.foo.head.3')->filename);
+        $this->assertSame('fooscript.js', $script->resources->get('scripts.local.foo.head_defer.10')->filename);
     }
 
     /**
-     * Add a file that doesn't exist in given theme, but does in default
+     * Add a resource that doesn't exist in given theme, but does in default
      */
-    public function testAddFileWithDefaultFallback()
+    public function testAddResourceWithDefaultFallback()
     {
         $script = $this->createScript();
 
         $this->loadLocalScripts($script);
 
-        $this->assertTrue($this->themer->themeIsDefault($script->files->get('scripts.local.foo.head_defer.10')->theme));
+        $this->assertTrue($this->themer->themeIsDefault($script->resources->get('scripts.local.foo.head_defer.10')->theme));
     }
 
     /**
-     * Test adding same file twice
+     * Test adding same resource twice
      */
     public function testAddKeyWhenKeyExists()
     {
@@ -136,8 +135,8 @@ class ScriptTest extends LaranixTestCase
 
         $script = $this->createScript();
 
-        $settings = $this->getSettings(['key' => 'foo', 'file' => 'script.js', 'order' => 1]);
-        $settings2 = $this->getSettings(['key' => 'foo', 'file' => 'script2.js', 'order' => 1]);
+        $settings = $this->getSettings(['key' => 'foo', 'filename' => 'script.js', 'order' => 1]);
+        $settings2 = $this->getSettings(['key' => 'foo', 'filename' => 'script2.js', 'order' => 1]);
 
         $script->add($settings);
         $script->add($settings2);
@@ -146,37 +145,37 @@ class ScriptTest extends LaranixTestCase
     /**
      * Test adding a script with no default fallback
      */
-    public function testAddNonExistentScriptWithNoDefaultFallback()
+    public function testAddNonExistentResourceWithNoDefaultFallback()
     {
         $this->expectException(FileNotFoundException::class);
 
         $script = $this->createScript(FileNotFoundException::class);
 
-        $script->add($this->getSettings(['key' => 'foo',   'file' => 'fooscript.js',  'themeName' => 'bar',  'defaultFallback' => false]));
+        $script->add($this->getSettings(['key' => 'foo',   'filename' => 'fooscript.js',  'themeName' => 'bar',  'defaultFallback' => false]));
     }
 
     /**
      * Test add remote scripts
      */
-    public function testAddRemoteScripts()
+    public function testAddRemoteResource()
     {
         $script = $this->createScript();
 
         $this->loadRemoteScripts($script);
 
-        $this->assertTrue($script->files->has('_added.foo.remote_foo'));
-        $this->assertTrue($script->files->has('_added.foo.remote_baz'));
-        $this->assertCount(6, $script->files->get('_added.foo'));
+        $this->assertTrue($script->resources->has('_added.foo.remote_foo'));
+        $this->assertTrue($script->resources->has('_added.foo.remote_baz'));
+        $this->assertCount(6, $script->resources->get('_added.foo'));
 
 
-        $this->assertCount(4, $script->files->get('scripts.remote.head'));
-        $this->assertCount(2, $script->files->get('scripts.remote.body'));
+        $this->assertCount(4, $script->resources->get('scripts.remote.head'));
+        $this->assertCount(2, $script->resources->get('scripts.remote.body'));
     }
 
     /**
-     * Test adding file without merging
+     * Test adding resource without merging
      */
-    public function testAddFileWithoutMerging()
+    public function testAddResourceWithoutMerging()
     {
         $this->config->set('app.env', 'env1');
 
@@ -184,61 +183,60 @@ class ScriptTest extends LaranixTestCase
 
         $this->loadLocalScripts($script);
 
-        $this->assertNull($script->files->get('scripts.local'));
+        $this->assertNull($script->resources->get('scripts.local'));
 
-        $this->assertCount(5, $script->files->get('scripts.remote.head'));
-        $this->assertCount(1, $script->files->get('scripts.remote.body'));
+        $this->assertCount(5, $script->resources->get('scripts.remote.head'));
+        $this->assertCount(1, $script->resources->get('scripts.remote.body'));
 
-        $this->assertNotNull($script->files->get('scripts.remote.head.1')->url);
+        $this->assertNotNull($script->resources->get('scripts.remote.head.1')->url);
     }
 
     /**
-     * View should render null with no scripts
+     * Output null with no scripts
      */
-    public function testRenderWhenNoScriptsAdded()
+    public function testOutputWhenNoResourcesAdded()
     {
-        $script = $this->createScriptWithView(true);
+        $script = $this->createScript();
 
-        $this->assertNull($script->render());
+        $this->assertNull($script->output());
     }
 
     /**
-     * Non existent view should throw exception
+     * Test output
      */
-    public function testRenderWhenNoViewSet()
+    public function testOutputReturnsExpected()
     {
-        $this->expectException(FileNotFoundException::class);
+        $script = $this->createScript();
 
-        $this->createScriptWithView(false)->render([], 'noviewhere');
+        $script->add(['key' => 'foo1', 'filename' => 'script1.js', 'url' => 'http://url.com', 'async' => true]);
+        $script->add(['key' => 'foo2', 'filename' => 'script2.js', 'url' => 'http://url.com', 'defer' => false]);
+        $script->add(['key' => 'foo3', 'filename' => 'script3.js', 'url' => 'http://url.com', 'crossorigin' => 'anonymous', 'integrity' => 'sha1-123']);
+
+        $expect = /** @lang text */
+            <<<EXPECTED
+<script type="application/javascript" src="http://url.com/script1.js" async defer></script>
+<script type="application/javascript" src="http://url.com/script2.js"></script>
+<script type="application/javascript" src="http://url.com/script3.js" defer crossorigin="anonymous" integrity="sha1-123"></script>
+EXPECTED;
+
+        $this->assertSame($expect, $script->output());
     }
 
     /**
-     * Test render
+     * Test get resource path
      */
-    public function testRenderReturnsExpected()
-    {
-        $script = $this->createScriptWithView(true);
-
-        $this->loadLocalScripts($script);
-
-        $this->assertSame('rendered', $script->render());
-    }
-
-    /**
-     * Test get file path
-     */
-    public function testGetFilePath()
+    public function testGetResourcePath()
     {
         $script = $this->createScript();
 
         $this->assertSame(realpath(__DIR__ . '/../Stubs/themes/foo/scripts/script.js'),
-                          $script->getFilePath('script.js'));
+                          $script->getResourcePath('script.js'));
 
         $this->assertSame(realpath(__DIR__ . '/../Stubs/themes/bar/scripts/script2.js'),
-                          $script->getFilePath('script2.js', $this->themer->getTheme('bar')));
+                          $script->getResourcePath('script2.js', $this->themer->getTheme('bar')));
 
         $this->assertSame(realpath(__DIR__ . '/../Stubs/themes/bar/scripts/script.min.js'),
-                          $script->getFilePath('script.min.js', $this->themer->getTheme('bar')));
+                          $script->getResourcePath('script.min.js', $this->themer->getTheme('bar')));
     }
 
     /**
@@ -267,25 +265,7 @@ class ScriptTest extends LaranixTestCase
         $writer = m::mock(Writer::class);
         $writer->shouldReceive('warning')->andThrow($throw);
 
-        return new Script($this->themer, $this->config, $writer, m::mock(Factory::class));
-    }
-
-    /**
-     * @param $exists
-     * @return \Laranix\Themer\Script\Script
-     */
-    protected function createScriptWithView(bool $exists = false)
-    {
-        $writer = m::mock(Writer::class);
-        $writer->shouldReceive('warning')->andThrow(KeyExistsException::class);
-
-        $viewfactory = m::mock(Factory::class);
-
-        $viewfactory->shouldReceive('exists')->andReturn($exists);
-        $viewfactory->shouldReceive('make')->andReturnSelf();
-        $viewfactory->shouldReceive('render')->andReturn('rendered');
-
-        return new Script($this->themer, $this->config, $writer, $viewfactory);
+        return new Script($this->themer, $this->config, $writer);
     }
 
     /**
@@ -298,7 +278,7 @@ class ScriptTest extends LaranixTestCase
     {
         $settings = new Settings($options);
 
-        $settings->hasRequired();
+        $settings->hasRequiredSettings();
 
         return $settings;
     }
@@ -311,12 +291,12 @@ class ScriptTest extends LaranixTestCase
     protected function loadLocalScripts(Script $script)
     {
         $local = [
-            'foo'       => $this->getSettings(['key' => 'foo',      'file' => 'script.js',  'order' => 1]),
-            'bar'       => $this->getSettings(['key' => 'bar',      'file' => 'script.js',  'order' => 1]),
-            'baz'       => $this->getSettings(['key' => 'baz',      'file' => 'script2.js', 'order' => 2, 'themeName' => 'bar']),
-            'foobar'    => $this->getSettings(['key' => 'foobar',   'file' => 'script.js', 'automin' => true, 'defer' => false]),
-            'barbaz'    => $this->getSettings(['key' => 'barbaz',   'file' => 'script.js',  'defer' => false, 'async' => true,            'head' => false]),
-            'foobaz'    => $this->getSettings(['key' => 'foobaz',   'file' => 'fooscript.js',  'themeName' => 'bar',  'order' => 10,  'automin' => true]),
+            'foo'       => $this->getSettings(['key' => 'foo',      'filename' => 'script.js',  'order' => 1]),
+            'bar'       => $this->getSettings(['key' => 'bar',      'filename' => 'script.js',  'order' => 1]),
+            'baz'       => $this->getSettings(['key' => 'baz',      'filename' => 'script2.js', 'order' => 2, 'themeName' => 'bar']),
+            'foobar'    => $this->getSettings(['key' => 'foobar',   'filename' => 'script.js', 'automin' => true, 'defer' => false]),
+            'barbaz'    => $this->getSettings(['key' => 'barbaz',   'filename' => 'script.js',  'defer' => false, 'async' => true,            'head' => false]),
+            'foobaz'    => $this->getSettings(['key' => 'foobaz',   'filename' => 'fooscript.js',  'themeName' => 'bar',  'order' => 10,  'automin' => true]),
         ];
 
         foreach ($local as $key => $setting) {
@@ -332,12 +312,12 @@ class ScriptTest extends LaranixTestCase
     protected function loadRemoteScripts(Script $script)
     {
         $remote = [
-            'remote_foo'       => $this->getSettings(['key' => 'remote_foo',    'file' => 'script.js', 'url' => 'http://foo.com', 'order' => 1]),
-            'remote_bar'       => $this->getSettings(['key' => 'remote_bar',    'file' => 'script.js', 'url' => 'http://bar.com/foo', 'order' => 1]),
-            'remote_baz'       => $this->getSettings(['key' => 'remote_baz',    'file' => 'script2.js', 'url' => 'http://foo.com/baz/', 'head' => false]),
-            'remote_foobar'    => $this->getSettings(['key' => 'remote_foobar', 'file' => 'script2.js', 'url' => 'https://foo.com/script', 'defer' => false]),
-            'remote_barbaz'    => $this->getSettings(['key' => 'remote_barbaz', 'file' => 'script.js', 'url' => '//foo.com', 'defer' => false, 'async' => true, 'head' => false]),
-            'remote_foobaz'    => $this->getSettings(['key' => 'remote_foobaz', 'file' => 'script.js', 'url' => 'http://foo.com/20', 'order' => 20]),
+            'remote_foo'       => $this->getSettings(['key' => 'remote_foo',    'filename' => 'script.js', 'url' => 'http://foo.com', 'order' => 1]),
+            'remote_bar'       => $this->getSettings(['key' => 'remote_bar',    'filename' => 'script.js', 'url' => 'http://bar.com/foo', 'order' => 1]),
+            'remote_baz'       => $this->getSettings(['key' => 'remote_baz',    'filename' => 'script2.js', 'url' => 'http://foo.com/baz/', 'head' => false]),
+            'remote_foobar'    => $this->getSettings(['key' => 'remote_foobar', 'filename' => 'script2.js', 'url' => 'https://foo.com/script', 'defer' => false]),
+            'remote_barbaz'    => $this->getSettings(['key' => 'remote_barbaz', 'filename' => 'script.js', 'url' => '//foo.com', 'defer' => false, 'async' => true, 'head' => false]),
+            'remote_foobaz'    => $this->getSettings(['key' => 'remote_foobaz', 'filename' => 'script.js', 'url' => 'http://foo.com/20', 'order' => 20]),
         ];
 
         foreach ($remote as $key => $setting) {

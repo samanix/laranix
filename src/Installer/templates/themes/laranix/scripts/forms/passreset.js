@@ -1,6 +1,6 @@
-form_name = 'pass-reset';
+formId = 'pass-reset';
 
-validation_fields = {
+formValidationFields = {
     token: {
         identifier: 'token',
         rules: [

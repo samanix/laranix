@@ -32,13 +32,15 @@ class Recaptcha extends AntiSpam
     /**
      * Get view data.
      *
+     * @param string $formId
      * @return array
      */
-    protected function getViewData() : array
+    protected function getViewData(?string $formId = null) : array
     {
         return [
             'recaptcha' => [
-                'key' => $this->config->get('antispam.recaptcha.key', ''),
+                'siteKey'   => $this->config->get('antispam.recaptcha.key', ''),
+                'formId'    => $formId,
             ],
         ];
     }
@@ -83,15 +85,5 @@ class Recaptcha extends AntiSpam
         ]);
 
         return json_decode($response->getBody());
-    }
-
-    /**
-     * Get the name of the javascript file that contains the recaptcha callback function.
-     *
-     * @return string
-     */
-    public function getCallbackScript() : string
-    {
-        return $this->config->get('antispam.recaptcha.js_callback', 'recaptcha_callback.js');
     }
 }
