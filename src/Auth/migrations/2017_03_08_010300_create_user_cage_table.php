@@ -22,6 +22,7 @@ class CreateUserCageTable extends Migration
 
             $table->unsignedInteger('issuer_id')->nullable();
             $table->unsignedInteger('user_id')->nullable();
+            $table->unsignedInteger('user_ipv4')->nullable();
 
             /** @see \Laranix\Auth\User\Cage\Settings */
             $table->unsignedTinyInteger('cage_status')->default(1);
