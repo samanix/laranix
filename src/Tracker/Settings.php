@@ -94,7 +94,6 @@ class Settings extends BaseSettings
      */
     protected $url = null;
 
-
     /**
      * Settings constructor.
      *
