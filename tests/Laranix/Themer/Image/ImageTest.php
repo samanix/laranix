@@ -101,9 +101,22 @@ class ImageTest extends LaranixTestCase
         $imgurl = $this->image->getWebUrl('laranix.png');
         $imgurl2 = $this->image->getWebUrl('samanix.png');
 
-        $this->assertSame('<img src="' . $imgurl . '" alt="img" title="title" />', $this->image->display('laranix.png', ['alt' => 'img', 'title' => 'title']));
-        $this->assertSame('<img src="' . $imgurl . '" alt="laranix.png" />', $this->image->show('laranix.png'));
+        $this->assertSame('<img src="' . $imgurl . '" alt="img" title="title" />',
+                          $this->image->display('laranix.png', 'img', ['title' => 'title']));
 
-        $this->assertSame('<img src="' . $imgurl2 . '" alt="samanix.png" />', $this->image->show('samanix.png'));
+        $this->assertSame('<img src="' . $imgurl . '" alt="laranix.png" />',
+                          $this->image->show('laranix.png'));
+
+        $this->assertSame('<img src="' . $imgurl2 . '" alt="samanix.png" />',
+                          $this->image->show('samanix.png'));
+
+        $this->assertSame('<img src="' . $imgurl . '" alt="foo" id="fooimage" title="bar" />',
+                          $this->image->display(['image' => 'laranix.png', 'alt' => 'foo', 'id' => 'fooimage', 'extra' => ['title' => 'bar']]));
+
+        $this->assertSame('<img src="' . $imgurl . '" alt="foo" id="fooimage" title="baz" />',
+                          $this->image->display(['image' => 'laranix.png', 'alt' => 'foo', 'id' => 'fooimage', 'extra' => ['title' => 'bar']], 'bar', ['title' => 'baz']));
+
+        $this->assertSame('<img src="' . $imgurl . '" alt="foo" id="fooimage" title="baz" data-foo="bar" />',
+                          $this->image->display(['image' => 'laranix.png', 'alt' => 'foo', 'id' => 'fooimage'], 'bar', ['title' => 'baz', 'data-foo' => 'bar']));
     }
 }

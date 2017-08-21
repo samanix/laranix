@@ -2,6 +2,7 @@
 namespace Laranix\Themer\Image;
 
 use Laranix\Support\Exception\NotImplementedException;
+use Laranix\Support\IO\Str\Str;
 use Laranix\Themer\ResourceSettings;
 use Laranix\Themer\Theme;
 use Laranix\Themer\ThemerResource;
@@ -11,119 +12,177 @@ class Image extends ThemerResource
     /**
      * Display an image
      *
-     * @param string $image
-     * @param array  $params
-     * @param bool   $default
+     * @param string|Settings|array $image
+     * @param null|string           $alt
+     * @param array                 $extra
+     * @param bool                  $default
      * @return null|string
+     * @internal param array $params
      */
-    public function display(string $image, array $params = [], bool $default = false) : ?string
+    public function display($image, ?string $alt = null, array $extra = [], bool $default = false) : ?string
     {
-        $cacheKey = $this->cacheKey($image, $params, $default);
+        $image = $this->createImageSettings($image, $alt, $extra, $default);
 
-        if ($this->hasCachedImage($cacheKey)) {
-            return $this->getCachedImage($cacheKey);
+        if ($this->hasCachedImage($image)) {
+            return $this->getCachedImage($image);
         }
 
-        $theme = $default ? $this->getDefaultTheme() : $this->getTheme();
+        $image->hasRequiredSettings();
 
-        if (!$this->exists($image, $theme)) {
-            if (!$default && $this->themeIsDefault($theme)) {
-                return $this->display($image, $params, true);
+        if (!$this->exists($image->image, $image->theme)) {
+            if (!$default && $this->themeIsDefault($image->theme)) {
+                return $this->display($image, $alt, $extra, true);
             }
 
-            $this->missing($image, $theme);
+            $this->missing($image->image, $image->theme);
 
-            return null;
+            // Null returned
+            return $this->cacheImage($image);
         }
 
-        return $this->cacheImage($cacheKey, $this->createHtmlImageString($image, $theme, array_merge([
-            'alt'   => $image,
-        ], $params)));
+        //dd($image);
+
+        return $this->cacheImage($this->generateHtmlOutput($image));
     }
 
     /**
      * Display alias
      *
-     * @param string $image
-     * @param array  $params
-     * @param bool   $default
+     * @param string      $image
+     * @param null|string $alt
+     * @param array       $extra
+     * @param bool        $default
      * @return null|string
      */
-    public function show(string $image, array $params = [], bool $default = false) : ?string
+    public function show($image, ?string $alt = null, array $extra = [], bool $default = false) : ?string
     {
-        return $this->display($image, $params, $default);
+        return $this->display($image, $alt, $extra, $default);
     }
 
     /**
-     * Create HTML image string
-     *
-     * @param string                $image
-     * @param \Laranix\Themer\Theme $theme
-     * @param array                 $params
-     * @return string
-     */
-    protected function createHtmlImageString(string $image, Theme $theme, array $params = [])
-    {
-        if (!empty($params)) {
-            $extra = [];
-
-            foreach ($params as $key => $param) {
-                $extra[] = $key . '="' . $param . '"';
-            }
-
-            $properties = implode(' ', $extra) . ' ';
-        }
-
-        return sprintf('<img src="%s" %s/>', $this->getWebUrl($image, $theme), $properties ?? '');
-    }
-
-     /**
      * Check for cached image
      *
-     * @param string $key
+     * @param \Laranix\Themer\ResourceSettings $image
      * @return bool
      */
-    protected function hasCachedImage(string $key) : bool
+    protected function hasCachedImage(ResourceSettings $image) : bool
     {
-        return $this->resources->has($key);
+        return $this->resources->has($image->key);
     }
 
     /**
      * Get cached image
      *
-     * @param string $key
+     * @param \Laranix\Themer\ResourceSettings $image
      * @return string
      */
-    protected function getCachedImage(string $key) : string
+    protected function getCachedImage(ResourceSettings $image) : string
     {
-        return $this->resources->get($key);
+        return $this->resources->get($image->key);
     }
 
     /**
      * Store image in the cache
      *
-     * @param string $key
-     * @param string $image
-     * @return string
+     * @param ResourceSettings|Settings    $image
+     * @return string|null
      */
-    protected function cacheImage($key, string $image) : string
+    protected function cacheImage(ResourceSettings $image) : ?string
     {
-        $this->resources->add($key, $image);
+        $this->resources->add($image->key, $image);
 
-        return $image;
+        return $image->htmlstring;
     }
 
     /**
      * Cached image key
      *
-     * @param string $image
-     * @param array  $params
-     * @param bool   $default
+     * @param \Laranix\Themer\ResourceSettings $settings
      * @return string
      */
-    protected function cacheKey(string $image, array $params = [], bool $default = false) : string
+    protected function cacheKey(ResourceSettings $settings) : string
     {
-        return hash('crc32', json_encode([$image, $params, $default]));
+        return hash('crc32', json_encode($settings));
+    }
+
+    /**
+     * @param             $image
+     * @param null|string $alt
+     * @param array       $extra
+     * @param bool        $default
+     * @return \Laranix\Themer\ResourceSettings|Settings
+     */
+    protected function createImageSettings($image, ?string $alt = null, array $extra = [], bool $default = false) : ResourceSettings
+    {
+        if ($image instanceof Settings) {
+            $settings = $image;
+        } elseif (is_array($image)) {
+            if (!empty($extra)) {
+                $image['extra'] = array_merge($image['extra'] ?? [], $extra);
+            }
+
+            $settings = new Settings($image);
+        } else {
+            $settings = new Settings([
+                'image'     => $image,
+                'alt'       => $alt ?? $image,
+                'extra'     => $extra,
+            ]);
+        }
+
+        $settings->theme    = $default ? $this->getDefaultTheme() : $this->getTheme();
+        $settings->default  = $default;
+        $settings->key      = $this->cacheKey($settings);
+
+        return $settings;
+    }
+
+    /**
+     * Image output string
+     *
+     * @param \Laranix\Themer\ResourceSettings|Settings $image
+     * @return \Laranix\Themer\ResourceSettings
+     */
+    protected function generateHtmlOutput(ResourceSettings $image) : ResourceSettings
+    {
+        $str = /** @lang text */
+                '<img src="{{url}}" alt="{{alt}}" {{title}} {{width}} {{height}} {{class}} {{id}} {{crossorigin}} {{extra}} />';
+
+        $image->htmlstring = Str::format($str, [
+            'url'           => $this->getWebUrl($image->image, $image->theme),
+            'alt'           => $image->alt,
+            'title'         => $image->title !== null ? 'title="' . $image->title . '"' : null,
+            'width'         => $image->width !== null ? 'width="' . $image->width . '"' : null,
+            'height'        => $image->height !== null ? 'height="' . $image->height . '"' : null,
+            'class'         => $image->class !== null ? 'class="' . $image->class . '"' : null,
+            'id'            => $image->id !== null ? 'id="' . $image->id . '"' : null,
+            'crossorigin'   => $image->crossorigin !== null ? ' crossorigin="' . $image->crossorigin . '"' : null,
+            'extra'         => $this->createResourceOutput($image->extra),
+        ]);
+
+        return $image;
+    }
+
+    /**
+     * Creates output for resources
+     *
+     * @param array|null $resources
+     * @return string|null
+     * @throws \Laranix\Support\Exception\NotImplementedException
+     */
+    protected function createResourceOutput(?array $resources) : ?string
+    {
+        if (empty($resources)) {
+            return null;
+        }
+
+        $extra = [];
+
+        foreach ($resources as $attr => $value) {
+            $extra[] = sprintf('%s="%s"', $attr, $value);
+        }
+
+        return implode(' ', $extra);
     }
 
     /**
@@ -206,18 +265,6 @@ class Image extends ThemerResource
      * @throws \Laranix\Support\Exception\NotImplementedException
      */
     protected function parseLocalResources(?array $compiled): ?array
-    {
-        throw new NotImplementedException('Method not required for ' . get_class($this));
-    }
-
-    /**
-     * Creates output for resources
-     *
-     * @param array|null $resources
-     * @return string|null
-     * @throws \Laranix\Support\Exception\NotImplementedException
-     */
-    protected function createResourceOutput(?array $resources) : ?string
     {
         throw new NotImplementedException('Method not required for ' . get_class($this));
     }
