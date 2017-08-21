@@ -148,4 +148,22 @@ class CageTest extends LaranixTestCase
         $this->assertSame(3, Cage::find(2)->user->user_id);
         $this->assertSame(4, Cage::find(3)->user->getKey());
     }
+
+    /**
+     * Test get ip attribute
+     */
+    public function testGetIpv4Attribute()
+    {
+        $this->assertSame('1.1.1.1', Cage::find(2)->ipv4);
+        $this->assertSame('1.1.1.5', Cage::find(5)->ipv4);
+    }
+
+    /**
+     * Test get raw ip attribute
+     */
+    public function testGetRawIpv4Attribute()
+    {
+        $this->assertSame(ip2long('1.1.1.3'), Cage::find(3)->rawIpv4);
+        $this->assertSame(ip2long('1.1.1.5'), Cage::find(5)->rawIpv4);
+    }
 }

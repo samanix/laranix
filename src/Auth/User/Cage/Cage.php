@@ -242,7 +242,27 @@ class Cage extends Model
         return $this->hasOne(User::class, 'user_id', 'user_id');
     }
 
+    /**
+     * Get ip attribute
+     *
+     * @return string|null
+     */
+    public function getIpv4Attribute() : ?string
+    {
+        $ip = $this->getAttributeFromArray('user_ipv4');
 
+        return $ip !== null ? long2ip($ip) : null;
+    }
+
+    /**
+     * Get ip attribute
+     *
+     * @return int|null
+     */
+    public function getRawIpv4Attribute() : ?int
+    {
+        return $this->getAttributeFromArray('user_ipv4');
+    }
 
     // TODO join
 //    public function rawSelect()

@@ -31,6 +31,7 @@ trait CreatesUserCage
             'cage_reason_rendered'  => $rendered ?? null,
             'issuer_id'             => $values->issuer,
             'user_id'               => $values->user,
+            'user_ipv4'             => $values->ipv4 ?? null,
         ]);
     }
 }
