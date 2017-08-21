@@ -75,7 +75,7 @@ Provides breadcrumb like tracking for user actions
 
 Or add to composer.json and then run `composer update`:
 
-`"samanix\laranix": "1.1.*"`
+`"samanix\laranix": "2.0.*"`
 
 ### Add Service Providers
 Add the following to your `config/app.php` in the `providers` array:
