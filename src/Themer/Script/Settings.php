@@ -25,11 +25,4 @@ class Settings extends BaseSettings
      * @var bool
      */
     public $head = true;
-
-    /**
-     * Set the CORS settings attribute
-     *
-     * @var string|null
-     */
-    public $crossorigin;
 }

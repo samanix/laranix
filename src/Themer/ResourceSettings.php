@@ -64,6 +64,13 @@ abstract class ResourceSettings extends SettingsBase
     public $themeName;
 
     /**
+     * Set the CORS settings attribute
+     *
+     * @var string|null
+     */
+    public $crossorigin;
+
+    /**
      * SRI Hash
      *
      * @var string|null
