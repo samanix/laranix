@@ -124,7 +124,8 @@ abstract class Model extends BaseModel
     /**
      * Get an attribute from the $attributes array.
      *
-     * @param  string  $key
+     * @param string    $key
+     * @param mixed     $default
      * @return mixed
      */
     protected function getAttributeFromArray($key, $default = null)
