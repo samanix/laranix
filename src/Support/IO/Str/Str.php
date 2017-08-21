@@ -37,7 +37,7 @@ class Str
     protected static function parseString(string $string, array $values, Settings $options) : string
     {
         $output = str_replace(array_map(function ($value) use ($options) {
-            return sprintf('%s%s%s', $options->leftSeparator, $value, $options->rightSeparator);
+            return $options->leftSeparator . $value . $options->rightSeparator;
         }, array_keys($values)), array_values($values), $string);
 
         if ($options->removeUnparsed
