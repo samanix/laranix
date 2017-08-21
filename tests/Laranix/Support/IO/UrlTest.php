@@ -9,7 +9,7 @@ class UrlTest extends LaranixTestCase
     /**
      * @var string
      */
-    protected $url = 'http://bar.com';
+    protected $url = 'http://homestead.app';
 
     /**
      * Set up
@@ -18,10 +18,10 @@ class UrlTest extends LaranixTestCase
     {
         parent::setUp();
 
-        $_SERVER['HTTP_HOST']   = 'bar.com';
+        $_SERVER['HTTP_HOST']   = 'homestead.app';
         $_SERVER['REQUEST_URI'] = '';
 
-        config()->set('app.url', 'http://bar.com');
+        config()->set('app.url', 'http://homestead.app');
     }
 
     /**
@@ -95,7 +95,7 @@ class UrlTest extends LaranixTestCase
             ['http', 'https://bar.com', null, ['baz' => 'foo'], null, false, 'http://bar.com?baz=foo'],
             ['https', '//baz.com', 'foo/bar', ['foo' => 'bar'], null, true, 'https://baz.com/foo/bar/?foo=bar'],
             ['http:', 'url.com', '/baz/', ['foo' => 'bar', 'query' => 'value'], null, true, 'http://url.com/baz/?foo=bar&query=value'],
-            ['http://', null, '/foo', null, null, true, 'http://bar.com/foo/'],
+            ['http://', null, '/foo', null, null, true, 'http://homestead.app/foo/'],
             ['http', 'foo.com', '/bar', ['foo' => 'bar'], '#baz', false, 'http://foo.com/bar?foo=bar#baz'],
             ['http', 'foo.com', '/bar/bar baz', null, null, false, 'http://foo.com/bar/bar%20baz'],
             [null, 'foo.com', '//bar//bar baz/file 1.txt', null, null, false, 'http://foo.com/bar/bar%20baz/file%201.txt'],
