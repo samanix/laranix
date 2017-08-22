@@ -1,6 +1,6 @@
 <?php
 
-use __UserAppNamespace__Services\Laranix\DefaultUserGroups;
+use Laranix\Auth\Group\Settings;
 use Illuminate\Database\Seeder;
 
 class DefaultGroups extends Seeder
@@ -12,7 +12,7 @@ class DefaultGroups extends Seeder
      */
     public function run()
     {
-        $groups = DefaultUserGroups::getGroups();
+        $groups = config('defaultusergroups');
         $insertGroups = [];
 
         /**
@@ -20,16 +20,18 @@ class DefaultGroups extends Seeder
          * @var \Laranix\Auth\Group\Settings $group
          */
         foreach ($groups as $name => $group) {
-            $group->hasRequiredSettings();
+            $settings = new Settings($group);
 
-            $insertGroups[] = [
-                'group_name'    => $group->name,
-                'group_color'   => $group->color,
-                'group_icon'    => $group->icon,
-                'group_level'   => $group->level,
-                'group_flags'   => $group->flags !== null ? implode(',', $group->flags) : null,
-                'is_hidden'     => $group->hidden,
-            ];
+            if ($settings->hasRequiredSettings()) {
+                $insertGroups[] = [
+                    'group_name'  => $settings->name,
+                    'group_color' => $settings->color,
+                    'group_icon'  => $settings->icon,
+                    'group_level' => $settings->level,
+                    'group_flags' => $settings->flags !== null ? implode(',', $settings->flags) : null,
+                    'is_hidden'   => $settings->hidden,
+                ];
+            }
         }
 
         app('db')->table(config('laranixauth.groups.table', 'groups'))->insert($insertGroups);
