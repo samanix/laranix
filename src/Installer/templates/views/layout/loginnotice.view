@@ -1,4 +1,4 @@
-@if (session('login_notice', false))
+@isset(session('login_notice'))
     <div class="ui grid">
         <div class="doubling two column centered row">
             <div class="column">
@@ -11,4 +11,4 @@
             </div>
         </div>
     </div>
-@endif
+@endisset
