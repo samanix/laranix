@@ -23,7 +23,7 @@ class ServiceProvider extends BaseServiceProvider
             'globalviewvars'    => 'globalviewvars.php',
             'themerdefaultfiles'=> 'themerdefaultfiles.php',
             'socialmedia'       => 'socialmedia.php',
-            //'defaultusergroups.php',
+            'defaultusergroups' => 'defaultusergroups.php',
         ];
 
         $publishes = [];
