@@ -49,9 +49,18 @@ class HelpersTest extends LaranixTestCase
             'updated_at'    => [123, 789]
         ];
 
-        $this->assertSame(json_encode($expected, true), model_diff($old, $new));
-        $this->assertSame($expected, model_diff($old, $new, false));
-        $this->assertSame(json_encode($expected2, true), model_diff($old, $new, true, ['foo', 'extra']));
+        $this->assertSame(json_encode($expected, true), modelDiff($old, $new));
+        $this->assertSame($expected, modelDiff($old, $new, false));
+        $this->assertSame(json_encode($expected2, true), modelDiff($old, $new, true, ['foo', 'extra']));
     }
 
+
+    /**
+     * Test socialMedia function returns expected string
+     */
+    public function testSocialMediaReturnsExpected()
+    {
+        $this->assertSame('https://facebook.com/samanixcom', socialMedia('facebook'));
+        $this->assertNull(socialMedia('foobook'));
+    }
 }
