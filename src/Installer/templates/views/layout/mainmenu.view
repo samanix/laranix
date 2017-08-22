@@ -1,13 +1,13 @@
 <div class="ui inverted menu main-menu">
-    <a class="item" href="{{ url_to('/') }}">Home</a>
-    <a class="item" href="{{ url_to('about') }}">About</a>
-    <a class="item" href="{{ url_to('contact') }}">Contact</a>
+    <a class="item" href="{{ urlTo('/') }}">Home</a>
+    <a class="item" href="{{ urlTo('about') }}">About</a>
+    <a class="item" href="{{ urlTo('contact') }}">Contact</a>
     @if ($auth->guest())
         <div class="right menu">
-            <a class="item" href="{{ url_to('login') }}">
+            <a class="item" href="{{ urlTo('login') }}">
                 Login
             </a>
-            <a class="item" href="{{ url_to('register') }}">
+            <a class="item" href="{{ urlTo('register') }}">
                 Register
             </a>
         </div>
@@ -17,7 +17,7 @@
             <i class="dropdown icon"></i>
             <div class="ui inverted menu">
                 <div class="item">
-                    <form class="ui form" id="logout-form" action="{{ url_to('logout') }}" method="post">
+                    <form class="ui form" id="logout-form" action="{{ urlTo('logout') }}" method="post">
                         <div class="ui transparent input">
                             {!! csrf_field() !!}
                             <input type="submit" value="Logout" id="submit-logout-form">

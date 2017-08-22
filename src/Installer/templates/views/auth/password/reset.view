@@ -22,7 +22,7 @@
             </div>
         </div>
 
-        <form class="ui form attached segment" method="post" action="{{ url_to('password/reset') }}" id="pass-reset-form" autocomplete="off">
+        <form class="ui form attached segment" method="post" action="{{ urlTo('password/reset') }}" id="pass-reset-form" autocomplete="off">
 
             {!! csrf_field() !!}
             {!! $sequence->render() !!}
@@ -83,7 +83,7 @@
 
         <div class="ui bottom attached warning message">
             <div class="ui link list">
-                <a class="item" href="{{ url_to('password/forgot') }}">
+                <a class="item" href="{{ urlTo('password/forgot') }}">
                     <div class="content">Need a new reset token?</div>
                 </a>
             </div>

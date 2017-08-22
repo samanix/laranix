@@ -28,7 +28,7 @@
             </div>
         </div>
 
-        <form class="ui form attached segment" method="post" action="{{ url_to('password/forgot') }}" id="pass-forgot-form" autocomplete="off">
+        <form class="ui form attached segment" method="post" action="{{ urlTo('password/forgot') }}" id="pass-forgot-form" autocomplete="off">
 
             {!! csrf_field() !!}
             {!! $sequence->render() !!}

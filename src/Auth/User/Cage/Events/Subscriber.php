@@ -23,7 +23,7 @@ class Subscriber extends Listener
      */
     public function onUpdated(Updated $event)
     {
-        $this->track(Settings::TYPEID_UPDATED, $event->cage->id, 10, model_diff($event->oldcage->toArray(), $event->cage->toArray()));
+        $this->track(Settings::TYPEID_UPDATED, $event->cage->id, 10, modelDiff($event->oldcage->toArray(), $event->cage->toArray()));
     }
 
     /**
