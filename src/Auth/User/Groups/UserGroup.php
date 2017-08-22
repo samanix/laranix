@@ -1,9 +1,8 @@
 <?php
 namespace Laranix\Auth\User\Groups;
 
-use Laranix\Auth\User\Groups\{
-    Events\Added, Events\Removed
-};
+use Laranix\Auth\User\Groups\Events\Added;
+use Laranix\Auth\User\Groups\Events\Removed;
 use Laranix\Auth\User\User;
 use Laranix\Support\Database\HasCompositePrimaryKey;
 use Laranix\Support\Database\Model;

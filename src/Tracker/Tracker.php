@@ -200,7 +200,6 @@ class Tracker extends Model
 
         if ($this->config->get('tracker.save_rendered', true) &&
             ($rendered = $this->getAttributeFromArray('tracker_data_rendered')) !== null) {
-
             return $this->renderedData = $rendered;
         }
 

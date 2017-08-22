@@ -1,7 +1,6 @@
 <?php
 namespace Laranix\Tracker;
 
-
 interface TrackWriter
 {
     /**

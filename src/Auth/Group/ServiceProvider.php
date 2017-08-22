@@ -5,10 +5,10 @@ use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 
 class ServiceProvider extends BaseServiceProvider
 {
-     /**
-     * @var bool
-     */
-     protected $defer = true;
+    /**
+    * @var bool
+    */
+    protected $defer = true;
 
     /**
      * Register providers.

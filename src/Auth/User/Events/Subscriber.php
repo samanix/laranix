@@ -16,7 +16,6 @@ class Subscriber extends Listener
     public function onCreated(Created $event)
     {
         $this->track(Settings::TYPEID_CREATED, $event->user->id, 10);
-
     }
 
     /**

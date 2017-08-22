@@ -32,7 +32,6 @@ class CreateUserGroupsTable extends Migration
                 ->on(config('laranixauth.groups.table', 'groups'))
                 ->onUpdate('cascade')
                 ->onDelete('restrict');
-
         });
     }
 
@@ -46,7 +45,7 @@ class CreateUserGroupsTable extends Migration
         $userKey = "{$table}_user_id_foreign";
         $groupKey = "{$table}_group_id_foreign";
 
-        Schema::table($table, function(Blueprint $table) use ($userKey, $groupKey) {
+        Schema::table($table, function (Blueprint $table) use ($userKey, $groupKey) {
             $table->dropForeign($userKey);
             $table->dropForeign($groupKey);
         });

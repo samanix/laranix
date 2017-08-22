@@ -44,9 +44,9 @@ class Handler implements SessionHandlerInterface
         $this->request = $request;
     }
 
-     /**
-     * {@inheritdoc}
-     */
+    /**
+    * {@inheritdoc}
+    */
     public function open($savePath, $sessionName)
     {
         return true;
@@ -228,4 +228,3 @@ class Handler implements SessionHandlerInterface
         return new Session();
     }
 }
-

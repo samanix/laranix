@@ -4,11 +4,11 @@ namespace Laranix\Auth\User;
 use Carbon\Carbon;
 use \Illuminate\Database\Eloquent\Collection;
 use Illuminate\Notifications\Notifiable;
-use Laranix\Auth\Password\{
-    Hasher as PasswordHasher, HashesPasswords
-};
+use Laranix\Auth\Password\Hasher as PasswordHasher;
+use Laranix\Auth\Password\HashesPasswords;
 use Laranix\Auth\User\Events\Created;
-use Laranix\Auth\User\Token\Api\{ApiTokenProvider,GetsApiTokens};
+use Laranix\Auth\User\Token\Api\ApiTokenProvider;
+use Laranix\Auth\User\Token\Api\GetsApiTokens;
 use Laranix\Auth\Group\Group;
 use Laranix\Auth\User\Groups\UserGroup;
 use Laranix\Auth\User\Cage\Cage;
@@ -20,12 +20,13 @@ use Illuminate\Auth\Authenticatable;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Foundation\Auth\Access\Authorizable;
 
-class User extends Model implements AuthenticatableContract,
-                                    AuthorizableContract,
-                                    CanResetPasswordContract,
-                                    ApiTokenProvider,
-                                    PasswordHasher,
-                                    LastLoginUpdater
+class User extends Model implements
+    AuthenticatableContract,
+    AuthorizableContract,
+    CanResetPasswordContract,
+    ApiTokenProvider,
+    PasswordHasher,
+    LastLoginUpdater
 {
     use Notifiable, Authenticatable, Authorizable, CanResetPassword, GetsApiTokens, HashesPasswords, UpdatesLastLogin;
 
@@ -185,7 +186,6 @@ class User extends Model implements AuthenticatableContract,
             if ($cage->cage_status == Cage::CAGE_ACTIVE
                 && ($cage->created_at->diffInMinutes(Carbon::now()) <= $cage->cage_time || $cage->cage_time === 0)
                 && !$cage->trashed()) {
-
                 $this->activeCagesCollection->push($cage);
             }
         }
@@ -337,5 +337,4 @@ class User extends Model implements AuthenticatableContract,
 //    {
 //        return $this->hasManyThrough(Group::class, UserGroup::class, 'group_id', 'group_id', 'user_id');
 //    }
-
 }

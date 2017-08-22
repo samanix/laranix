@@ -26,8 +26,12 @@ abstract class Subscriber extends Listener
      */
     public function onVerifyAttempt(VerifyAttempt $event)
     {
-        $this->track(Settings::TYPEID_VERIFY_ATTEMPT, null, $event->email !== null ? 10 : 25,
-                     sprintf('**Email:** _%s_', (isset($event->email) ?  "<{$event->email}>" : 'Email not set')));
+        $this->track(
+            Settings::TYPEID_VERIFY_ATTEMPT,
+            null,
+            $event->email !== null ? 10 : 25,
+            sprintf('**Email:** _%s_', (isset($event->email) ?  "<{$event->email}>" : 'Email not set'))
+        );
     }
 
     /**
@@ -35,8 +39,12 @@ abstract class Subscriber extends Listener
      */
     public function onFailed(Failed $event)
     {
-        $this->track(Settings::TYPEID_FAILED, $event->user->id ?? null, $event->email !== null ? 50 : 75,
-                     sprintf('**Email:** _%s_', (isset($event->email) ?  "<{$event->email}>" : 'Email not set')));
+        $this->track(
+            Settings::TYPEID_FAILED,
+            $event->user->id ?? null,
+            $event->email !== null ? 50 : 75,
+            sprintf('**Email:** _%s_', (isset($event->email) ?  "<{$event->email}>" : 'Email not set'))
+        );
     }
 
     /**
@@ -52,8 +60,12 @@ abstract class Subscriber extends Listener
      */
     public function onCreateUpdateAttempt(CreateUpdateAttempt $event)
     {
-        $this->track(Settings::TYPEID_CREATE_UPDATE_ATTEMPT, null, $event->email !== null ? 10 : 50,
-                     sprintf('**Email:** _%s_', (isset($event->email) ?  "<{$event->email}>" : 'Email not set')));
+        $this->track(
+            Settings::TYPEID_CREATE_UPDATE_ATTEMPT,
+            null,
+            $event->email !== null ? 10 : 50,
+            sprintf('**Email:** _%s_', (isset($event->email) ?  "<{$event->email}>" : 'Email not set'))
+        );
     }
 
     /**

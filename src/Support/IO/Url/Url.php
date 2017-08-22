@@ -40,9 +40,11 @@ class Url
         } elseif (is_string($settings)) {
             $url = self::parseStringUrl($settings);
         } elseif ($settings instanceof Settings) {
-            $url = StrFormat::format('{{scheme}}{{domain}}{{path}}{{query}}{{fragment}}',
-                                     self::getUrlComponents($settings),
-                                     new StrSettings([ 'removeUnparsed' => true ]));
+            $url = StrFormat::format(
+                '{{scheme}}{{domain}}{{path}}{{query}}{{fragment}}',
+                self::getUrlComponents($settings),
+                new StrSettings([ 'removeUnparsed' => true ])
+            );
         } else {
             throw new \InvalidArgumentException('Settings is not a supported type');
         }
@@ -68,12 +70,14 @@ class Url
 
         parse_str($parts['query'], $query);
 
-        return self::create($parts['scheme'],
-                            $parts['host'],
-                            $parts['path'],
-                            $query,
-                            $parts['fragment'],
-                            (Str::endsWith($url, '/') && ($parts['path'] !== '/' || !empty($parts['path']))));
+        return self::create(
+            $parts['scheme'],
+            $parts['host'],
+            $parts['path'],
+            $query,
+            $parts['fragment'],
+            (Str::endsWith($url, '/') && ($parts['path'] !== '/' || !empty($parts['path'])))
+        );
     }
 
     /**
@@ -258,7 +262,7 @@ class Url
 
         $last = end($path);
 
-        $path = implode('/', array_map(function($item) {
+        $path = implode('/', array_map(function ($item) {
             return rawurlencode(trim($item, "/ \t\n\r\0\x0B"));
         }, $path));
 

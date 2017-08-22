@@ -3,8 +3,10 @@ namespace Laranix\Themer;
 
 use Illuminate\Foundation\Application;
 use Illuminate\Contracts\Config\Repository;
-use Laranix\Themer\Script\{Script, Settings as ScriptSettings};
-use Laranix\Themer\Style\{Style, Settings as StyleSettings};
+use Laranix\Themer\Script\Script;
+use Laranix\Themer\Script\Settings as ScriptSettings;
+use Laranix\Themer\Style\Style;
+use Laranix\Themer\Style\Settings as StyleSettings;
 use Laranix\Themer\Image\Image;
 
 trait LoadsThemer

@@ -150,5 +150,4 @@ class MailSettings extends Settings
      * @var string
      */
     public $full_name;
-
 }

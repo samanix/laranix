@@ -110,7 +110,6 @@ class Script extends ThemerResource
                 $location = $this->getLocation(strpos($type, 'head') !== false);
 
                 $scripts[$location][] = $this->createLocalResourceFileSettings($theme, $type, $compiledResource);
-
             }
         }
 

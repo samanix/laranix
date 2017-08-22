@@ -2,7 +2,10 @@
 namespace Laranix\Auth\Events\Login;
 
 use Laranix\Support\Listeners\Listener;
-use Illuminate\Auth\Events\{Authenticated, Login, Failed, Lockout};
+use Illuminate\Auth\Events\Authenticated;
+use Illuminate\Auth\Events\Login;
+use Illuminate\Auth\Events\Failed;
+use Illuminate\Auth\Events\Lockout;
 use Laranix\Auth\User\User;
 
 class Subscriber extends Listener
@@ -37,9 +40,13 @@ class Subscriber extends Listener
      */
     public function onFailed(Failed $event)
     {
-        $this->track(Settings::TYPEID_LOGIN_FAILED, $event->user->id ?? null, 90,
-                     sprintf('**Email:** _%s_', (isset($event->credentials['email']) ?  "<{$event->credentials['email']}>" : 'Email not set')),
-                     $event->user->id ?? null);
+        $this->track(
+            Settings::TYPEID_LOGIN_FAILED,
+            $event->user->id ?? null,
+            90,
+            sprintf('**Email:** _%s_', (isset($event->credentials['email']) ?  "<{$event->credentials['email']}>" : 'Email not set')),
+            $event->user->id ?? null
+        );
     }
 
     /**
@@ -49,8 +56,12 @@ class Subscriber extends Listener
     {
         $email = $event->request->get('email');
 
-        $this->track(Settings::TYPEID_LOGIN_LOCKOUT, null, 100,
-                     sprintf('**Email:** _%s_', ($email !== null ?  "<{$email}>" : 'Email not set')));
+        $this->track(
+            Settings::TYPEID_LOGIN_LOCKOUT,
+            null,
+            100,
+            sprintf('**Email:** _%s_', ($email !== null ?  "<{$email}>" : 'Email not set'))
+        );
     }
 
     /**
@@ -60,8 +71,13 @@ class Subscriber extends Listener
     {
         // Only fire if the account is not active
         if ($event->user->account_status !== User::USER_ACTIVE) {
-            $this->track(Settings::TYPEID_LOGIN_RESTRICTED, $event->user->id, 75,
-                         sprintf('**Message:** _%s_', $event->message), $event->user->id);
+            $this->track(
+                Settings::TYPEID_LOGIN_RESTRICTED,
+                $event->user->id,
+                75,
+                sprintf('**Message:** _%s_', $event->message),
+                $event->user->id
+            );
         }
     }
 

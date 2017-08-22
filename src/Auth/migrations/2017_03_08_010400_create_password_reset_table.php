@@ -37,7 +37,7 @@ class CreatePasswordResetTable extends Migration
 
         $userKey = "{$table}_user_id_foreign";
 
-        Schema::table($table, function(Blueprint $table) use ($userKey) {
+        Schema::table($table, function (Blueprint $table) use ($userKey) {
             $table->dropForeign($userKey);
         });
 

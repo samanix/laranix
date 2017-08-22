@@ -118,8 +118,7 @@ abstract class Manager
      */
     protected function checkPropertiesAreSet()
     {
-        if ($this->model === null || !class_exists($this->model) || $this->configKey === null)
-        {
+        if ($this->model === null || !class_exists($this->model) || $this->configKey === null) {
             throw new NullValueException('Null properties detected on UserAccountTokens');
         }
     }

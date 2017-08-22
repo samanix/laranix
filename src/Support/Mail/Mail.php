@@ -85,9 +85,11 @@ class Mail extends Mailable
 
         if ($this->options->rawAttachments !== null) {
             if (isset($this->options->rawAttachments['data'])) {
-                $this->attachData($this->options->rawAttachments['data'],
-                                  $this->options->rawAttachments['name'],
-                                  $this->options->rawAttachments['options'] ?? []);
+                $this->attachData(
+                    $this->options->rawAttachments['data'],
+                    $this->options->rawAttachments['name'],
+                    $this->options->rawAttachments['options'] ?? []
+                );
             } else {
                 foreach ($this->options->rawAttachments as $id => $attachment) {
                     $this->attachData($attachment['data'], $attachment['name'], $attachment['options'] ?? []);

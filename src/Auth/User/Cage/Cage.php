@@ -162,7 +162,6 @@ class Cage extends Model
 
         if ($this->config->get('laranixauth.cage.save_rendered', true) &&
             ($rendered = $this->getAttributeFromArray('cage_reason_rendered')) !== null) {
-
             return $this->renderedReason = $rendered;
         }
 
