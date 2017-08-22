@@ -1,9 +1,6 @@
 <?php
 
 return [
-    // App name, shared from env file (for ease)
-    'name'  => env('APP_NAME', 'Laranix'),
-
     // App version
     'version' => env('APP_VERSION', '1.0.0'),
 
