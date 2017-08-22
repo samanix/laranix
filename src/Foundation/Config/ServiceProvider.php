@@ -22,6 +22,7 @@ class ServiceProvider extends BaseServiceProvider
             'appsettings'       => 'appsettings.php',
             'globalviewvars'    => 'globalviewvars.php',
             'themerdefaultfiles'=> 'themerdefaultfiles.php',
+            'socialmedia'       => 'socialmedia.php',
             //'defaultusergroups.php',
         ];
 
