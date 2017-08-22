@@ -42,6 +42,7 @@ if (!function_exists('urlHref')) {
      * Create an HTML a tag
      *
      * @param string $url
+     * @param string $content
      * @param array  $params
      * @return string
      */
