@@ -17,8 +17,12 @@ class Subscriber extends Listener
     {
         $group = $event->usergroup->group;
 
-        $this->track(Settings::TYPEID_ADDED, $event->usergroup->user_id, 10,
-                     sprintf('User added to group **%s** (ID: %d)', $group->name, $group->id));
+        $this->track(
+            Settings::TYPEID_ADDED,
+            $event->usergroup->user_id,
+            10,
+            sprintf('User added to group **%s** (ID: %d)', $group->name, $group->id)
+        );
     }
 
     /**
@@ -26,8 +30,12 @@ class Subscriber extends Listener
      */
     public function onUpdated(Updated $event)
     {
-        $this->track(Settings::TYPEID_UPDATED, $event->usergroup->user_id, 10,
-                     model_diff($event->oldusergroup->toArray(), $event->usergroup->toArray()));
+        $this->track(
+            Settings::TYPEID_UPDATED,
+            $event->usergroup->user_id,
+            10,
+            modelDiff($event->oldusergroup->toArray(), $event->usergroup->toArray())
+        );
     }
 
     /**
@@ -37,8 +45,12 @@ class Subscriber extends Listener
     {
         $group = $event->usergroup->group;
 
-        $this->track(Settings::TYPEID_REMOVED, $event->usergroup->user_id, 25,
-                     sprintf('User removed from group **%s** (ID: %d)', $group->name, $group->id));
+        $this->track(
+            Settings::TYPEID_REMOVED,
+            $event->usergroup->user_id,
+            25,
+            sprintf('User removed from group **%s** (ID: %d)', $group->name, $group->id)
+        );
     }
 
     /**

@@ -16,7 +16,6 @@ class Subscriber extends Listener
     public function onCreated(Created $event)
     {
         $this->track(Settings::TYPEID_CREATED, $event->user->id, 10);
-
     }
 
     /**
@@ -24,7 +23,7 @@ class Subscriber extends Listener
      */
     public function onUpdated(Updated $event)
     {
-        $this->track(Settings::TYPEID_UPDATED, $event->user->id, 10, model_diff($event->olduser->toArray(), $event->user->toArray()));
+        $this->track(Settings::TYPEID_UPDATED, $event->user->id, 10, modelDiff($event->olduser->toArray(), $event->user->toArray()));
     }
 
     /**

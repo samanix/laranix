@@ -14,7 +14,8 @@ class MailSettings extends Settings
         'to'            => 'email|array',
         'view'          => 'string',
         'subject'       => 'string',
-        'attachments'   => 'optional|array'
+        'attachments'   => 'optional|array',
+        'rawAttachments'=> 'optional|array',
     ];
 
     /*
@@ -105,6 +106,12 @@ class MailSettings extends Settings
      */
     public $attachments;
 
+    /**
+     * Raw attachments
+     *
+     * @var array|null
+     */
+    public $rawAttachments;
 
     /*
      |--------------------------------------------------------------------------
@@ -143,5 +150,4 @@ class MailSettings extends Settings
      * @var string
      */
     public $full_name;
-
 }

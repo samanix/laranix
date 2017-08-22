@@ -10,11 +10,11 @@
 <div class="ui centered grid">
     <div class="eight wide computer twelve wide tablet sixteen wide mobile column">
 
-        @if (isset($verify_refresh_message))
+        @isset($verify_refresh_message))
             <div class="ui visible success message">
                 {{ $verify_refresh_message }}
             </div>
-        @endif
+        @endisset
 
         @include('layout.formerrors')
 
@@ -26,11 +26,11 @@
                 </div>
                 Request a new verification code for your email. Remember to check spam and junk folders.
                 <br /><br />
-                If you think you might have entered the wrong email, please <a href="{{ url_to('contact') }}">contact us</a>.
+                If you think you might have entered the wrong email, please <a href="{{ urlTo('contact') }}">contact us</a>.
             </div>
         </div>
 
-        <form class="ui form attached segment" method="post" action="{{ url_to('email/verify/refresh') }}" id="verify-email-refresh-form" autocomplete="off">
+        <form class="ui form attached segment" method="post" action="{{ urlTo('email/verify/refresh') }}" id="verify-email-refresh-form" autocomplete="off">
 
             {!! csrf_field() !!}
             {!! $sequence->render() !!}

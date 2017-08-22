@@ -57,7 +57,7 @@ class CreateUserCageTable extends Migration
         $userKey = "{$table}_user_id_foreign";
         $issuerKey = "{$table}_issuer_id_foreign";
 
-        Schema::table($table, function(Blueprint $table) use ($userKey, $issuerKey) {
+        Schema::table($table, function (Blueprint $table) use ($userKey, $issuerKey) {
             $table->dropForeign($userKey);
             $table->dropForeign($issuerKey);
         });

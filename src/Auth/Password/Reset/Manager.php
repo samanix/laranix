@@ -2,15 +2,16 @@
 namespace Laranix\Auth\Password\Reset;
 
 use Illuminate\Contracts\Auth\Authenticatable;
-use Laranix\Auth\Password\{Hasher as PasswordHasher, HashesPasswords};
-use Laranix\Auth\User\Token\{
-    Manager as BaseManager, MailSettings
-};
+use Laranix\Auth\Password\Hasher as PasswordHasher;
+use Laranix\Auth\Password\HashesPasswords;
+use Laranix\Auth\User\Token\Manager as BaseManager;
+use Laranix\Auth\User\Token\MailSettings;
 use Laranix\Auth\Password\Reset\Mail as PasswordMail;
 use Laranix\Auth\User\User;
-use Laranix\Auth\Password\Reset\Events\{
-    Created, Failed, Reset as ResetEvent, Updated
-};
+use Laranix\Auth\Password\Reset\Events\Created;
+use Laranix\Auth\Password\Reset\Events\Failed;
+use Laranix\Auth\Password\Reset\Events\Reset as ResetEvent;
+use Laranix\Auth\Password\Reset\Events\Updated;
 use Laranix\Auth\Password\Events\Updated as PasswordUpdated;
 
 class Manager extends BaseManager implements PasswordHasher
@@ -38,11 +39,11 @@ class Manager extends BaseManager implements PasswordHasher
      */
     protected $mailTemplateClass = PasswordMail::class;
 
-     /**
-     * The mail options class to use in the mail
-     *
-     * @var string
-     */
+    /**
+    * The mail options class to use in the mail
+    *
+    * @var string
+    */
     protected $mailOptionsClass = MailSettings::class;
 
     /**

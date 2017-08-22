@@ -33,4 +33,3 @@ class Verify extends Middleware
         return $next($request);
     }
 }
-

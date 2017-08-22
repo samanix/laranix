@@ -18,7 +18,7 @@ class CreateGroupsTable extends Migration
             $table->string('group_icon')->nullable();
             $table->unsignedTinyInteger('group_level')->default(0);
 
-             if (config('laranixauth.groups.use_json_column', true)) {
+            if (config('laranixauth.groups.use_json_column', true)) {
                 $table->json('group_flags');
             } else {
                 $table->text('group_flags');
@@ -27,7 +27,6 @@ class CreateGroupsTable extends Migration
             $table->unsignedTinyInteger('is_hidden')->default(0);
 
             $table->timestamps();
-
         });
     }
 

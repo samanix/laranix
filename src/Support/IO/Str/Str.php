@@ -43,9 +43,11 @@ class Str
         if ($options->removeUnparsed
             && strpos($output, $options->leftSeparator) !== false
             && strpos($output, $options->rightSeparator) !== false) {
-
-            $output = preg_replace(sprintf('/%s([a-zA-Z0-9_\\.\\-]+)%s/', $options->leftSeparator, $options->rightSeparator),
-                                   $options->unparsedReplacement, $output);
+            $output = preg_replace(
+                sprintf('/%s([a-zA-Z0-9_\\.\\-]+)%s/', $options->leftSeparator, $options->rightSeparator),
+                $options->unparsedReplacement,
+                $output
+            );
         }
 
         if ($options->removeExtraSpaces) {

@@ -9,7 +9,6 @@ use Laranix\Support\IO\Url\Url;
 use Laranix\Support\IO\Url\Settings;
 use Laranix\Support\IO\Repository;
 
-
 abstract class ThemerResource
 {
     /**
@@ -182,8 +181,10 @@ abstract class ThemerResource
         $this->config         = $config;
         $this->logger         = $logger;
         $this->resources      = new Repository();
-        $this->mergeResources = !in_array($this->config->get('app.env', 'production'),
-                                          (array) $this->config->get('themer.ignored'));
+        $this->mergeResources = !in_array(
+            $this->config->get('app.env', 'production'),
+            (array) $this->config->get('themer.ignored')
+        );
 
         $this->directory        = $this->getDirectory();
         $this->configKey        = $this->getConfigKey();

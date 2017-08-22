@@ -32,11 +32,11 @@ class Settings extends BaseSettings
      */
     public $user = -1;
 
-     /**
-     * Type of track
-     *
-     * @var string
-     */
+    /**
+    * Type of track
+    *
+    * @var string
+    */
     public $type;
 
     /**
@@ -159,4 +159,3 @@ class Settings extends BaseSettings
         return $this->url;
     }
 }
-

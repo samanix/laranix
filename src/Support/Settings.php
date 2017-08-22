@@ -238,7 +238,7 @@ abstract class Settings
         return $this->required ?? [];
     }
 
-        /**
+    /**
      * Set required properties
      *
      * @param array $required

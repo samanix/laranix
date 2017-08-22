@@ -21,7 +21,6 @@ class InstallLaranixCommand extends Command
                             {--C|configs : Publish Laranix configs}
                             {--K|packageconf : Publish other configs from packages}
                             {--T|controllers : Install controllers}
-                            {--S|services : Install services}
                             {--R|routes : Copy routes}
                             {--H|themes : Copy themes}
                             {--W|views : Copy views}
@@ -81,13 +80,10 @@ class InstallLaranixCommand extends Command
      */
     protected function installLaranix()
     {
-        $appPath            = app_path();
-        $httpPath           = app_path('Http');
         $replaceAppFiles    = ['.stub', '.php'];
 
         $parts = [
-            'Controllers'   => [$httpPath, true, false, $replaceAppFiles],
-            'Services'      => [$appPath, true, false, $replaceAppFiles],
+            'Controllers'   => [app_path('Http'), true, false, $replaceAppFiles],
             'themes'        => [public_path(), false, true, []],
             'views'         => [resource_path(), false, true, ['.view', '.blade.php']],
             'seeds'         => [database_path(), true, false, $replaceAppFiles],

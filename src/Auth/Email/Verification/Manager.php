@@ -2,13 +2,13 @@
 namespace Laranix\Auth\Email\Verification;
 
 use Illuminate\Contracts\Auth\Authenticatable;
-use Laranix\Auth\User\Token\{
-    Manager as BaseManager, MailSettings
-};
+use Laranix\Auth\User\Token\Manager as BaseManager;
+use Laranix\Auth\User\Token\MailSettings;
 use Laranix\Auth\Email\Events\Updated as EmailUpdated;
-use Laranix\Auth\Email\Verification\Events\{
-    Created, Failed, Updated, Verified as VerifiedEvent
-};
+use Laranix\Auth\Email\Verification\Events\Created;
+use Laranix\Auth\Email\Verification\Events\Failed;
+use Laranix\Auth\Email\Verification\Events\Updated;
+use Laranix\Auth\Email\Verification\Events\Verified as VerifiedEvent;
 use Laranix\Auth\Email\Verification\Mail as VerificationMail;
 use Laranix\Auth\User\User;
 use Laranix\Support\Exception\EmailExistsException;
@@ -36,11 +36,11 @@ class Manager extends BaseManager
      */
     protected $mailTemplateClass = VerificationMail::class;
 
-     /**
-     * The mail options class to use in the mail
-     *
-     * @var string
-     */
+    /**
+    * The mail options class to use in the mail
+    *
+    * @var string
+    */
     protected $mailOptionsClass = MailSettings::class;
 
     /**

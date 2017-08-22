@@ -24,4 +24,4 @@ compiled*.css
 *.min.css
 *.css.map
 vars.css
-
+.php_cs.cache

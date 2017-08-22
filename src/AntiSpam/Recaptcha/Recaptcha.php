@@ -78,7 +78,7 @@ class Recaptcha extends AntiSpam
      */
     protected function getRecaptchaResult()
     {
-        $response = $this->guzzle->request('POST', 'https://www.google.com/recaptcha/api/siteverify',  [
+        $response = $this->guzzle->request('POST', 'https://www.google.com/recaptcha/api/siteverify', [
             'secret'    => $this->config->get('antispam.recaptcha.secret', ''),
             'response'  => $this->request->get('g-recaptcha-response', ''),
             'remoteip'  => $this->request->getClientIp(),

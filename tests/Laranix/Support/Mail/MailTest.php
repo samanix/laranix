@@ -19,11 +19,20 @@ class MailTest extends LaranixTestCase
             ]
         ];
 
+        $rawAttachments = [
+            'data'      => '123',
+            'name'      => 'foo.txt',
+            'options'   => [
+                'mime'  => 'text/plain',
+            ],
+        ];
+
         $settings = new MailSettings([
             'to'            => [['email' => 'foo@bar.com', 'name' => 'FooBar']],
             'view'          => 'hello.world',
             'subject'       => 'Subject',
             'attachments'   => $attachments,
+            'rawAttachments'=> $rawAttachments,
         ]);
 
         $this->assertNotNull(($mail = new Mail($settings))->options);
@@ -33,6 +42,7 @@ class MailTest extends LaranixTestCase
         $this->assertSame([['name' => 'FooBar', 'address' => 'foo@bar.com']], $mail->to);
 
         $this->assertSame([$attachments], $mail->attachments);
+        $this->assertSame([$rawAttachments], $mail->rawAttachments);
     }
 
     /**
@@ -57,12 +67,30 @@ class MailTest extends LaranixTestCase
             ],
         ];
 
+        $rawAttachments = [
+            [
+                'data'      => '123',
+                'name'      => 'foo.txt',
+                'options'   => [
+                    'mime'  => 'text/plain',
+                ],
+            ],
+            [
+                'data'      => '456',
+                'name'      => 'bar.pdf',
+                'options'   => [
+                    'mime'  => 'application/pdf',
+                ],
+            ],
+        ];
+
         $settings = new MailSettings([
             'to'            => [['email' => 'foo@bar.com', 'name' => 'FooBar']],
             'subject'       => 'Subject',
             'textView'      => 'text.view',
             'view'          => 'normal.view',
             'attachments'   => $attachments,
+            'rawAttachments'=> $rawAttachments,
             'markdown'      => false,
         ]);
 
@@ -76,5 +104,6 @@ class MailTest extends LaranixTestCase
         $this->assertSame('text.view', $mail->textView);
 
         $this->assertSame($attachments, $mail->attachments);
+        $this->assertSame($rawAttachments, $mail->rawAttachments);
     }
 }

@@ -83,7 +83,7 @@ class UserTest extends LaranixTestCase
      */
     public function testGetPrimaryGroup()
     {
-        $this->assertNull(User::find(4)->primaryGroup());
+        $this->assertSame(3, User::find(4)->primaryGroup()->group_id);
         $this->assertSame(1, User::find(5)->primaryGroup()->group_id);
     }
 

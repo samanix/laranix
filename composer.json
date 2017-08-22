@@ -28,8 +28,6 @@
       "Laranix\\": "src/"
     },
     "files": [
-      "src/Networker/helpers.php",
-      "src/AppSettings/helpers.php",
       "src/Support/helpers.php"
     ]
   },
