@@ -33,9 +33,6 @@ Laranix is open-sourced software licensed under the [MIT license](http://opensou
 #### AntiSpam
 Provides recaptcha entry on forms (sign up with Google), as well as a sequence ID field, which will prevent the form being submitted twice.
 
-#### AppSettings
-Currently only provides a way to manage your App version, though you can add extra settings to it to access via the helper functions.
-
 #### Auth
 Custom auth package built on top of Laravels own, providing:
 
@@ -82,7 +79,6 @@ Add the following to your `config/app.php` in the `providers` array:
 
     Laranix\Tracker\ServiceProvider::class,
     Laranix\AntiSpam\ServiceProvider::class,
-    Laranix\AppSettings\ServiceProvider::class,
 	Laranix\Auth\Email\Verification\ServiceProvider::class,
     Laranix\Auth\Group\ServiceProvider::class,
     Laranix\Auth\Password\Reset\ServiceProvider::class,
@@ -90,6 +86,7 @@ Add the following to your `config/app.php` in the `providers` array:
     Laranix\Auth\User\Groups\ServiceProvider::class,
     Laranix\Auth\User\ServiceProvider::class,
     Laranix\Auth\ServiceProvider::class,
+    Laranix\Foundation\Config\ServiceProvider::class,
     Laranix\Networker\ServiceProvider::class,
 	Laranix\Session\ServiceProvider::class,
     Laranix\Themer\ServiceProvider::class,
@@ -111,7 +108,6 @@ Add the following to your `config/app.php` in then `aliases` array:
 
     'Recaptcha'     => Laranix\AntiSpam\Recaptcha\Facade::class,
     'Sequence'      => Laranix\AntiSpam\Sequence\Facade::class,
-    'AppSettings'   => Laranix\AppSettings\Facade::class,
     'Image'         => Laranix\Themer\Image\Facade::class,
     'Script'        => Laranix\Themer\Script\Facade::class,
     'Style'         => Laranix\Themer\Style\Facade::class,
@@ -225,6 +221,9 @@ Other configurations you can edit are:
 * laranixauth.php
 * themer.php
 * appsettings.php
+* globalviewvars.php
+* themerdefaultfiles.php
+* defaultusergroups.php
 * antispam.php
 * networker.php
 * tracker.php
