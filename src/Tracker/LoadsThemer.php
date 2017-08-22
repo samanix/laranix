@@ -89,9 +89,11 @@ trait LoadsThemer
     }
 
     /**
-     * @param array $sheets
+     * Add multiple stylesheets
+     *
+     * @param array|array[] ...$sheets
      */
-    protected function addStylesheets(array $sheets)
+    protected function addStylesheets(array ...$sheets)
     {
         foreach ($sheets as $sheet) {
             $this->addStylesheet($sheet);
@@ -114,9 +116,9 @@ trait LoadsThemer
     /**
      * Add multiple scripts
      *
-     * @param array $scripts
+     * @param array|array[] ...$scripts
      */
-    protected function addScripts(array $scripts)
+    protected function addScripts(array ...$scripts)
     {
         foreach ($scripts as $script) {
             $this->addScript($script);
