@@ -15,7 +15,7 @@ Contributions are encouraged via [pull requests](https://bitbucket.org/samanix-p
 
 
 ### Security
-For security related issues, please contact <samanix@gmail.com>.
+For security related issues, please contact <samanixcom@gmail.com>.
 
 
 ### License
@@ -31,7 +31,7 @@ Laranix is open-sourced software licensed under the [MIT license](http://opensou
 
 ### Features
 #### AntiSpam
-Provides recaptcha entry on forms (sign up with Google), as well as a sequence ID field, which will prevent the form being submitted twice.
+Provides invisible recaptcha entry on forms (sign up with Google), as well as a sequence ID field, which will prevent the form being submitted twice.
 
 #### Auth
 Custom auth package built on top of Laravels own, providing:
@@ -44,11 +44,6 @@ Custom auth package built on top of Laravels own, providing:
 
 #### Installer
 Installs, publishes and copies files required for Laranix to run
-
-#### Networker
-Provides an easy way to link to your social media outlets, such as Twitter, Facebook, Instagram
-
-You can also add custom ones as you like
 
 #### Session
 Adds IP locking to sessions, not required if you don't want to use it
@@ -87,7 +82,6 @@ Add the following to your `config/app.php` in the `providers` array:
     Laranix\Auth\User\ServiceProvider::class,
     Laranix\Auth\ServiceProvider::class,
     Laranix\Foundation\Config\ServiceProvider::class,
-    Laranix\Networker\ServiceProvider::class,
 	Laranix\Session\ServiceProvider::class,
     Laranix\Themer\ServiceProvider::class,
     Indal\Markdown\MarkdownServiceProvider::class
@@ -223,9 +217,9 @@ Other configurations you can edit are:
 * appsettings.php
 * globalviewvars.php
 * themerdefaultfiles.php
+* socialmedia.php
 * defaultusergroups.php
 * antispam.php
-* networker.php
 * tracker.php
 
 
