@@ -164,7 +164,7 @@ class User extends Model implements AuthenticatableContract,
             }
         }
 
-        return null;
+        return $this->userPrimaryGroup = $usergroups[0]->group;
     }
 
     /**
