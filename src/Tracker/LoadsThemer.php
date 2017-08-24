@@ -3,10 +3,9 @@ namespace Laranix\Themer;
 
 use Illuminate\Foundation\Application;
 use Illuminate\Contracts\Config\Repository;
+use Laranix\AntiSpam\Recaptcha\Recaptcha;
 use Laranix\Themer\Script\Script;
-use Laranix\Themer\Script\Settings as ScriptSettings;
 use Laranix\Themer\Style\Style;
-use Laranix\Themer\Style\Settings as StyleSettings;
 use Laranix\Themer\Image\Image;
 
 trait LoadsThemer
@@ -47,42 +46,44 @@ trait LoadsThemer
      */
     protected function loadThemerDefaultFiles(Repository $config)
     {
-        $this->loadDefaultSheets($config->get('sheets'));
-        $this->loadDefaultScripts($config->get('scripts'));
+        $this->loadStylesheets($config->get('sheets.global'));
+        $this->loadScripts($config->get('scripts.global'));
     }
 
     /**
-     * Load default stylesheets
+     * Load the default themer files
      *
-     * @param array|null $files
+     * @param \Illuminate\Contracts\Config\Repository $config
+     * @param \Laranix\AntiSpam\Recaptcha\Recaptcha   $recaptcha
      */
-    protected function loadDefaultSheets(?array $files = [])
+    protected function loadThemerDefaultFormFiles(Repository $config, Recaptcha $recaptcha)
     {
-        foreach ($files as $file) {
-            $this->style->add(new StyleSettings($file));
-        }
-    }
+        $this->loadStylesheets($config->get('sheets.form'));
+        $this->loadScripts($config->get('scripts.form'));
 
-    /**
-     * Load default scripts
-     *
-     * @param array|null $files
-     */
-    protected function loadDefaultScripts(?array $files = [])
-    {
-        foreach ($files as $file) {
-            $this->scripts->add(new ScriptSettings($file));
+        if ($recaptcha->enabled()) {
+            $this->loadScript([
+                'key'       => 'recaptcha',
+                'filename'  => 'api.js',
+                'url'       => 'https://www.google.com/recaptcha',
+                'order'     => 10,
+                'async'     => true,
+            ]);
         }
     }
 
     /**
      * Add a stylesheet
      *
-     * @param \Laranix\Themer\Style\Settings|array $settings
+     * @param \Laranix\Themer\Style\Settings|array|null $settings
      * @return $this
      */
-    protected function addStylesheet($settings)
+    protected function loadStylesheet($settings)
     {
+        if ($settings === null) {
+            return $this;
+        }
+
         $this->style->add($settings);
 
         return $this;
@@ -91,23 +92,33 @@ trait LoadsThemer
     /**
      * Add multiple stylesheets
      *
-     * @param array|array[] ...$sheets
+     * @param mixed ...$sheets
      */
-    protected function addStylesheets(array ...$sheets)
+    protected function loadStylesheets(...$sheets)
     {
-        foreach ($sheets as $sheet) {
-            $this->addStylesheet($sheet);
+        $files = $this->getFilePayload($sheets[0] ?? null);
+
+        if (empty($files)) {
+            return;
+        }
+
+        foreach ($files as $sheet) {
+            $this->loadStylesheet($sheet);
         }
     }
 
     /**
      * Add a script
      *
-     * @param \Laranix\Themer\ResourceSettings|array $settings
+     * @param \Laranix\Themer\ResourceSettings|array|null $settings
      * @return $this
      */
-    protected function addScript($settings)
+    protected function loadScript($settings)
     {
+        if ($settings === null || !is_array($settings)) {
+            return $this;
+        }
+
         $this->scripts->add($settings);
 
         return $this;
@@ -116,12 +127,37 @@ trait LoadsThemer
     /**
      * Add multiple scripts
      *
-     * @param array|array[] ...$scripts
+     * @param array $scripts
      */
-    protected function addScripts(array ...$scripts)
+    protected function loadScripts(...$scripts)
     {
-        foreach ($scripts as $script) {
-            $this->addScript($script);
+        $files = $this->getFilePayload($scripts[0] ?? null);
+
+        if (empty($files)) {
+            return;
         }
+
+        foreach ($files as $script) {
+            $this->loadScript($script);
+        }
+    }
+
+    /**
+     * Get the file payload
+     *
+     * @param array|null $files
+     * @return array|null
+     */
+    protected function getFilePayload(?array $files) : ?array
+    {
+        if (empty($files)) {
+            return null;
+        }
+
+        $files = array_filter($files, function($file) {
+            return $file instanceof ResourceSettings || (isset($file['key']) && isset($file['filename']));
+        });
+
+        return $files;
     }
 }
