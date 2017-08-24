@@ -13,7 +13,7 @@ trait LoadsThemer
     /**
      * @var \Laranix\Themer\ThemerResource
      */
-    protected $style;
+    protected $styles;
 
     /**
      * @var \Laranix\Themer\ThemerResource
@@ -27,14 +27,14 @@ trait LoadsThemer
      */
     protected function loadThemer(Application $app)
     {
-        $this->style      = $app->make(Style::class);
+        $this->styles     = $app->make(Style::class);
         $this->scripts    = $app->make(Script::class);
 
         if (method_exists($this, 'share')) {
             $this->share([
-                 'style'   => $this->style,
+                 'styles'  => $this->styles,
                  'scripts' => $this->scripts,
-                 'image'   => $app->make(Image::class),
+                 'images'  => $app->make(Image::class),
              ]);
         }
     }
@@ -46,7 +46,7 @@ trait LoadsThemer
      */
     protected function loadThemerDefaultFiles(Repository $config)
     {
-        $this->loadStylesheets($config->get('sheets.global'));
+        $this->loadStylesheets($config->get('styles.global'));
         $this->loadScripts($config->get('scripts.global'));
     }
 
@@ -58,7 +58,7 @@ trait LoadsThemer
      */
     protected function loadThemerDefaultFormFiles(Repository $config, Recaptcha $recaptcha)
     {
-        $this->loadStylesheets($config->get('sheets.form'));
+        $this->loadStylesheets($config->get('styles.form'));
         $this->loadScripts($config->get('scripts.form'));
 
         if ($recaptcha->enabled()) {
@@ -84,7 +84,7 @@ trait LoadsThemer
             return $this;
         }
 
-        $this->style->add($settings);
+        $this->styles->add($settings);
 
         return $this;
     }
@@ -92,18 +92,18 @@ trait LoadsThemer
     /**
      * Add multiple stylesheets
      *
-     * @param mixed ...$sheets
+     * @param mixed ...$styles
      */
-    protected function loadStylesheets(...$sheets)
+    protected function loadStylesheets(...$styles)
     {
-        $files = $this->getFilePayload($sheets[0] ?? null);
+        $files = $this->getFilePayload($styles[0] ?? null);
 
         if (empty($files)) {
             return;
         }
 
-        foreach ($files as $sheet) {
-            $this->loadStylesheet($sheet);
+        foreach ($files as $style) {
+            $this->loadStylesheet($style);
         }
     }
 
