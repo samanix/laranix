@@ -179,7 +179,7 @@ class Images extends ThemerResource
         $extra = [];
 
         foreach ($resources as $attr => $value) {
-            $extra[] = sprintf('%s="%s"', $attr, $value);
+            $extra[] = $attr . '="' . $value . '"';
         }
 
         return implode(' ', $extra);
