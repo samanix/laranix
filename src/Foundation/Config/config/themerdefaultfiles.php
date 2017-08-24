@@ -14,7 +14,7 @@ return [
             [
                 'key'       => 'semantic-css',
                 'filename'  => 'semantic.min.css',
-                'url'       => 'https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.11/',
+                'url'       => 'https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/',
                 'order'     => 1,
             ],
             [
@@ -48,7 +48,7 @@ return [
             [
                 'key'       => 'semantic-js',
                 'filename'  => 'semantic.min.js',
-                'url'       => 'https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.11/',
+                'url'       => 'https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/',
                 'order'     => 1,
             ],
             [
