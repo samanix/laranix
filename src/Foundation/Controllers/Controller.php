@@ -8,7 +8,7 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Laranix\AntiSpam\Sequence\Sequence;
 use Laranix\AntiSpam\Recaptcha\Recaptcha;
-use Laranix\Foundation\Support\LoadsViews;
+use Laranix\Support\IO\LoadsViews;
 use Laranix\Themer\LoadsThemer;
 use Laranix\Themer\ResourceSettings as ThemerFileSettings;
 

@@ -1,5 +1,5 @@
 <?php
-namespace Laranix\Foundation\Support;
+namespace Laranix\Support\IO;
 
 use Illuminate\Contracts\Config\Repository as Config;
 use Illuminate\Foundation\Application;
