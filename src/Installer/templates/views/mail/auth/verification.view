@@ -18,6 +18,6 @@ Alternatively, visit {{ $options->baseurl }} and enter code:
 @component('mail::subcopy')
 Kind Regards,
 
-{{ config('appsettings.name', 'Laranix') }}
+{{ config('app.name', 'Laranix') }}
 @endcomponent
 @endcomponent

@@ -39,6 +39,6 @@
         <div class="ui inverted section divider"></div>
     </div>
     <div id="copyright">
-        &copy; 2014 - {{ date('Y') }} {{ $appsettings->name() }} {{ $appsettings->version('v') }} (~{{ number_format(microtime(true) - LARAVEL_START, 2) }}s)
+        &copy; 2014 - {{ date('Y') }} {{ $config->get('app.name') }} v{{ $config->get('appsettings.version') }} (~{{ number_format(microtime(true) - LARAVEL_START, 2) }}s)
     </div>
 </div>
