@@ -1,10 +1,9 @@
 <?php
 namespace __UserAppNamespace__Http\Controllers\Auth\Email\Verification;
 
-use Laranix\Auth\Email\Verification\Events\{
-    RefreshAttempt, VerifyAttempt
-};
-use __UserAppNamespace__Http\Controllers\Controller;
+use Laranix\Auth\Email\Verification\Events\RefreshAttempt;
+use Laranix\Auth\Email\Verification\Events\VerifyAttempt;
+use Laranix\Foundation\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Laranix\Auth\User\Token\Token;
 use Laranix\Auth\Email\Verification\Manager as VerificationManager;
@@ -52,9 +51,9 @@ class Verification extends Controller
      */
     protected function getManualVerificationForm(string $token = null, string $email = null) : View
     {
-        $this->initForm(new ScriptSettings([
-            'key'   => 'verify-email-form',
-            'file'  => 'forms/verifyemail.js',
+        $this->prepareForFormResponse(new ScriptSettings([
+            'key'       => 'verify-email-form',
+            'filename'  => 'forms/verifyemail.js',
         ]));
 
         return $this->view->make($this->config->get('laranixauth.verification.views.verify_form', 'auth.verify.verify'))
@@ -138,9 +137,9 @@ class Verification extends Controller
      */
     public function getVerificationRefreshForm() : View
     {
-        $this->initForm(new ScriptSettings([
-            'key'   => 'verify-email-refresh-form',
-            'file'  => 'forms/verifyemailrefresh.js',
+        $this->prepareForFormResponse(new ScriptSettings([
+            'key'       => 'verify-email-refresh-form',
+            'filename'  => 'forms/verifyemailrefresh.js',
         ]));
 
         return $this->view->make($this->config->get('laranixauth.verification.views.verify_refresh', 'auth.verify.refresh'))
