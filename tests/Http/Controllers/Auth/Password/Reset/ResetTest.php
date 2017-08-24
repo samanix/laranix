@@ -9,11 +9,14 @@ use Laranix\Auth\User\Token\Token;
 use Laranix\Auth\User\User;
 use Laranix\Auth\Password\Reset\Reset;
 use Laranix\Support\IO\Url\Url;
+use Laranix\Tests\Http\HasSharedViewVariable;
 use Laranix\Tests\LaranixTestCase;
 use Illuminate\Support\Facades\Event;
 
 class ResetTest extends LaranixTestCase
 {
+    use HasSharedViewVariable;
+
     /**
      * @var bool
      */
@@ -42,7 +45,7 @@ class ResetTest extends LaranixTestCase
 
         $response->assertViewHas('email', '');
 
-        $response->assertViewHas(['sequence', 'recaptcha']);
+        $this->assertTrue($this->hasSharedViewVariables('sequence', 'recaptcha'));
     }
 
     /**

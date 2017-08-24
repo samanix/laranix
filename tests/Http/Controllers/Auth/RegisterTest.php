@@ -6,6 +6,7 @@ use Laranix\Auth\Group\Group;
 use Laranix\Auth\User\Events\Created;
 use Laranix\Auth\User\Groups\Events\Added;
 use Laranix\Auth\User\User;
+use Laranix\Tests\Http\HasSharedViewVariable;
 use Laranix\Tests\LaranixTestCase;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Mail;
@@ -13,6 +14,8 @@ use Laranix\Auth\Email\Verification\Mail as VerificationMail;
 
 class RegisterTest extends LaranixTestCase
 {
+    use HasSharedViewVariable;
+
     /**
      * @var bool
      */
@@ -34,7 +37,7 @@ class RegisterTest extends LaranixTestCase
 
         $response->assertStatus(200);
 
-        $response->assertViewHas(['sequence', 'recaptcha']);
+        $this->assertTrue($this->hasSharedViewVariables('sequence', 'recaptcha'));
     }
 
     /**

@@ -10,6 +10,7 @@ use Laranix\Auth\Email\Verification\Events\Verified;
 use Laranix\Auth\Email\Verification\Verification;
 use Laranix\Auth\User\Token\Token;
 use Laranix\Auth\User\User;
+use Laranix\Tests\Http\HasSharedViewVariable;
 use Laranix\Tests\LaranixTestCase;
 use Laranix\Support\IO\Url\Url;
 use Illuminate\Support\Facades\Mail;
@@ -18,6 +19,8 @@ use Illuminate\Support\Facades\Event;
 
 class VerificationTest extends LaranixTestCase
 {
+    use HasSharedViewVariable;
+
     /**
      * @var bool
      */
@@ -42,7 +45,7 @@ class VerificationTest extends LaranixTestCase
 
         $response->assertViewHas(['token' => null, 'email' => null]);
 
-        $response->assertViewHas(['sequence', 'recaptcha']);
+        $this->assertTrue($this->hasSharedViewVariables('sequence', 'recaptcha'));
     }
 
     /**
