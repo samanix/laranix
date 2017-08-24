@@ -27,15 +27,15 @@ class ServiceProvider extends BaseServiceProvider
         });
 
         $this->app->singleton(Style::class, function ($app) {
-            return new Style($app->make(Themer::class), $app->make('config'), $app->make('log'), $app->make('view'));
+            return new Style($app->make(Themer::class), $app->make('config'), $app->make('log'));
         });
 
         $this->app->singleton(Script::class, function ($app) {
-            return new Script($app->make(Themer::class), $app->make('config'), $app->make('log'), $app->make('view'));
+            return new Script($app->make(Themer::class), $app->make('config'), $app->make('log'));
         });
 
         $this->app->singleton(Image::class, function ($app) {
-            return new Image($app->make(Themer::class), $app->make('config'), $app->make('log'), $app->make('view'));
+            return new Image($app->make(Themer::class), $app->make('config'), $app->make('log'));
         });
     }
 
