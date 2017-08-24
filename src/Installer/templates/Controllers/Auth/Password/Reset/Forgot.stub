@@ -21,8 +21,8 @@ class Forgot extends Controller
     public function getPasswordForgotForm() : View
     {
         $this->prepareForFormResponse(new ScriptSettings([
-            'key'   => 'pass-forgot-form',
-            'file'  => 'forms/passforgot.js',
+            'key'       => 'pass-forgot-form',
+            'filename'  => 'forms/passforgot.js',
         ]));
 
         return $this->view->make($this->config->get('laranixauth.password.views.request_form', 'auth.password.forgot'))

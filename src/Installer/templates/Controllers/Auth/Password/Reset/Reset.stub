@@ -24,8 +24,8 @@ class Reset extends Controller implements PasswordHasher
     public function getPasswordResetForm() : View
     {
         $this->prepareForFormResponse(new ScriptSettings([
-            'key'   => 'pass-reset-form',
-            'file'  => 'forms/passreset.js',
+            'key'       => 'pass-reset-form',
+            'filename'  => 'forms/passreset.js',
         ]));
 
         return $this->view->make($this->config->get('laranixauth.password.views.reset_form', 'auth.password.reset'))

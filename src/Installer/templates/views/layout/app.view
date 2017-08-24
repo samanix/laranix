@@ -37,7 +37,7 @@
                 @include('layout.loginnotice')
 
                 @yield('content')
-            </div>0K
+            </div>
         </div>
         <div id="footer-wrapper">
             @include('layout.footer')

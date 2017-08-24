@@ -24,8 +24,8 @@ class Register extends Controller implements UserCreator, UserGroupAdder
     public function getRegister() : View
     {
         $this->prepareForFormResponse(new ScriptSettings([
-            'key'   => 'register-form',
-            'file'  => 'forms/register.js',
+            'key'       => 'register-form',
+            'filename'  => 'forms/register.js',
         ]));
 
         return $this->view->make($this->config->get('laranixauth.users.views.register_form', 'auth.register.form'));

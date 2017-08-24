@@ -29,8 +29,8 @@ class Login extends Controller
     public function getLogin() : View
     {
         $this->prepareForFormResponse(new ScriptSettings([
-            'key'   => 'login-form',
-            'file'  => 'forms/login.js',
+            'key'       => 'login-form',
+            'filename'  => 'forms/login.js',
         ]));
 
         return $this->view->make($this->config->get('laranixauth.login.views.login_form', 'auth.login'));
