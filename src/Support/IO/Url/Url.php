@@ -5,24 +5,8 @@ use Illuminate\Support\Str;
 use Laranix\Support\IO\Str\Str as StrFormat;
 use Laranix\Support\IO\Str\Settings as StrSettings;
 
-// TODO Allowed schemes array
-class Url
+class Url extends UrlCreator
 {
-    /**
-     * @var string
-     */
-    protected static $appUrl;
-
-    /**
-     * @var array
-     */
-    protected static $cached = [];
-
-    /**
-     * @var array
-     */
-    protected static $cachedHref = [];
-
     /**
      * Generate a URL.
      *
@@ -31,53 +15,23 @@ class Url
      * @return string
      * @throws \InvalidArgumentException
      */
-    public static function url($settings) : string
+    public function url($settings) : string
     {
-        $cacheKey = self::cacheKey($settings);
+        $cacheKey = $this->getCacheKey('url', $settings);
 
-        if (self::hasCachedUrl($cacheKey)) {
-            return self::getCachedUrl($cacheKey);
-        } elseif (is_string($settings)) {
+        if ($this->hasCachedData($cacheKey)) {
+            return $this->getCachedData($cacheKey);
+        }
+
+        if (is_string($settings)) {
             $url = self::parseStringUrl($settings);
         } elseif ($settings instanceof Settings) {
-            $url = StrFormat::format(
-                '{{scheme}}{{domain}}{{path}}{{query}}{{fragment}}',
-                self::getUrlComponents($settings),
-                new StrSettings([ 'removeUnparsed' => true ])
-            );
+            $url = $this->createUrlString($settings);
         } else {
             throw new \InvalidArgumentException('Settings is not a supported type');
         }
 
-        return self::cacheUrl($cacheKey, $url);
-    }
-
-    /**
-     * Parse url when given as string
-     *
-     * @param string $url
-     * @return string
-     */
-    protected static function parseStringUrl(?string $url) : string
-    {
-        $parts = array_replace([
-            'scheme'    => null,
-            'host'      => self::getAppUrl(),
-            'path'      => null,
-            'query'     => '',
-            'fragment'  => null,
-        ], (array) parse_url($url));
-
-        parse_str($parts['query'], $query);
-
-        return self::create(
-            $parts['scheme'],
-            $parts['host'],
-            $parts['path'],
-            $query,
-            $parts['fragment'],
-            (Str::endsWith($url, '/') && ($parts['path'] !== '/' || !empty($parts['path'])))
-        );
+        return $this->cacheData($cacheKey, $url);
     }
 
     /**
@@ -90,11 +44,16 @@ class Url
      * @param string|null   $fragment
      * @param bool          $trailingSlash
      *
-     * @return string
+     * @return string|null
      */
-    public static function create(?string $scheme = null, ?string $domain = null, $path = null, ?array $query = [], ?string $fragment = null, bool $trailingSlash = false) : string
+    public function create(?string $scheme = null,
+                           ?string $domain = null,
+                           $path = null,
+                           ?array $query = [],
+                           ?string $fragment = null,
+                           bool $trailingSlash = false) : string
     {
-        return self::url(new Settings([
+        return $this->url(new Settings([
             'scheme'        => $scheme,
             'domain'        => $domain,
             'path'          => $path,
@@ -113,91 +72,82 @@ class Url
      * @param bool              $trailingSlash
      * @return string
      */
-    public static function to($path = null, ?array $query = [], ?string $fragment = null, bool $trailingSlash = false) : string
+    public function to($path = null,
+                       ?array $query = [],
+                       ?string $fragment = null,
+                       bool $trailingSlash = false) : string
     {
-        return self::create(null, self::getAppUrl(), $path, $query, $fragment, $trailingSlash);
+        return $this->create(null, $this->appUrl, $path, $query, $fragment, $trailingSlash);
     }
 
     /**
-     * Current URL
-     */
-    public static function self() : string
-    {
-        return self::parseStringUrl($_SERVER['REQUEST_URI'] ?? null);
-    }
-
-    /**
-     * HTML tagged URL
+     * Current Url
      *
-     * @param string $content
+     * @return string
+     */
+    public function self() : string
+    {
+        return $this->parseStringUrl($_SERVER['REQUEST_URI'] ?? null);
+    }
+
+
+    /**
+     * Parse url when given as string
+     *
      * @param string $url
-     * @param array  $attributes
      * @return string
      */
-    public static function href(string $content, string $url, array $attributes = []) : string
+    protected function parseStringUrl(?string $url) : string
     {
-        $cacheKey = self::cacheKey([$content, $url, $attributes]);
+        $parts = array_replace([
+            'scheme'    => null,
+            'host'      => self::getAppUrl(),
+            'path'      => null,
+            'query'     => '',
+            'fragment'  => null,
+        ], (array) parse_url($url));
 
-        if (self::hasCachedHref($cacheKey)) {
-            return self::getCachedHref($cacheKey);
-        }
+        parse_str($parts['query'], $query);
 
-        return self::cacheHref($cacheKey,
-                               sprintf('<a href="%s"%s>%s</a>',
-                                       $url,
-                                       self::getHrefAttributes($attributes),
-                                       $content));
+        return $this->create(
+            $parts['scheme'],
+            $parts['host'],
+            $parts['path'],
+            $query,
+            $parts['fragment'],
+            (Str::endsWith($url, '/') && ($parts['path'] !== '/' || !empty($parts['path'])))
+        );
     }
 
     /**
-     * @param array|null $attributes
-     * @return null|string
-     */
-    protected static function getHrefAttributes(?array $attributes) : ?string
-    {
-        if (empty($attributes)) {
-            return null;
-        }
-
-
-
-        $extra = [];
-
-        foreach ($attributes as $attr => $value) {
-            $extra[] = $attr . '="' . $value . '"';
-        }
-
-        return implode(' ', $extra);
-    }
-
-    /**
-     * Get app url
+     * Create the URL string
      *
+     * @param \Laranix\Support\IO\Url\Settings $settings
      * @return string
      */
-    protected static function getAppUrl() : ?string
+    protected function createUrlString(Settings $settings) : string
     {
-        if (self::$appUrl !== null) {
-            return self::$appUrl;
-        }
-
-        return self::$appUrl = config('app.url') ?? $_SERVER['HTTP_HOST'] ?? $_SERVER['SERVER_NAME'] ?? null;
+        return StrFormat::format(
+            '{{scheme}}{{domain}}{{path}}{{query}}{{fragment}}',
+            $this->parseUrlComponents($settings),
+            new StrSettings([ 'removeUnparsed' => true ])
+        );
     }
 
     /**
-     * Parse URL parts
+     * Parse the parts of the Url
      *
-     * @param \Laranix\Support\IO\Url\Settings|null $settings
+     * @param \Laranix\Support\IO\Url\Settings $settings
      * @return array
      */
-    protected static function getUrlComponents(?Settings $settings) : array
+    protected function parseUrlComponents(Settings $settings) : array
     {
         return [
-            'scheme'    => self::getScheme($settings->scheme, $settings->domain),
-            'domain'    => self::getDomain($settings->domain),
-            'path'      => self::getPath($settings->path, $settings->trailingSlash),
-            'query'     => self::getQuery($settings->query),
-            'fragment'  => self::getFragment($settings->fragment),
+            'scheme'    => $this->getScheme($settings->scheme, $settings->domain),
+            'domain'    => $this->getDomain($settings->domain),
+            'path'      => $this->getPath($settings->path, $settings->trailingSlash),
+            'query'     => $this->getQueryString($settings->query),
+            'fragment'  => $this->getFragment($settings->fragment),
         ];
     }
 
@@ -208,22 +158,22 @@ class Url
      * @param null|string $domain
      * @return string
      */
-    protected static function getScheme(?string $scheme, ?string $domain = null) : string
+    protected function getScheme(?string $scheme, ?string $domain = null) : string
     {
         if ($scheme === null || $scheme === '//') {
             return self::tryGuessScheme($domain);
         }
 
-        return sprintf('%s://', trim($scheme, ":/ \t\n\r\0\x0B"));
+        return $this->trim($scheme, ':/') . '://';
     }
 
-    /**
+        /**
      * Get the scheme from the domain
      *
      * @param null|string $domain
      * @return null|string
      */
-    protected static function tryGuessScheme(?string $domain) : ?string
+    protected function tryGuessScheme(?string $domain) : ?string
     {
         if ($domain !== null) {
             if (Str::startsWith($domain, 'https')) {
@@ -235,7 +185,10 @@ class Url
             }
         }
 
-        return (isset($_SERVER['HTTPS']) && !empty($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) !== 'off') ? 'https://' : 'http://';
+        return (isset($_SERVER['HTTPS'])
+            && !empty($_SERVER['HTTPS'])
+            && strtolower($_SERVER['HTTPS']) !== 'off')
+            ? 'https://' : 'http://';
     }
 
     /**
@@ -244,15 +197,15 @@ class Url
      * @param null|string $domain
      * @return string|null
      */
-    protected static function getDomain(?string $domain = null) : ?string
+    protected function getDomain(?string $domain = null) : ?string
     {
-        $domain = $domain ?? self::getAppUrl();
+        $domain = $domain ?? $this->appUrl;
 
         if ($domain === null) {
             return null;
         }
 
-        return trim(str_replace(['http:', 'https:'], '', $domain), "/ \t\n\r\0\x0B");
+        return $this->trim(str_replace(['http:', 'https:'], '', $domain), '/');
     }
 
     /**
@@ -260,9 +213,9 @@ class Url
      *
      * @param mixed $path
      * @param bool  $trailing
-     * @return string
+     * @return null|string
      */
-    protected static function getPath($path, bool $trailing = false) : ?string
+    protected function getPath($path, bool $trailing = false) : ?string
     {
         if ($path === null || $path === '/') {
             return $trailing ? '/' : null;
@@ -281,52 +234,50 @@ class Url
         $last = end($path);
 
         $path = implode('/', array_map(function ($item) {
-            return rawurlencode(trim($item, "/ \t\n\r\0\x0B"));
+            return rawurlencode($this->trim($item, '/'));
         }, $path));
 
-
-
-        return '/'. $path . self::getTrailingSlash($last, $trailing);
+        return '/'. $path . $this->getTrailingSlash($last, $trailing);
     }
 
     /**
-     * Get query string
+     * Build query string
      *
-     * @param array $query
+     * @param array|null $query
      * @return null|string
      */
-    protected static function getQuery(?array $query) : ?string
+    protected function getQueryString(?array $query) : ?string
     {
-        if ($query === null || empty($query)) {
+        if (empty($query)) {
             return null;
         }
 
-        return '?'.http_build_query($query);
+        return '?' . http_build_query($query);
     }
 
     /**
-     * Get fragment
+     * Get url fragment
      *
      * @param null|string $fragment
      * @return null|string
      */
-    protected static function getFragment(?string $fragment) : ?string
+    protected function getFragment(?string $fragment) : ?string
     {
         if ($fragment === null) {
             return null;
         }
 
-        return '#' . trim($fragment, "# \t\n\r\0\x0B");
+        return '#' . $this->trim($fragment, '#');
     }
 
     /**
-     * Check if last segment of path might be a file
+     * Check if we should include a trailing slash
      *
      * @param string $item
      * @param bool   $trailing
      * @return string
      */
-    protected static function getTrailingSlash(string $item, bool $trailing) : string
+    protected function getTrailingSlash(string $item, bool $trailing) : string
     {
         if (Str::contains($item, '.') || !$trailing) {
             return '';
@@ -336,85 +287,14 @@ class Url
     }
 
     /**
-     * Cache key
+     * Trim string
      *
-     * @param $settings
+     * @param string      $string
+     * @param null|string $extra
      * @return string
      */
-    protected static function cacheKey($settings) : string
+    protected function trim(string $string, ?string $extra = null)
     {
-        return hash('crc32', json_encode($settings));
-    }
-
-    /**
-     * Check for cached url
-     *
-     * @param string $key
-     * @return bool
-     */
-    protected static function hasCachedUrl(string $key) : bool
-    {
-        return isset(self::$cached[$key]);
-    }
-
-    /**
-     * Get cached url
-     *
-     * @param string $key
-     * @return string
-     */
-    protected static function getCachedUrl(string $key) : string
-    {
-        return self::$cached[$key];
-    }
-
-    /**
-     * Store url in the cache
-     *
-     * @param string $key
-     * @param string $url
-     * @return string
-     */
-    protected static function cacheUrl($key, string $url) : string
-    {
-        self::$cached[$key] = $url;
-
-        return $url;
-    }
-
-    /**
-     * Check for cached href
-     *
-     * @param string $key
-     * @return bool
-     */
-    protected static function hasCachedHref(string $key) : bool
-    {
-        return isset(self::$cached[$key]);
-    }
-
-    /**
-     * Get cached href
-     *
-     * @param string $key
-     * @return string
-     */
-    protected static function getCachedHref(string $key) : string
-    {
-        return self::$cached[$key];
-    }
-
-    /**
-     * Store href in the cache
-     *
-     * @param string $key
-     * @param string $url
-     * @return string
-     */
-    protected static function cacheHref($key, string $url) : string
-    {
-        self::$cached[$key] = $url;
-
-        return $url;
+        return trim($string, ($extra ?? '') . " \t\n\r\0\x0B");
     }
 }

@@ -7,9 +7,14 @@ use Laranix\Tests\LaranixTestCase;
 class UrlTest extends LaranixTestCase
 {
     /**
+     * @var \Laranix\Support\IO\Url\Url
+     */
+    protected $url;
+
+    /**
      * @var string
      */
-    protected $url = 'http://homestead.app';
+    protected $baseurl = 'http://homestead.app';
 
     /**
      * Set up
@@ -18,10 +23,12 @@ class UrlTest extends LaranixTestCase
     {
         parent::setUp();
 
-        $_SERVER['HTTP_HOST']   = 'homestead.app';
+        $this->url = new Url($this->baseurl);
+
+        $_SERVER['HTTP_HOST']   = str_replace(['http://', 'https://'], '', $this->baseurl);
         $_SERVER['REQUEST_URI'] = '';
 
-        config()->set('app.url', 'http://homestead.app');
+        config()->set('app.url', $this->baseurl);
     }
 
     /**
@@ -48,7 +55,7 @@ class UrlTest extends LaranixTestCase
      */
     public function testCreateUrl($a, $b, $c, $d, $e, $f, $g)
     {
-        $this->assertSame($g, Url::create($a, $b, $c, $d, $e, $f));
+        $this->assertSame($g, $this->url->create($a, $b, $c, $d, $e, $f));
     }
 
     /**
@@ -56,16 +63,16 @@ class UrlTest extends LaranixTestCase
      */
     public function testCreateToUrl()
     {
-        $this->assertSame($this->url . '/bar', Url::to('bar'));
-        $this->assertSame($this->url . '/bar/baz', Url::to(['bar', 'baz']));
-        $this->assertSame($this->url, Url::to(null));
-        $this->assertSame($this->url . '/bar/', Url::to('bar', null, null, true));
-        $this->assertSame($this->url . '/', Url::to(null, null, null, true));
-        $this->assertSame($this->url . '#bar', Url::to(null, null, 'bar'));
-        $this->assertSame($this->url . '/bar/?hello=world', Url::to('bar', [ 'hello' => 'world'], null, true));
-        $this->assertSame($this->url . '/bar?hello=world#foo', Url::to('bar', ['hello' => 'world'], 'foo', false));
+        $this->assertSame($this->baseurl . '/bar', $this->url->to('bar'));
+        $this->assertSame($this->baseurl . '/bar/baz', $this->url->to(['bar', 'baz']));
+        $this->assertSame($this->baseurl, $this->url->to(null));
+        $this->assertSame($this->baseurl . '/bar/', $this->url->to('bar', null, null, true));
+        $this->assertSame($this->baseurl . '/', $this->url->to(null, null, null, true));
+        $this->assertSame($this->baseurl . '#bar', $this->url->to(null, null, 'bar'));
+        $this->assertSame($this->baseurl . '/bar/?hello=world', $this->url->to('bar', [ 'hello' => 'world'], null, true));
+        $this->assertSame($this->baseurl . '/bar?hello=world#foo', $this->url->to('bar', [ 'hello' => 'world'], 'foo', false));
 
-        $this->assertSame($this->url, Url::self());
+        $this->assertSame($this->baseurl, $this->url->self());
     }
 
     /**
@@ -73,20 +80,11 @@ class UrlTest extends LaranixTestCase
      */
     public function testMakeUrl()
     {
-        $this->assertSame($this->url . '/foo', Url::url('/foo'));
-        $this->assertSame($this->url . '/foo/', Url::url('/foo/'));
-        $this->assertSame('https://foo.com', Url::url('https://foo.com'));
-        $this->assertSame('http://bar.com/baz/', Url::url('http://bar.com/baz/'));
-        $this->assertSame($this->url . '/bar?hello=world#foo', Url::url('/bar?hello=world#foo'));
-    }
-
-    /**
-     * Test making an href
-     */
-    public function testMakeHref()
-    {
-        $this->assertSame('<a href="#bar">foo</a>', Url::href('foo', '#bar'));
-        $this->assertSame('<a href="http://foo.com" title="bar">foo</a>', Url::href('foo', 'http://foo.com', [ 'title' => 'bar' ]));
+        $this->assertSame($this->baseurl . '/foo', $this->url->url('/foo'));
+        $this->assertSame($this->baseurl . '/foo/', $this->url->url('/foo/'));
+        $this->assertSame('https://foo.com', $this->url->url('https://foo.com'));
+        $this->assertSame('http://bar.com/baz/', $this->url->url('http://bar.com/baz/'));
+        $this->assertSame($this->baseurl . '/bar?hello=world#foo', $this->url->url('/bar?hello=world#foo'));
     }
 
     /**
