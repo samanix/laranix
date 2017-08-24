@@ -11,7 +11,6 @@ use Laranix\AntiSpam\Recaptcha\Recaptcha;
 use Laranix\Foundation\Support\LoadsViews;
 use Laranix\Themer\LoadsThemer;
 use Laranix\Themer\ResourceSettings as ThemerFileSettings;
-use Laranix\Themer\Script\{Settings as ScriptSettings};
 
 class Controller extends BaseController
 {
@@ -146,42 +145,20 @@ class Controller extends BaseController
     /**
      * Add parts required for rendering a form
      *
-     * @param array|ThemerFileSettings $scripts
+     * @param array|ThemerFileSettings|null $scripts
      */
-    protected function prepareForFormResponse($scripts = null)
+    protected function prepareForFormResponse(...$scripts)
     {
+        $recaptcha = $this->app->make(Recaptcha::class);
+
         $this->share([
             'sequence'  => $this->app->make(Sequence::class),
-            'recaptcha' => $this->app->make(Recaptcha::class),
+            'recaptcha' => $recaptcha,
         ]);
 
-        $formScripts = [
-            [
-                'key'   => 'form-base-script',
-                'file'  => 'forms/form.js',
-                'order' => 5,
-            ],
-            [
-                'key'   => 'recaptcha',
-                'file'  => 'api.js',
-                'url'   => 'https://www.google.com/recaptcha',
-                'order' => 10,
-                'async' => true,
-            ]
-        ];
+        $this->loadThemerDefaultFormFiles($this->config, $recaptcha);
 
-        if ($scripts instanceof ScriptSettings || isset($scripts['key'])) {
-            $formScripts[] = $scripts;
-        } else {
-            array_push($formScripts, $scripts);
-        }
-
-        $this->addScripts($formScripts);
-
-        $this->addStylesheet([
-            'key'   => 'formstyle',
-            'file'  => 'form.min.css',
-        ]);
+        $this->loadScripts($scripts);
     }
 
     /**

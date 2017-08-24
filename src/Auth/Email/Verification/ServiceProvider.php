@@ -2,7 +2,6 @@
 namespace Laranix\Auth\Email\Verification;
 
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
-use Laranix\AppSettings\AppSettings;
 
 class ServiceProvider extends BaseServiceProvider
 {
