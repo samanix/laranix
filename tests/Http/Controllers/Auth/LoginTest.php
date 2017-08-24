@@ -30,6 +30,8 @@ class LoginTest extends LaranixTestCase
         $response = $this->get('login');
 
         $response->assertStatus(200);
+
+        $response->assertViewHas(['sequence', 'recaptcha']);
     }
 
     /**

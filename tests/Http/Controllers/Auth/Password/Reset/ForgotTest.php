@@ -36,6 +36,8 @@ class ForgotTest extends LaranixTestCase
         $response->assertStatus(200);
 
         $response->assertViewHas('forgot_password_message');
+
+        $response->assertViewHas(['sequence', 'recaptcha']);
     }
 
     /**

@@ -13,6 +13,7 @@ class HomeTest extends LaranixTestCase
         $response = $this->get('home');
 
         $response->assertStatus(200);
+        $response->assertViewHas(['scripts', 'styles', 'images']);
     }
 
 }

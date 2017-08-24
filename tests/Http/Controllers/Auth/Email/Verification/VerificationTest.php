@@ -41,6 +41,8 @@ class VerificationTest extends LaranixTestCase
         $response->assertStatus(200);
 
         $response->assertViewHas(['token' => null, 'email' => null]);
+
+        $response->assertViewHas(['sequence', 'recaptcha']);
     }
 
     /**

@@ -33,6 +33,8 @@ class RegisterTest extends LaranixTestCase
         $response = $this->get('register');
 
         $response->assertStatus(200);
+
+        $response->assertViewHas(['sequence', 'recaptcha']);
     }
 
     /**

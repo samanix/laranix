@@ -41,6 +41,8 @@ class ResetTest extends LaranixTestCase
         });
 
         $response->assertViewHas('email', '');
+
+        $response->assertViewHas(['sequence', 'recaptcha']);
     }
 
     /**
