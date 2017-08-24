@@ -207,6 +207,8 @@ abstract class ThemerResource
             throw new InvalidInstanceException('Settings is not a valid instance of ' . ResourceSettings::class);
         }
 
+        $settings->hasRequiredSettings();
+
         $settings->theme = $this->getThemeToUse($settings);
 
         $addKey = sprintf('_added.%s.%s', $settings->theme->getName(), $settings->key);
@@ -236,8 +238,6 @@ abstract class ThemerResource
         if ($settings === null) {
             return false;
         }
-
-        $settings->hasRequiredSettings();
 
         return $settings->url === null && $this->mergeResources ? $this->addLocalResource($settings) : $this->addRemoteResource($settings);
     }
