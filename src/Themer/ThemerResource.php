@@ -239,7 +239,9 @@ abstract class ThemerResource
             return false;
         }
 
-        return $settings->url === null && $this->mergeResources ? $this->addLocalResource($settings) : $this->addRemoteResource($settings);
+        return $settings->url === null && $this->mergeResources
+            ? $this->addLocalResource($settings)
+            : $this->addRemoteResource($settings);
     }
 
     /**
