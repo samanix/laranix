@@ -2,6 +2,7 @@
 namespace Laranix\Tests\Laranix\Support\IO;
 
 use Laranix\Support\IO\Url\Href;
+use Laranix\Support\IO\Url\Url;
 use Laranix\Tests\LaranixTestCase;
 
 class HrefTest extends LaranixTestCase
@@ -23,7 +24,7 @@ class HrefTest extends LaranixTestCase
     {
         parent::setUp();
 
-        $this->href = new Href($this->baseurl);
+        $this->href = new Href($this->baseurl, new Url($this->baseurl));
 
         $_SERVER['HTTP_HOST']   = str_replace(['http://', 'https://'], '', $this->baseurl);
         $_SERVER['REQUEST_URI'] = '';
@@ -48,5 +49,6 @@ class HrefTest extends LaranixTestCase
     {
         $this->assertSame('<a href="#bar">foo</a>', $this->href->create('foo', '#bar'));
         $this->assertSame('<a href="http://foo.com" title="bar">foo</a>', $this->href->create('foo', 'http://foo.com', [ 'title' => 'bar' ]));
+        $this->assertSame('<a href="' . $this->baseurl . '/foo">bar</a>', $this->href->create('bar', 'foo'));
     }
 }
