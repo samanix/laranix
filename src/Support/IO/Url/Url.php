@@ -152,7 +152,7 @@ class Url
             $properties = ' ' . implode(' ', $extra);
         }
 
-        return self::cacheHref($cacheKey, sprintf('<a href="%s" %s>%s</a>', $url, $properties ?? '', $content));
+        return self::cacheHref($cacheKey, sprintf('<a href="%s"%s>%s</a>', $url, $properties ?? '', $content));
     }
 
     /**
