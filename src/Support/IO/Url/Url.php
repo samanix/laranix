@@ -4,34 +4,27 @@ namespace Laranix\Support\IO\Url;
 use Illuminate\Support\Str;
 use Laranix\Support\IO\Str\Str as StrFormat;
 use Laranix\Support\IO\Str\Settings as StrSettings;
+use Laranix\Support\Settings;
 
 class Url extends UrlCreator
 {
     /**
-     * Generate a URL.
+     * Create a url from variable type
      *
-     * @param \Laranix\Support\IO\Url\Settings|string $settings
-     *
-     * @return string
-     * @throws \InvalidArgumentException
+     * @param $url
+     * @return null|string
      */
-    public function url($settings) : string
+    public function url($url)
     {
-        $cacheKey = $this->getCacheKey('url', $settings);
-
-        if ($this->hasCachedData($cacheKey)) {
-            return $this->getCachedData($cacheKey);
+        if (is_string($url)) {
+            return $this->parseStringUrl($url);
         }
 
-        if (is_string($settings)) {
-            $url = self::parseStringUrl($settings);
-        } elseif ($settings instanceof Settings) {
-            $url = $this->createUrlString($settings);
-        } else {
-            throw new \InvalidArgumentException('Settings is not a supported type');
+        if ($url instanceof UrlSettings) {
+            return $this->make($url);
         }
 
-        return $this->cacheData($cacheKey, $url);
+        throw new \InvalidArgumentException('Settings is not a supported type');
     }
 
     /**
@@ -53,7 +46,7 @@ class Url extends UrlCreator
                            ?string $fragment = null,
                            bool $trailingSlash = false) : string
     {
-        return $this->url(new Settings([
+        return $this->make(new UrlSettings([
             'scheme'        => $scheme,
             'domain'        => $domain,
             'path'          => $path,
@@ -99,33 +92,31 @@ class Url extends UrlCreator
      */
     protected function parseStringUrl(?string $url) : string
     {
-        $parts = array_replace([
-            'scheme'    => null,
-            'host'      => self::getAppUrl(),
-            'path'      => null,
-            'query'     => '',
-            'fragment'  => null,
-        ], (array) parse_url($url));
+        $parts = parse_url($url);
 
-        parse_str($parts['query'], $query);
+        if (isset($parts['query'])) {
+            parse_str($parts['query'], $query);
+        }
 
         return $this->create(
-            $parts['scheme'],
-            $parts['host'],
-            $parts['path'],
-            $query,
-            $parts['fragment'],
-            (Str::endsWith($url, '/') && ($parts['path'] !== '/' || !empty($parts['path'])))
+            $parts['scheme'] ?? null,
+            $parts['host'] ?? null,
+            $parts['path'] ?? null,
+            $query ?? null,
+            $parts['fragment'] ?? null,
+            (Str::endsWith($url, '/')
+                && (isset($parts['path'])
+                    && ($parts['path'] !== '/' || !empty($parts['path']))) )
         );
     }
 
     /**
      * Create the URL string
      *
-     * @param \Laranix\Support\IO\Url\Settings $settings
+     * @param \Laranix\Support\Settings|\Laranix\Support\IO\Url\UrlSettings $settings
      * @return string
      */
-    protected function createUrlString(Settings $settings) : string
+    protected function createOutput(Settings $settings) : string
     {
         return StrFormat::format(
             '{{scheme}}{{domain}}{{path}}{{query}}{{fragment}}',
@@ -137,10 +128,10 @@ class Url extends UrlCreator
     /**
      * Parse the parts of the Url
      *
-     * @param \Laranix\Support\IO\Url\Settings $settings
+     * @param \Laranix\Support\IO\Url\UrlSettings $settings
      * @return array
      */
-    protected function parseUrlComponents(Settings $settings) : array
+    protected function parseUrlComponents(UrlSettings $settings) : array
     {
         return [
             'scheme'    => $this->getScheme($settings->scheme, $settings->domain),
@@ -161,7 +152,7 @@ class Url extends UrlCreator
     protected function getScheme(?string $scheme, ?string $domain = null) : string
     {
         if ($scheme === null || $scheme === '//') {
-            return self::tryGuessScheme($domain);
+            return $this->tryGuessScheme($domain);
         }
 
         return $this->trim($scheme, ':/') . '://';

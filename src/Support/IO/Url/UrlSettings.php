@@ -1,9 +1,9 @@
 <?php
 namespace Laranix\Support\IO\Url;
 
-use Laranix\Support\Settings as BaseSettings;
+use Laranix\Support\Settings;
 
-class Settings extends BaseSettings
+class UrlSettings extends Settings
 {
     /**
      * Scheme to use.

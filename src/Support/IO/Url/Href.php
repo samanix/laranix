@@ -1,8 +1,29 @@
 <?php
 namespace Laranix\Support\IO\Url;
 
+use Laranix\Support\Settings;
+use Illuminate\Support\Str;
+
 class Href extends UrlCreator
 {
+    /**
+     * @var \Laranix\Support\IO\Url\Url
+     */
+    protected $url;
+
+    /**
+     * Href constructor.
+     *
+     * @param string                      $appUrl
+     * @param \Laranix\Support\IO\Url\Url $url
+     */
+    public function __construct(string $appUrl, Url $url)
+    {
+        parent::__construct($appUrl);
+
+        $this->url = $url;
+    }
+
     /**
      * HTML href output
      *
@@ -13,18 +34,15 @@ class Href extends UrlCreator
      */
     public function create(string $content, string $url, array $attributes = []) : string
     {
-        $cacheKey = $this->getCacheKey($content, $url, $attributes);
-
-        if ($this->hasCachedData($cacheKey)) {
-            return $this->getCachedData($cacheKey);
-        }
-
-        return $this->cacheData($cacheKey,
-                                $this->createHrefHtmlOutput($content, $url, $attributes));
+        return $this->make(new HrefSettings([
+            'content'   => $content,
+            'url'       => $url,
+            'attributes'=> $attributes,
+        ]));
     }
 
     /**
-     * HTML href output alias
+     * Create alias
      *
      * @param string $content
      * @param string $url
@@ -37,19 +55,34 @@ class Href extends UrlCreator
     }
 
     /**
+     * Create and return string output
      *
-     *
-     * @param string $content
-     * @param string $url
-     * @param array  $attributes
+     * @param \Laranix\Support\Settings|\Laranix\Support\IO\Url\HrefSettings $settings
      * @return string
      */
-    protected function createHrefHtmlOutput(string $content, string $url, array $attributes = []) : string
+    protected function createOutput(Settings $settings) : string
     {
         return sprintf('<a href="%s"%s>%s</a>',
-                       $url,
-                       $this->parseHrefAttributes($attributes),
-                       $content);
+                       $this->parseUrl($settings->url),
+                       $this->parseHrefAttributes($settings->attributes),
+                       $settings->content);
+    }
+
+    /**
+     * Parse Url
+     *
+     * @param mixed $url
+     * @return string
+     */
+    protected function parseUrl($url) : string
+    {
+        if (filter_var($url, FILTER_VALIDATE_URL) !== false
+            || Str::startsWith($url, '#')) {
+            return $url;
+        }
+
+
+        return $this->url->url($url);
     }
 
     /**

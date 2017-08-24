@@ -1,6 +1,21 @@
 <?php
 
 use Laranix\Support\IO\Url\Url;
+use Laranix\Support\IO\Url\Href;
+use Laranix\Support\Settings;
+
+if (!function_exists('urlMake')) {
+    /**
+     * Make url string
+     *
+     * @param \Laranix\Support\Settings $settings
+     * @return string
+     */
+    function urlMake(Settings $settings) : string
+    {
+        return app(Url::class)->make($settings);
+    }
+}
 
 if (!function_exists('urlCreate')) {
     /**
@@ -15,9 +30,14 @@ if (!function_exists('urlCreate')) {
      *
      * @return string
      */
-    function urlCreate(?string $scheme = null, ?string $domain = null, $path = null, ?array $query = [], ?string $fragment = null, bool $trailingSlash = false) : string
+    function urlCreate(?string $scheme = null,
+                       ?string $domain = null,
+                       $path = null,
+                       ?array $query = [],
+                       ?string $fragment = null,
+                       bool $trailingSlash = false) : string
     {
-        return Url::create($scheme, $domain, $path, $query, $fragment, $trailingSlash);
+        return app(Url::class)->create($scheme, $domain, $path, $query, $fragment, $trailingSlash);
     }
 }
 
@@ -31,24 +51,52 @@ if (!function_exists('urlTo')) {
      * @param bool              $trailingSlash
      * @return string
      */
-    function urlTo($path = null, ?array $query = [], ?string $fragment = null, bool $trailingSlash = false) : string
+    function urlTo($path = null,
+                   ?array $query = [],
+                   ?string $fragment = null,
+                   bool $trailingSlash = false) : string
     {
-        return Url::to($path, $query, $fragment, $trailingSlash);
+        return app(Url::class)->to($path, $query, $fragment, $trailingSlash);
     }
 }
 
-if (!function_exists('urlHref')) {
+if (!function_exists('urlSelf')) {
+    /**
+     * Current Url
+     *
+     * @return string
+     */
+    function urlSelf() : string
+    {
+        return app(Url::class)->self();
+    }
+}
+
+if (!function_exists('hrefMake')) {
+    /**
+     * Make url string
+     *
+     * @param \Laranix\Support\Settings $settings
+     * @return string
+     */
+    function hrefMake(Settings $settings) : string
+    {
+        return app(Href::class)->make($settings);
+    }
+}
+
+if (!function_exists('hrefCreate')) {
     /**
      * Create an HTML a tag
      *
      * @param string $content
-     * @param string $url
+     * @param mixed $url
      * @param array  $params
      * @return string
      */
-    function urlHref(string $content, string $url, array $params = []) : string
+    function hrefCreate(string $content, $url, array $params = []) : string
     {
-        return Url::href($url, $content, $params);
+        return app(Href::class)->create($content, $url, $params);
     }
 }
 

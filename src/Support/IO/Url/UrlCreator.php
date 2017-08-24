@@ -1,6 +1,8 @@
 <?php
 namespace Laranix\Support\IO\Url;
 
+use Laranix\Support\Settings;
+
 abstract class UrlCreator
 {
     /**
@@ -18,6 +20,14 @@ abstract class UrlCreator
     protected $cache = [];
 
     /**
+     * Create and return string output
+     *
+     * @param \Laranix\Support\Settings $settings
+     * @return string
+     */
+    abstract protected function createOutput(Settings $settings) : string;
+
+    /**
      * Url constructor.
      *
      * @param $appUrl
@@ -25,6 +35,25 @@ abstract class UrlCreator
     public function __construct(?string $appUrl)
     {
         $this->appUrl = $appUrl ?? $this->getAppUrl();
+    }
+
+    /**
+     * Make url string
+     *
+     * @param \Laranix\Support\Settings $settings
+     * @return string
+     */
+    public function make(Settings $settings) : string
+    {
+        $cacheKey = $this->getCacheKey($settings);
+
+        if ($this->hasCachedData($cacheKey)) {
+            return $this->getCachedData($cacheKey);
+        }
+
+        $settings->hasRequiredSettings();
+
+        return $this->cacheData($cacheKey, $this->createOutput($settings));
     }
 
     /**
