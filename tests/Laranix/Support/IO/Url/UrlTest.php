@@ -85,8 +85,8 @@ class UrlTest extends LaranixTestCase
      */
     public function testMakeHref()
     {
-        $this->assertSame('<a href="#bar">foo</a>', Url::href('#bar', 'foo'));
-        $this->assertSame('<a href="http://foo.com" title="bar">foo</a>', Url::href('http://foo.com', 'foo', ['title' => 'bar']));
+        $this->assertSame('<a href="#bar">foo</a>', Url::href('foo', '#bar'));
+        $this->assertSame('<a href="http://foo.com" title="bar">foo</a>', Url::href('foo', 'http://foo.com', [ 'title' => 'bar' ]));
     }
 
     /**
