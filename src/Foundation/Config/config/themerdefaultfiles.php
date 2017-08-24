@@ -9,14 +9,27 @@ return [
      * Default stylesheets to load
      */
     'sheets'    => [
-         'semantic-css' => [
-            'file'  => 'semantic.min.css',
-            'url'   => 'https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.11/',
-            'order' => 1,
+        // Loaded on every page
+        'global'    => [
+            [
+                'key'       => 'semantic-css',
+                'filename'  => 'semantic.min.css',
+                'url'       => 'https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.11/',
+                'order'     => 1,
+            ],
+            [
+                'key'       => 'app-css',
+                'filename'  => 'app.min.css',
+                'order'     => 2,
+            ],
         ],
-        'app-css'   => [
-            'file'  => 'app.min.css',
-            'order' => 2,
+
+        // Loaded when form response prepared
+        'form' => [
+            [
+                'key'       => 'form-css',
+                'filename'  => 'form.min.css',
+            ],
         ],
     ],
 
@@ -24,19 +37,34 @@ return [
      * Default scripts to loads
      */
     'scripts'   => [
-        'jquery' => [
-            'file'  => 'jquery.min.js',
-            'url'   => 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/',
-            'order' => 1,
+        // Loaded on every page
+        'global'    => [
+            [
+                'key'       => 'jquery-base',
+                'filename'  => 'jquery.min.js',
+                'url'       => 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/',
+                'order'     => 1,
+            ],
+            [
+                'key'       => 'semantic-js',
+                'filename'  => 'semantic.min.js',
+                'url'       => 'https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.11/',
+                'order'     => 1,
+            ],
+            [
+                'key'       => 'app-base-js',
+                'filename'  => 'app.js',
+                'order'     => 2,
+            ],
         ],
-        'semantic-js' => [
-            'file'  => 'semantic.min.js',
-            'url'   => 'https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.11/',
-            'order' => 1,
-        ],
-        'app-main' =>  [
-            'file'  => 'app.js',
-            'order' => 2,
+
+        // Loaded when form response prepared
+        'form' => [
+            [
+                'key'       => 'form-base-js',
+                'filename'  => 'forms/form.js',
+                'order'     => 5,
+            ],
         ],
     ],
 ];
