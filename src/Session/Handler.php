@@ -37,6 +37,7 @@ class Handler implements SessionHandlerInterface
      * Create a new database session handler instance.
      *
      * @param \Illuminate\Contracts\Config\Repository $config
+     * @param \Illuminate\Http\Request                $request
      */
     public function __construct(Repository $config, Request $request)
     {
