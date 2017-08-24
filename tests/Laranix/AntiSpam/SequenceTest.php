@@ -1,7 +1,6 @@
 <?php
 namespace Laranix\Tests\Laranix\AntiSpam;
 
-use GuzzleHttp\Client as GuzzleClient;
 use Illuminate\Contracts\Session\Session;
 use Illuminate\Contracts\View\Factory as ViewFactory;
 use Illuminate\Http\RedirectResponse;
@@ -18,7 +17,7 @@ class SequenceTest extends LaranixTestCase
      */
     public function testWhenEnabledIsFalse()
     {
-        list($config, $request, $view, $guzzle) = $this->getConstructorArgs(false);
+        list($config, $request, $view) = $this->getConstructorArgs(false);
 
         $sequence = new Sequence($config, $request, $view);
 
@@ -33,7 +32,7 @@ class SequenceTest extends LaranixTestCase
      */
     public function testWhenEnvironmentIsDisabled()
     {
-        list($config, $request, $view, $guzzle) = $this->getConstructorArgs(true, 'disabled1');
+        list($config, $request, $view) = $this->getConstructorArgs(true, 'disabled1');
 
         $sequence = new Sequence($config, $request, $view);
 
@@ -48,7 +47,7 @@ class SequenceTest extends LaranixTestCase
      */
     public function testRenderWhenEnabled()
     {
-        list($config, $request, $view, $guzzle) = $this->getConstructorArgs();
+        list($config, $request, $view) = $this->getConstructorArgs();
 
         $view->shouldReceive('exists')->andReturn(true);
         $view->shouldReceive('make')->andReturnSelf();
@@ -67,7 +66,7 @@ class SequenceTest extends LaranixTestCase
      */
     public function testRenderThrowsExceptionWhenViewNotFound()
     {
-        list($config, $request, $view, $guzzle) = $this->getConstructorArgs();
+        list($config, $request, $view) = $this->getConstructorArgs();
 
         $view->shouldReceive('exists')->withAnyArgs()->andReturn(false);
         $view->shouldReceive('make')->withAnyArgs()->andReturnSelf();
@@ -84,7 +83,7 @@ class SequenceTest extends LaranixTestCase
      */
     public function testVerifyReturnsFalseWhenFieldNotFound()
     {
-        list($config, $request, $view, $guzzle) = $this->getConstructorArgs();
+        list($config, $request, $view) = $this->getConstructorArgs();
 
         $request->shouldReceive('has')->andReturn(false);
 
@@ -96,7 +95,7 @@ class SequenceTest extends LaranixTestCase
      */
     public function testVerifyReturnsFalseWhenSessionNotSet()
     {
-        list($config, $request, $view, $guzzle) = $this->getConstructorArgs();
+        list($config, $request, $view) = $this->getConstructorArgs();
 
         $request->shouldReceive('has')->andReturn(true);
 
@@ -113,7 +112,7 @@ class SequenceTest extends LaranixTestCase
      */
     public function testVerifyReturnsFalseWhenSequenceDoesNotAddUp()
     {
-        list($config, $request, $view, $guzzle) = $this->getConstructorArgs();
+        list($config, $request, $view) = $this->getConstructorArgs();
 
         $value = random_int(100, 10000);
         $add = random_int(10, 1000);
@@ -148,7 +147,7 @@ class SequenceTest extends LaranixTestCase
      */
     public function testVerifyReturnsTrue()
     {
-        list($config, $request, $view, $guzzle) = $this->getConstructorArgs();
+        list($config, $request, $view) = $this->getConstructorArgs();
 
         $value = random_int(100, 10000);
         $add = random_int(10, 1000);
@@ -183,7 +182,7 @@ class SequenceTest extends LaranixTestCase
      */
     public function testRedirect()
     {
-        list($config, $request, $view, $guzzle) = $this->getConstructorArgs();
+        list($config, $request, $view) = $this->getConstructorArgs();
 
         $this->get('/foo', ['referer' => 'https://foo.com/recaptcha']);
 
@@ -224,7 +223,6 @@ class SequenceTest extends LaranixTestCase
             $config,
             m::mock(Request::class),
             m::mock(ViewFactory::class),
-            m::mock(GuzzleClient::class),
         ];
     }
 }

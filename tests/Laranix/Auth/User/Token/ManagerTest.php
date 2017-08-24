@@ -4,7 +4,6 @@ namespace Laranix\Tests\Auth\User\Token;
 use Illuminate\Config\Repository;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Mail\Mailer;
-use Laranix\AppSettings\AppSettings;
 use Laranix\Auth\User\Token\Token;
 use Laranix\Support\Exception\NullValueException;
 use Laranix\Tests\LaranixTestCase;
