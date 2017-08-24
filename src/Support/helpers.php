@@ -41,12 +41,12 @@ if (!function_exists('urlHref')) {
     /**
      * Create an HTML a tag
      *
-     * @param string $url
      * @param string $content
+     * @param string $url
      * @param array  $params
      * @return string
      */
-    function urlHref(string $url, string $content, array $params = []) : string
+    function urlHref(string $content, string $url, array $params = []) : string
     {
         return Url::href($url, $content, $params);
     }

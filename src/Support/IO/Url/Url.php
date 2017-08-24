@@ -129,30 +129,45 @@ class Url
     /**
      * HTML tagged URL
      *
-     * @param string $url
      * @param string $content
-     * @param array  $params
+     * @param string $url
+     * @param array  $attributes
      * @return string
      */
-    public static function href(string $url, string $content, array $params = []) : string
+    public static function href(string $content, string $url, array $attributes = []) : string
     {
-        $cacheKey = self::cacheKey([$url, $content, $params]);
+        $cacheKey = self::cacheKey([$content, $url, $attributes]);
 
         if (self::hasCachedHref($cacheKey)) {
             return self::getCachedHref($cacheKey);
         }
 
-        if (!empty($params)) {
-            $extra = [];
+        return self::cacheHref($cacheKey,
+                               sprintf('<a href="%s"%s>%s</a>',
+                                       $url,
+                                       self::getHrefAttributes($attributes),
+                                       $content));
+    }
 
-            foreach ($params as $key => $param) {
-                $extra[] = $key . '="' . $param . '"';
-            }
-
-            $properties = ' ' . implode(' ', $extra);
+    /**
+     * @param array|null $attributes
+     * @return null|string
+     */
+    protected static function getHrefAttributes(?array $attributes) : ?string
+    {
+        if (empty($attributes)) {
+            return null;
         }
 
-        return self::cacheHref($cacheKey, sprintf('<a href="%s"%s>%s</a>', $url, $properties ?? '', $content));
+
+
+        $extra = [];
+
+        foreach ($attributes as $attr => $value) {
+            $extra[] = $attr . '="' . $value . '"';
+        }
+
+        return implode(' ', $extra);
     }
 
     /**
