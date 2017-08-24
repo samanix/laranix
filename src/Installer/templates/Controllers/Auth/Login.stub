@@ -11,7 +11,6 @@ use Laranix\Auth\User\User;
 use Laranix\Support\Exception\ArgumentOutOfRangeException;
 use Laranix\Themer\Script\Settings as ScriptSettings;
 use Illuminate\Contracts\View\View;
-use Laranix\Support\IO\Url\Url;
 
 class Login extends Controller
 {
@@ -61,7 +60,7 @@ class Login extends Controller
         $user->updateLastLogin()->save();
 
         return redirect()
-                ->intended(Url::to($this->redirectPath()))
+                ->intended(urlTo($this->redirectPath()))
                 ->with([
                     // TODO Localise
                     'login_notice'          => true,
@@ -83,7 +82,7 @@ class Login extends Controller
 
         event(new Restricted($user, $message));
 
-        return redirect(Url::to('login'))
+        return redirect(urlTo('login'))
             ->withErrors([
                 'login_account_status' => $message,
             ])
@@ -141,7 +140,7 @@ class Login extends Controller
             return null;
         }
 
-        return redirect(Url::to('login'))
+        return redirect(urlTo('login'))
             ->with([
                 // TODO Localise phrases
                 'login_notice'          => true,

@@ -8,7 +8,6 @@ use Laranix\Auth\Password\Reset\Events\Reset as ResetEvent;
 use Laranix\Auth\User\Token\Token;
 use Laranix\Auth\User\User;
 use Laranix\Auth\Password\Reset\Reset;
-use Laranix\Support\IO\Url\Url;
 use Laranix\Tests\Http\HasSharedViewVariable;
 use Laranix\Tests\LaranixTestCase;
 use Illuminate\Support\Facades\Event;
@@ -150,7 +149,7 @@ class ResetTest extends LaranixTestCase
         $response->assertRedirect('password/reset/error');
 
         $response->assertSessionHas([
-            'password_reset_error_message'   => 'Your token has expired, please <a href="' . Url::to('password/forgot') . '">request a new one</a>',
+            'password_reset_error_message'   => 'Your token has expired, please <a href="' . urlTo('password/forgot') . '">request a new one</a>',
         ]);
     }
 

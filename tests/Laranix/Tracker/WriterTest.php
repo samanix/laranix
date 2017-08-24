@@ -3,7 +3,6 @@ namespace Laranix\Tests\Laranix\Tracker;
 
 use Illuminate\Config\Repository;
 use Illuminate\Http\Request;
-use Laranix\Support\IO\Url\Url;
 use Laranix\Tracker\Events\BatchCreated;
 use Laranix\Tracker\Tracker;
 use Laranix\Tracker\Writer;
@@ -160,7 +159,7 @@ class WriterTest extends LaranixTestCase
 
         $this->assertDatabaseHas(config('tracker.table', 'tracker'), [
             'request_method'        => 'GET',
-            'request_url'           => Url::to('/foo/bar'),
+            'request_url'           => urlTo('/foo/bar'),
             'tracker_type_id'       => 400,
             'tracker_type'          => 'foobar',
             'tracker_item_id'       => null,

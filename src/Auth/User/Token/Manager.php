@@ -11,7 +11,6 @@ use Laranix\Support\Exception\InvalidPermissionException;
 use Laranix\Support\Exception\NullValueException;
 use Laranix\Support\Mail\Mail;
 use Laranix\Support\Mail\MailSettings;
-use Laranix\Support\IO\Url\Url;
 
 abstract class Manager
 {
@@ -430,7 +429,7 @@ abstract class Manager
 
         $route = route($this->config->get("laranixauth.{$this->configKey}.route"), [], false);
 
-        return Url::to($route, ['token' => $token->token, 'email' => $token->email]);
+        return urlTo($route, ['token' => $token->token, 'email' => $token->email]);
     }
 
     /**

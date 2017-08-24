@@ -5,7 +5,6 @@ use Laranix\Auth\Events\Login\Restricted;
 use Laranix\Auth\User\User;
 use Laranix\Tests\Http\HasSharedViewVariable;
 use Laranix\Tests\LaranixTestCase;
-use Laranix\Support\IO\Url\Url;
 use Illuminate\Support\Facades\Event;
 
 
@@ -44,7 +43,7 @@ class LoginTest extends LaranixTestCase
     {
         $this->createFactories();
 
-        $response = $this->post('login', ['email' => 'foo@baz.com', 'password' => 'secret'], ['HTTP_REFERER' => Url::to('login')]);
+        $response = $this->post('login', ['email' => 'foo@baz.com', 'password' => 'secret'], ['HTTP_REFERER' => urlTo('login')]);
 
         $response->assertStatus(302);
 

@@ -9,7 +9,6 @@ use Laranix\Auth\Password\{Hasher as PasswordHasher, HashesPasswords};
 use Laranix\Auth\Password\Reset\Manager as PasswordResetManager;
 use Laranix\Auth\User\Token\Token;
 use Laranix\Themer\Script\Settings as ScriptSettings;
-use Laranix\Support\IO\Url\Url;
 
 class Reset extends Controller implements PasswordHasher
 {
@@ -112,7 +111,7 @@ class Reset extends Controller implements PasswordHasher
     protected function redirectAfterValidReset() : RedirectResponse
     {
         // TODO Localise
-        return redirect(Url::to('login'))
+        return redirect(urlTo('login'))
             ->with([
                 'login_notice'          => true,
                 'login_notice_header'   => 'Password Reset Successfully',
@@ -131,12 +130,12 @@ class Reset extends Controller implements PasswordHasher
     {
         // TODO Localise
         if ($resetResult === Token::TOKEN_EXPIRED) {
-            $message = 'Your token has expired, please <a href="' . Url::to('password/forgot') . '">request a new one</a>';
+            $message = 'Your token has expired, please <a href="' . urlTo('password/forgot') . '">request a new one</a>';
         } else {
             $message = 'The provided information does not match our records.';
         }
 
-        return redirect(Url::to('password/reset/error'))
+        return redirect(urlTo('password/reset/error'))
             ->with([
                 'password_reset_error_message'   => $message,
             ]);

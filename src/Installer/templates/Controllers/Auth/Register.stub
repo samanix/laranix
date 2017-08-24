@@ -10,7 +10,6 @@ use Laranix\Auth\Group\Repository as GroupRepository;
 use Laranix\Auth\User\Groups\{UserGroupAdder, AddsUserToGroup};
 use Laranix\Auth\User\{CreatesUsers, UserCreator};
 use Laranix\Auth\Email\Verification\Manager as VerificationManager;
-use Laranix\Support\IO\Url\Url;
 use Laranix\Themer\Script\Settings as ScriptSettings;
 
 class Register extends Controller implements UserCreator, UserGroupAdder
@@ -67,7 +66,7 @@ class Register extends Controller implements UserCreator, UserGroupAdder
 
             event(new Registered($user));
 
-            return redirect(Url::to('register/success'))
+            return redirect(urlTo('register/success'))
                     ->with([
                         'registered_username'   => $user->username,
                         'registered_email'      => $user->email,
@@ -121,7 +120,7 @@ class Register extends Controller implements UserCreator, UserGroupAdder
 
         // Any values are null then redirect
         if (in_array(null, $data, true)) {
-            return redirect(Url::to('register'));
+            return redirect(urlTo('register'));
         }
 
         $session->keep('registered_username', 'registered_email', 'verify_token_expiry', 'token_valid_for');

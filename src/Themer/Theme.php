@@ -2,7 +2,6 @@
 namespace Laranix\Themer;
 
 use Illuminate\Support\Str;
-use Laranix\Support\IO\Url\Url;
 
 class Theme
 {
@@ -120,7 +119,7 @@ class Theme
             return $this->fullWebPath = $path;
         }
 
-        return $this->fullWebPath = Url::url(ltrim($path, '/'));
+        return $this->fullWebPath = urlTo(ltrim($path, '/'));
     }
 
     /**

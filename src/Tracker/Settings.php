@@ -2,7 +2,6 @@
 namespace Laranix\Tracker;
 
 use Illuminate\Http\Request;
-use Laranix\Support\IO\Url\Url;
 use Laranix\Support\Settings as BaseSettings;
 
 class Settings extends BaseSettings
@@ -117,7 +116,7 @@ class Settings extends BaseSettings
         $this->ipv4 = ip2long($request->getClientIp());
         $this->userAgent = $request->server('HTTP_USER_AGENT');
         $this->method = $request->getMethod();
-        $this->url = Url::self();
+        $this->url = urlSelf();
 
         if ($this->user === -1) {
             /** @var \Laranix\Auth\User\User $user */
