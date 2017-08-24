@@ -28,7 +28,7 @@ class HomeTest extends BrowserTestCase
         $this->browse(function (Browser $browser) {
             $browser->visit('/')
                     ->assertSeeIn('#content-wrapper', 'WELCOME')
-                    ->assertSeeIn('#main-menu', 'Login');
+                    ->assertSeeIn('.main-menu', 'Login');
         });
     }
 
@@ -57,7 +57,7 @@ class HomeTest extends BrowserTestCase
 
         $this->browse(function (Browser $browser, Browser $browser2) {
             $browser->visit('/')
-                    ->assertSourceHas('<a class="item active">Home</a>');
+                    ->assertSourceHas('<a class="item active" href="http://homestead.app">Home</a>');
 
             $browser2->loginAs(1)
                      ->visit('/')
