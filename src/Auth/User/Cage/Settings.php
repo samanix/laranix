@@ -1,7 +1,6 @@
 <?php
 namespace Laranix\Auth\User\Cage;
 
-use Illuminate\Http\Request;
 use Laranix\Support\Settings as BaseSettings;
 
 class Settings extends BaseSettings

@@ -185,7 +185,8 @@ abstract class Manager
      *
      * @param \Illuminate\Contracts\Auth\Authenticatable|User $user
      * @param string                                          $token
-     * @return \Laranix\Auth\User\Token\Token|\Laranix\Support\Database\Model
+     * @param string                                          $email
+     * @return \Laranix\Auth\User\Token\Token
      * @throws \Laranix\Support\Exception\NullValueException
      */
     protected function insertToken(?Authenticatable $user, string $token, string $email) : Token
@@ -196,7 +197,7 @@ abstract class Manager
 
         /** @var \Laranix\Auth\User\Token\Token $row */
         $row = $this->getModel()
-                    ->updateOrCreate([
+                    ->updateOrCreateNew([
                         'user_id'   => $user->getAuthIdentifier(),
                         'email'     => $email,
                         'token'     => $token,
@@ -291,6 +292,7 @@ abstract class Manager
      * Fire created event
      *
      * @param \Illuminate\Contracts\Auth\Authenticatable $user
+     * @param \Laranix\Auth\User\Token\Token             $token
      */
     protected function fireCreatedEvent(Authenticatable $user, Token $token)
     {
@@ -305,6 +307,7 @@ abstract class Manager
      * Fire updated event
      *
      * @param \Illuminate\Contracts\Auth\Authenticatable $user
+     * @param \Laranix\Auth\User\Token\Token             $token
      */
     protected function fireUpdatedEvent(Authenticatable $user, Token $token)
     {

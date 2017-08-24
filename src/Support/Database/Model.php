@@ -43,7 +43,7 @@ abstract class Model extends BaseModel
      * @param array $options
      * @return \Laranix\Support\Database\Model
      */
-    public function create(array $attributes, array $options = []) : Model
+    public function create(array $attributes = [], array $options = []) : Model
     {
         return $this->fillSave($attributes, $options);
     }
@@ -56,7 +56,7 @@ abstract class Model extends BaseModel
      * @param array         $options
      * @return \Laranix\Support\Database\Model
      */
-    public function updateOrCreate(array $attributes, $key, array $options = []) : Model
+    public function updateOrCreateNew(array $attributes, $key, array $options = []) : Model
     {
         $query = $this->newQuery();
 

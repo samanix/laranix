@@ -22,6 +22,7 @@ class Updated
      * Create a new event instance.
      *
      * @param \Laranix\Auth\User\User $user
+     * @param \Laranix\Auth\User\User $olduser
      */
     public function __construct(User $user, User $olduser)
     {

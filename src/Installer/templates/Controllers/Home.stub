@@ -1,6 +1,8 @@
 <?php
 namespace __UserAppNamespace__Http\Controllers;
 
+use Laranix\Foundation\Controllers\Controller;
+
 class Home extends Controller
 {
     /**

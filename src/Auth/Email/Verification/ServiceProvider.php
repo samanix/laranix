@@ -2,7 +2,6 @@
 namespace Laranix\Auth\Email\Verification;
 
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
-use Laranix\AppSettings\AppSettings;
 
 class ServiceProvider extends BaseServiceProvider
 {
@@ -19,7 +18,7 @@ class ServiceProvider extends BaseServiceProvider
     public function register()
     {
         $this->app->singleton(Manager::class, function ($app) {
-            return new Manager($app->make('config'), $app->make('mailer'), $app->make(AppSettings::class));
+            return new Manager($app->make('config'), $app->make('mailer'));
         });
     }
 

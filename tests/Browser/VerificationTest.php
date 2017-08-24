@@ -160,7 +160,7 @@ class VerificationTest extends BrowserTestCase
      */
     public function testVisitVerifyRefresh()
     {
-        $this->browse(function (Browser $browser, Browser $browser2) {
+        $this->browse(function (Browser $browser) {
             $browser->visit('/email/verify/refresh')
                     ->type('email', 'baz2@foo.com')
                     ->click('#submit-verify-email-refresh-form')

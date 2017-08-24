@@ -9,6 +9,7 @@ class PathTest extends LaranixTestCase
     /**
      * @dataProvider paths
      * @param $args
+     * @param $expected
      */
     public function testPathCombine($args, $expected)
     {

@@ -152,7 +152,7 @@ class Url
             $properties = ' ' . implode(' ', $extra);
         }
 
-        return self::cacheHref($cacheKey, sprintf('<a href="%s"%s>%s</a>', $url, $properties ?? '', $content));
+        return self::cacheHref($cacheKey, sprintf('<a href="%s" %s>%s</a>', $url, $properties ?? '', $content));
     }
 
     /**
@@ -205,16 +205,19 @@ class Url
     /**
      * Get the scheme from the domain
      *
-     * @return string
+     * @param null|string $domain
+     * @return null|string
      */
     protected static function tryGuessScheme(?string $domain) : ?string
     {
-        if (Str::startsWith($domain, 'https')) {
-            return 'https://';
-        }
+        if ($domain !== null) {
+            if (Str::startsWith($domain, 'https')) {
+                return 'https://';
+            }
 
-        if (Str::startsWith($domain, 'http')) {
-            return 'http://';
+            if (Str::startsWith($domain, 'http')) {
+                return 'http://';
+            }
         }
 
         return (isset($_SERVER['HTTPS']) && !empty($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) !== 'off') ? 'https://' : 'http://';

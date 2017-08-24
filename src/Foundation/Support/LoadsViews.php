@@ -32,8 +32,8 @@ trait LoadsViews
     {
         $share = [];
 
-        foreach ($config->get('globalviewvars') as $abstract) {
-            $share[] = $app->make($abstract);
+        foreach ($config->get('globalviewvars') as $name => $abstract) {
+            $share[$name] = $app->make($abstract);
         }
 
         $this->share($share);

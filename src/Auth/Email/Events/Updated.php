@@ -23,6 +23,7 @@ class Updated
      * Create a new event instance.
      *
      * @param \Illuminate\Contracts\Auth\Authenticatable|User $user
+     * @param string                                          $oldemail
      */
     public function __construct(Authenticatable $user, string $oldemail)
     {

@@ -4,7 +4,6 @@ namespace Laranix\Tests\Auth\User\Token;
 use Illuminate\Config\Repository;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Mail\Mailer;
-use Laranix\AppSettings\AppSettings;
 use Laranix\Auth\User\Token\Token;
 use Laranix\Support\Exception\NullValueException;
 use Laranix\Tests\LaranixTestCase;
@@ -24,9 +23,9 @@ class ManagerTest extends LaranixTestCase
     {
         $this->expectException(NullValueException::class);
 
-        list($config, $mailer, $appsettings) = $this->getMocks();
+        list($config, $mailer) = $this->getMocks();
 
-        new ManagerNoConfig($config, $mailer, $appsettings);
+        new ManagerNoConfig($config, $mailer);
     }
 
     /**
@@ -36,9 +35,9 @@ class ManagerTest extends LaranixTestCase
     {
         $this->expectException(NullValueException::class);
 
-        list($config, $mailer, $appsettings) = $this->getMocks();
+        list($config, $mailer) = $this->getMocks();
 
-        new ManagerNoModel($config, $mailer, $appsettings);
+        new ManagerNoModel($config, $mailer);
     }
 
     /**
@@ -48,11 +47,11 @@ class ManagerTest extends LaranixTestCase
     {
         $this->expectException(NullValueException::class);
 
-        list($config, $mailer, $appsettings) = $this->getMocks();
+        list($config, $mailer) = $this->getMocks();
 
         $mailer->shouldReceive('send')->andReturnSelf();
 
-        (new ManagerNoMailTemplate($config, $mailer, $appsettings))->sendMail($this->getUserMock(), $this->getTokenMock());
+        (new ManagerNoMailTemplate($config, $mailer))->sendMail($this->getUserMock(), $this->getTokenMock());
     }
 
     /**
@@ -78,7 +77,6 @@ class ManagerTest extends LaranixTestCase
                 ],
             ]),
             m::mock(Mailer::class),
-            m::mock(AppSettings::class),
         ];
     }
 

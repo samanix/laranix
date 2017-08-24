@@ -47,7 +47,7 @@
                 <div class="ui center aligned container">
                     <div class="ui checkbox">
                         <input type="checkbox" name="remember" tabindex="0" id="remember-me" {{ old('remember', false) ? 'checked' : ''}}>
-                        <label>Remember me</label>
+                        <label for="remember-me">Remember me</label>
                     </div>
                 </div>
             </div>
