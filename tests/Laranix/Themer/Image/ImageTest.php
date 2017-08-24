@@ -3,7 +3,7 @@ namespace Laranix\Tests\Laranix\Themer\Image;
 
 use Illuminate\Log\Writer;
 use Laranix\Support\Exception\NotImplementedException;
-use Laranix\Themer\Image\Image;
+use Laranix\Themer\Image\Images;
 use Laranix\Tests\LaranixTestCase;
 use Mockery as m;
 use Illuminate\Config\Repository;
@@ -20,7 +20,7 @@ class ImageTest extends LaranixTestCase
     protected $config;
 
     /**
-     * @var \Laranix\Themer\ThemerResource|Image
+     * @var \Laranix\Themer\ThemerResource|Images
      */
     protected $image;
 
@@ -43,7 +43,7 @@ class ImageTest extends LaranixTestCase
 
         $this->themer = new Themer($this->config, $request, new ThemeRepository($this->config));
 
-        $this->image = new Image($this->themer, $this->config, m::mock(Writer::class));
+        $this->image = new Images($this->themer, $this->config, m::mock(Writer::class));
     }
 
     /**

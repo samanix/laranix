@@ -4,7 +4,7 @@ namespace Laranix\Tests\Laranix\Themer\Scripts;
 use Illuminate\Log\Writer;
 use Laranix\Support\Exception\InvalidInstanceException;
 use Laranix\Support\Exception\KeyExistsException;
-use Laranix\Themer\Script\Script;
+use Laranix\Themer\Script\Scripts;
 use Laranix\Themer\Script\Settings;
 use Laranix\Tests\LaranixTestCase;
 use Mockery as m;
@@ -258,14 +258,14 @@ EXPECTED;
 
     /**
      * @param string $throw
-     * @return \Laranix\Themer\Script\Script
+     * @return \Laranix\Themer\Script\Scripts
      */
     protected function createScript($throw = KeyExistsException::class)
     {
         $writer = m::mock(Writer::class);
         $writer->shouldReceive('warning')->andThrow($throw);
 
-        return new Script($this->themer, $this->config, $writer);
+        return new Scripts($this->themer, $this->config, $writer);
     }
 
     /**
@@ -286,9 +286,9 @@ EXPECTED;
     /**
      * Get local scripts
      *
-     * @param \Laranix\Themer\Script\Script $script
+     * @param \Laranix\Themer\Script\Scripts $script
      */
-    protected function loadLocalScripts(Script $script)
+    protected function loadLocalScripts(Scripts $script)
     {
         $local = [
             'foo'       => $this->getSettings(['key' => 'foo',      'filename' => 'script.js',  'order' => 1]),
@@ -307,9 +307,9 @@ EXPECTED;
     /**
      * Get remote scripts
      *
-     * @param \Laranix\Themer\Script\Script $script
+     * @param \Laranix\Themer\Script\Scripts $script
      */
-    protected function loadRemoteScripts(Script $script)
+    protected function loadRemoteScripts(Scripts $script)
     {
         $remote = [
             'remote_foo'       => $this->getSettings(['key' => 'remote_foo',    'filename' => 'script.js', 'url' => 'http://foo.com', 'order' => 1]),

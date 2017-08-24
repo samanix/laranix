@@ -4,7 +4,7 @@ namespace Laranix\Tests\Laranix\Themer\Style;
 use Illuminate\Log\Writer;
 use Laranix\Support\Exception\InvalidInstanceException;
 use Laranix\Support\Exception\KeyExistsException;
-use Laranix\Themer\Style\Style;
+use Laranix\Themer\Style\Styles;
 use Laranix\Themer\Style\Settings;
 use Laranix\Tests\LaranixTestCase;
 use Mockery as m;
@@ -257,14 +257,14 @@ EXPECTED;
 
     /**
      * @param string $throw
-     * @return \Laranix\Themer\Style\Style
+     * @return \Laranix\Themer\Style\Styles
      */
     protected function createStyle($throw = KeyExistsException::class)
     {
         $writer = m::mock(Writer::class);
         $writer->shouldReceive('warning')->andThrow($throw);
 
-        return new Style($this->themer, $this->config, $writer);
+        return new Styles($this->themer, $this->config, $writer);
     }
 
     /**
@@ -285,9 +285,9 @@ EXPECTED;
     /**
      * Get local scripts
      *
-     * @param \Laranix\Themer\Style\Style $style
+     * @param \Laranix\Themer\Style\Styles $style
      */
-    protected function loadLocalStyle(Style $style)
+    protected function loadLocalStyle(Styles $style)
     {
         $local = [
             'foo'       => $this->getSettings(['key' => 'foo',      'filename' => 'style.css',  'order' => 1]),
@@ -306,9 +306,9 @@ EXPECTED;
     /**
      * Get remote scripts
      *
-     * @param \Laranix\Themer\Style\Style $style
+     * @param \Laranix\Themer\Style\Styles $style
      */
-    protected function loadRemoteStyle(Style $style)
+    protected function loadRemoteStyle(Styles $style)
     {
         $remote = [
             'remote_foo'       => $this->getSettings(['key' => 'remote_foo',      'filename' => 'style.css',    'url' => 'http://foo.com', 'order' => 1]),
