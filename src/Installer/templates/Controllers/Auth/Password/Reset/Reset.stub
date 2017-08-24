@@ -24,7 +24,7 @@ class Reset extends Controller implements PasswordHasher
      */
     public function getPasswordResetForm() : View
     {
-        $this->initForm(new ScriptSettings([
+        $this->prepareForFormResponse(new ScriptSettings([
             'key'   => 'pass-reset-form',
             'file'  => 'forms/passreset.js',
         ]));

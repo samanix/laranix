@@ -24,7 +24,7 @@ class Register extends Controller implements UserCreator, UserGroupAdder
      */
     public function getRegister() : View
     {
-        $this->initForm(new ScriptSettings([
+        $this->prepareForFormResponse(new ScriptSettings([
             'key'   => 'register-form',
             'file'  => 'forms/register.js',
         ]));

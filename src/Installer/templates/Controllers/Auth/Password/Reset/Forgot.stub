@@ -21,7 +21,7 @@ class Forgot extends Controller
      */
     public function getPasswordForgotForm() : View
     {
-        $this->initForm(new ScriptSettings([
+        $this->prepareForFormResponse(new ScriptSettings([
             'key'   => 'pass-forgot-form',
             'file'  => 'forms/passforgot.js',
         ]));

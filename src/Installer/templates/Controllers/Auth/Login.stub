@@ -29,7 +29,7 @@ class Login extends Controller
      */
     public function getLogin() : View
     {
-        $this->initForm(new ScriptSettings([
+        $this->prepareForFormResponse(new ScriptSettings([
             'key'   => 'login-form',
             'file'  => 'forms/login.js',
         ]));
