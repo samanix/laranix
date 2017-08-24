@@ -80,10 +80,6 @@ trait LoadsThemer
      */
     protected function loadStylesheet($settings)
     {
-        if ($settings === null) {
-            return $this;
-        }
-
         $this->styles->add($settings);
 
         return $this;
@@ -115,10 +111,6 @@ trait LoadsThemer
      */
     protected function loadScript($settings)
     {
-        if ($settings === null || !is_array($settings)) {
-            return $this;
-        }
-
         $this->scripts->add($settings);
 
         return $this;
