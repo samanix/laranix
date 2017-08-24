@@ -29,6 +29,7 @@ return [
             [
                 'key'       => 'form-css',
                 'filename'  => 'form.min.css',
+                'order'     => 3,
             ],
         ],
     ],
@@ -49,12 +50,12 @@ return [
                 'key'       => 'semantic-js',
                 'filename'  => 'semantic.min.js',
                 'url'       => 'https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/',
-                'order'     => 1,
+                'order'     => 2,
             ],
             [
                 'key'       => 'app-base-js',
                 'filename'  => 'app.js',
-                'order'     => 2,
+                'order'     => 3,
             ],
         ],
 
@@ -63,7 +64,7 @@ return [
             [
                 'key'       => 'form-base-js',
                 'filename'  => 'forms/form.js',
-                'order'     => 5,
+                'order'     => 4,
             ],
         ],
     ],
