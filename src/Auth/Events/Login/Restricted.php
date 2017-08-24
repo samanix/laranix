@@ -23,6 +23,7 @@ class Restricted
      * Create a new event instance.
      *
      * @param \Illuminate\Contracts\Auth\Authenticatable|User $user
+     * @param string                                          $message
      */
     public function __construct(Authenticatable $user, string $message)
     {

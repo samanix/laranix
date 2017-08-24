@@ -38,6 +38,13 @@ class UrlTest extends LaranixTestCase
      * Test url creation
      *
      * @dataProvider getUrlComponents
+     * @param $a
+     * @param $b
+     * @param $c
+     * @param $d
+     * @param $e
+     * @param $f
+     * @param $g
      */
     public function testCreateUrl($a, $b, $c, $d, $e, $f, $g)
     {

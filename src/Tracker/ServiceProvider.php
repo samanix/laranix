@@ -34,8 +34,6 @@ class ServiceProvider extends BaseServiceProvider
 
     /**
      * Boot method
-     *
-     * @return array
      */
     public function boot()
     {

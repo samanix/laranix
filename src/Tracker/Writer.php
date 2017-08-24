@@ -38,6 +38,7 @@ class Writer implements TrackWriter
      * Writer constructor.
      *
      * @param \Illuminate\Contracts\Config\Repository $config
+     * @param \Illuminate\Http\Request                $request
      */
     public function __construct(Config $config, Request $request)
     {
