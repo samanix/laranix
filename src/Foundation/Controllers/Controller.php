@@ -41,7 +41,7 @@ class Controller extends BaseController
      *
      * @var array
      */
-    protected $autoInitExcept = [];
+    protected $autoPrepareResponseExcept = [];
 
     /**
      * LaranixBaseController constructor.
@@ -116,7 +116,7 @@ class Controller extends BaseController
      */
     protected function shouldAutoPrepareForResponse() : bool
     {
-        if ($this->request->isMethod('get') && !in_array($this->request->path(), $this->autoInitExcept)) {
+        if ($this->request->isMethod('get') && !in_array($this->request->path(), $this->autoPrepareResponseExcept)) {
             return true;
         }
 
