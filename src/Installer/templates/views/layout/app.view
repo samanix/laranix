@@ -14,7 +14,7 @@
 
         <title>@yield('pagetitle', $config->get('app.name')) - {{ $config->get('app.name') }}</title>
 
-        {!! $style->output() !!}
+        {!! $styles->output() !!}
 
         <script type="application/javascript">
             let siteUrl = "{{ $config->get('app.url') }}",
