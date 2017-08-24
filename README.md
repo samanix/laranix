@@ -82,6 +82,7 @@ Add the following to your `config/app.php` in the `providers` array:
     Laranix\Auth\User\ServiceProvider::class,
     Laranix\Auth\ServiceProvider::class,
     Laranix\Foundation\Config\ServiceProvider::class,
+    Laranix\Foundation\Support\ServiceProvider::class,
 	Laranix\Session\ServiceProvider::class,
     Laranix\Themer\ServiceProvider::class,
     Indal\Markdown\MarkdownServiceProvider::class
