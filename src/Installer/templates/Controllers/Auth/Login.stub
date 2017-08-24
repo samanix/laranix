@@ -2,7 +2,7 @@
 namespace __UserAppNamespace__Http\Controllers\Auth;
 
 use Laranix\Auth\Events\Login\Restricted;
-use __UserAppNamespace__Http\Controllers\Controller;
+use Laranix\Foundation\Controllers\Controller;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\RedirectResponse;

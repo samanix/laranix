@@ -1,7 +1,7 @@
 <?php
 namespace __UserAppNamespace__Http\Controllers\Auth;
 
-use __UserAppNamespace__Http\Controllers\Controller;
+use Laranix\Foundation\Controllers\Controller;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\DatabaseManager;
