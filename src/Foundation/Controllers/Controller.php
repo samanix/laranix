@@ -156,9 +156,7 @@ class Controller extends BaseController
             'recaptcha' => $recaptcha,
         ]);
 
-        $this->loadThemerDefaultFormFiles($this->config, $recaptcha);
-
-        $this->loadScripts($scripts);
+        $this->loadThemerDefaultFormFiles($this->config, $recaptcha, $scripts);
     }
 
     /**

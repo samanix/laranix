@@ -55,11 +55,12 @@ trait LoadsThemer
      *
      * @param \Illuminate\Contracts\Config\Repository $config
      * @param \Laranix\AntiSpam\Recaptcha\Recaptcha   $recaptcha
+     * @param array                                   $scripts
      */
-    protected function loadThemerDefaultFormFiles(Repository $config, Recaptcha $recaptcha)
+    protected function loadThemerDefaultFormFiles(Repository $config, Recaptcha $recaptcha, ...$scripts)
     {
         $this->loadStylesheets($config->get('themerdefaultfiles.styles.form'));
-        $this->loadScripts($config->get('themerdefaultfiles.scripts.form'));
+        $this->loadScripts(array_merge($config->get('themerdefaultfiles.scripts.form'), $scripts[0]));
 
         if ($recaptcha->enabled()) {
             $this->loadScript([
