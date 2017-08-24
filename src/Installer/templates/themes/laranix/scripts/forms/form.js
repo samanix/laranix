@@ -1,7 +1,6 @@
 let formId, formValidationFields;
 
-
-window.addEventListener('DOMContentLoaded', function() {
+window.addEventListener('load', function() {
     let $_form = $('form#' + formId + '-form'),
         $_formInputs = $_form.find(':input'),
         _formHasCheckboxes = false;
@@ -19,7 +18,7 @@ window.addEventListener('DOMContentLoaded', function() {
         $('.ui.checkbox').checkbox();
     }
 
-    let _recaptchaElement = form + '-recaptcha-render',
+    let _recaptchaElement = $_form + '-recaptcha-render',
         _recaptcha_enabled = document.getElementById(_recaptchaElement);
 
     if (_recaptcha_enabled !== null) {
