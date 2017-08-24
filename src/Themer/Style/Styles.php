@@ -6,7 +6,7 @@ use Laranix\Themer\ResourceSettings;
 use Laranix\Themer\Theme;
 use Laranix\Themer\ThemerResource;
 
-class Style extends ThemerResource
+class Styles extends ThemerResource
 {
 //    /**
 //     * @var array

@@ -6,7 +6,7 @@ use Laranix\Themer\ResourceSettings;
 use Laranix\Themer\Theme;
 use Laranix\Themer\ThemerResource;
 
-class Script extends ThemerResource
+class Scripts extends ThemerResource
 {
     /**
      * Processed scripts, stored so as not to double compile in head/body

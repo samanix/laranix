@@ -4,9 +4,9 @@ namespace Laranix\Themer;
 use Illuminate\Foundation\Application;
 use Illuminate\Contracts\Config\Repository;
 use Laranix\AntiSpam\Recaptcha\Recaptcha;
-use Laranix\Themer\Script\Script;
-use Laranix\Themer\Style\Style;
-use Laranix\Themer\Image\Image;
+use Laranix\Themer\Script\Scripts;
+use Laranix\Themer\Style\Styles;
+use Laranix\Themer\Image\Images;
 
 trait LoadsThemer
 {
@@ -27,14 +27,14 @@ trait LoadsThemer
      */
     protected function loadThemer(Application $app)
     {
-        $this->styles     = $app->make(Style::class);
-        $this->scripts    = $app->make(Script::class);
+        $this->styles     = $app->make(Styles::class);
+        $this->scripts    = $app->make(Scripts::class);
 
         if (method_exists($this, 'share')) {
             $this->share([
                  'styles'  => $this->styles,
                  'scripts' => $this->scripts,
-                 'images'  => $app->make(Image::class),
+                 'images'  => $app->make(Images::class),
              ]);
         }
     }

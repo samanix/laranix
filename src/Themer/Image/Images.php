@@ -7,7 +7,7 @@ use Laranix\Themer\ResourceSettings;
 use Laranix\Themer\Theme;
 use Laranix\Themer\ThemerResource;
 
-class Image extends ThemerResource
+class Images extends ThemerResource
 {
     /**
      * Display an image
@@ -138,7 +138,7 @@ class Image extends ThemerResource
     }
 
     /**
-     * Image output string
+     * Images output string
      *
      * @param \Laranix\Themer\ResourceSettings|Settings $image
      * @return \Laranix\Themer\ResourceSettings

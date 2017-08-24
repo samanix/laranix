@@ -2,9 +2,9 @@
 namespace Laranix\Themer;
 
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
-use Laranix\Themer\Image\Image;
-use Laranix\Themer\Script\Script;
-use Laranix\Themer\Style\Style;
+use Laranix\Themer\Image\Images;
+use Laranix\Themer\Script\Scripts;
+use Laranix\Themer\Style\Styles;
 
 class ServiceProvider extends BaseServiceProvider
 {
@@ -26,16 +26,16 @@ class ServiceProvider extends BaseServiceProvider
             return new Themer($app->make('config'), $app->make('request'), $app->make(ThemeRepository::class));
         });
 
-        $this->app->singleton(Style::class, function ($app) {
-            return new Style($app->make(Themer::class), $app->make('config'), $app->make('log'));
+        $this->app->singleton(Styles::class, function ($app) {
+            return new Styles($app->make(Themer::class), $app->make('config'), $app->make('log'));
         });
 
-        $this->app->singleton(Script::class, function ($app) {
-            return new Script($app->make(Themer::class), $app->make('config'), $app->make('log'));
+        $this->app->singleton(Scripts::class, function ($app) {
+            return new Scripts($app->make(Themer::class), $app->make('config'), $app->make('log'));
         });
 
-        $this->app->singleton(Image::class, function ($app) {
-            return new Image($app->make(Themer::class), $app->make('config'), $app->make('log'));
+        $this->app->singleton(Images::class, function ($app) {
+            return new Images($app->make(Themer::class), $app->make('config'), $app->make('log'));
         });
     }
 
@@ -46,7 +46,7 @@ class ServiceProvider extends BaseServiceProvider
      */
     public function provides()
     {
-        return [Repository::class, Themer::class, Style::class, Script::class, Image::class];
+        return [Repository::class, Themer::class, Styles::class, Scripts::class, Images::class];
     }
 
     /**

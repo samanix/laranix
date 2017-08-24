@@ -14,7 +14,7 @@ class Settings extends BaseSettings
     ];
 
     /**
-     * Image file
+     * Images file
      *
      * @var string
      */
@@ -28,21 +28,21 @@ class Settings extends BaseSettings
     public $alt;
 
     /**
-     * Image title
+     * Images title
      *
      * @var string
      */
     public $title;
 
     /**
-     * Image width
+     * Images width
      *
      * @var int
      */
     public $width;
 
     /**
-     * Image height
+     * Images height
      *
      * @var int
      */

@@ -7,6 +7,6 @@ class Facade extends BaseFacade
 {
     protected static function getFacadeAccessor()
     {
-        return Script::class;
+        return Scripts::class;
     }
 }
