@@ -46,8 +46,8 @@ trait LoadsThemer
      */
     protected function loadThemerDefaultFiles(Repository $config)
     {
-        $this->loadStylesheets($config->get('styles.global'));
-        $this->loadScripts($config->get('scripts.global'));
+        $this->loadStylesheets($config->get('themerdefaultfiles.styles.global'));
+        $this->loadScripts($config->get('themerdefaultfiles.scripts.global'));
     }
 
     /**
@@ -58,8 +58,8 @@ trait LoadsThemer
      */
     protected function loadThemerDefaultFormFiles(Repository $config, Recaptcha $recaptcha)
     {
-        $this->loadStylesheets($config->get('styles.form'));
-        $this->loadScripts($config->get('scripts.form'));
+        $this->loadStylesheets($config->get('themerdefaultfiles.styles.form'));
+        $this->loadScripts($config->get('themerdefaultfiles.scripts.form'));
 
         if ($recaptcha->enabled()) {
             $this->loadScript([

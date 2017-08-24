@@ -8,7 +8,7 @@ return [
     /*
      * Default stylesheets to load
      */
-    'sheets'    => [
+    'styles'    => [
         // Loaded on every page
         'global'    => [
             [
