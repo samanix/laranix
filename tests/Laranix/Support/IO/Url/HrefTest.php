@@ -51,4 +51,16 @@ class HrefTest extends LaranixTestCase
         $this->assertSame('<a href="http://foo.com" title="bar">foo</a>', $this->href->create('foo', 'http://foo.com', [ 'title' => 'bar' ]));
         $this->assertSame('<a href="' . $this->baseurl . '/foo">bar</a>', $this->href->create('bar', 'foo'));
     }
+
+    /**
+     * Test making href with _blank target
+     */
+    public function testMakeHrefWithRel()
+    {
+        $this->assertSame('<a href="' . $this->baseurl . '/foo" target="_blank" rel="noreferrer noopener">bar</a>',
+                          $this->href->create('bar', 'foo', ['target' => '_blank']));
+
+        $this->assertSame('<a href="' . $this->baseurl . '" target="_blank" rel="nofollow">bar</a>',
+                          $this->href->create('bar', $this->baseurl, ['target' => '_blank', 'rel' => 'nofollow']));
+    }
 }

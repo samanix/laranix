@@ -97,6 +97,12 @@ class Href extends UrlCreator
             return null;
         }
 
+        if (isset($attributes['target']) && $attributes['target'] === '_blank') {
+            if (!isset($attributes['rel'])) {
+                $attributes['rel'] = 'noreferrer noopener';
+            }
+        }
+
         $extra = [];
 
         foreach ($attributes as $attr => $value) {
