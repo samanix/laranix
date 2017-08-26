@@ -103,9 +103,9 @@ Add the following to your `config/app.php` in then `aliases` array:
 
     'Recaptcha'     => Laranix\AntiSpam\Recaptcha\Facade::class,
     'Sequence'      => Laranix\AntiSpam\Sequence\Facade::class,
-    'Image'         => Laranix\Themer\Image\Facade::class,
-    'Script'        => Laranix\Themer\Script\Facade::class,
-    'Style'         => Laranix\Themer\Style\Facade::class,
+    'Images'        => Laranix\Themer\Image\Facade::class,
+    'Scripts'       => Laranix\Themer\Script\Facade::class,
+    'Styles'        => Laranix\Themer\Style\Facade::class,
 
 ### Artisan Commands
 Open `app/Console/Kernel.php` and add the following to the `$commands` array:
