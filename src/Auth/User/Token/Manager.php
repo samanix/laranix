@@ -101,13 +101,13 @@ abstract class Manager
     /**
      * Tokens constructor.
      *
-     * @param \Illuminate\Contracts\Config\Repository   $config
-     * @param \Illuminate\Contracts\Mail\Mailer         $mailer
+     * @param \Illuminate\Contracts\Config\Repository $config
+     * @param \Illuminate\Contracts\Mail\Mailer       $mailer
      */
     public function __construct(Repository $config, Mailer $mailer)
     {
-        $this->config       = $config;
-        $this->mailer       = $mailer;
+        $this->config   = $config;
+        $this->mailer   = $mailer;
 
         $this->checkPropertiesAreSet();
     }
