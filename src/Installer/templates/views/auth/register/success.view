@@ -25,10 +25,10 @@
         </div>
         <div class="ui bottom attached warning message">
             <div class="ui link list">
-                <a class="item" href="{{ urlTo('email/verify/refresh') }}">
+                <a class="item" href="{{ $url->to('email/verify/refresh') }}">
                     <div class="content">Need a new verification code?</div>
                 </a>
-                <a class="item" href="{{ urlTo('contact') }}">
+                <a class="item" href="{{ $url->to('contact') }}">
                     <div class="content">Entered the wrong email?</div>
                 </a>
             </div>

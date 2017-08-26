@@ -22,7 +22,7 @@
             </div>
         </div>
 
-        <form class="ui form attached segment" method="post" action="{{ urlTo('login') }}" id="login-form">
+        <form class="ui form attached segment" method="post" action="{{ $url->to('login') }}" id="login-form">
 
             {!! csrf_field() !!}
             {!! $sequence->render() !!}
@@ -63,15 +63,15 @@
 
         <div class="ui bottom attached warning message">
             <div class="ui link list">
-                <a class="item" href="{{ urlTo('password/forgot') }}">
+                <a class="item" href="{{ $url->to('password/forgot') }}">
                     <div class="content">Forgotten your password?</div>
                 </a>
 
-                <a class="item" href="{{ urlTo('register') }}">
+                <a class="item" href="{{ $url->to('register') }}">
                     <div class="content">Need to register?</div>
                 </a>
 
-                <a class="item" href="{{ urlTo('email/verify/refresh') }}">
+                <a class="item" href="{{ $url->to('email/verify/refresh') }}">
                     <div class="content">Need a new verification code?</div>
                 </a>
             </div>

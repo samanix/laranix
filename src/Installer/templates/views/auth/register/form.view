@@ -21,7 +21,7 @@
                 Register a new account with us.
             </div>
         </div>
-        <form class="ui form attached segment" method="post" action="{{ urlTo('register') }}" id="register-form" autocomplete="off">
+        <form class="ui form attached segment" method="post" action="{{ $url->to('register') }}" id="register-form" autocomplete="off">
 
             {!! csrf_field() !!}
             {!! $sequence->render() !!}
@@ -47,7 +47,7 @@
             <div class="field">
                 <label>Email</label>
                 <div class="description">
-                    If your email is already registered, please <a href="{{ urlTo('password/reset') }}">reset your password</a> or <a href="{{ urlTo('contact') }}">contact us</a>.
+                    If your email is already registered, please <a href="{{ $url->to('password/reset') }}">reset your password</a> or <a href="{{ $url->to('contact') }}">contact us</a>.
                 </div>
                 <div class="ui left icon input">
                     <i class="mail icon"></i>
@@ -116,7 +116,7 @@
                 <div class="ui center aligned container">
                     <div class="ui checkbox">
                         <input title="Terms" type="checkbox" name="terms" tabindex="0" id="terms" {{ old('terms', false) ? 'checked' : ''}}>
-                        <label>I have read and accept the <a href="{{ urlTo('terms') }}" target="_blank">terms and conditions</a></label>
+                        <label>I have read and accept the <a href="{{ $url->to('terms') }}" target="_blank">terms and conditions</a></label>
                     </div>
                 </div>
             </div>

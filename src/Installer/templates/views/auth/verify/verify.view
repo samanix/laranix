@@ -22,7 +22,7 @@
             </div>
         </div>
 
-        <form class="ui form attached segment" method="post" action="{{ urlTo('email/verify') }}" id="verify-email-form" autocomplete="off">
+        <form class="ui form attached segment" method="post" action="{{ $url->to('email/verify') }}" id="verify-email-form" autocomplete="off">
 
             {!! csrf_field() !!}
             {!! $sequence->render() !!}
@@ -60,7 +60,7 @@
 
         <div class="ui bottom attached warning message">
             <div class="ui link list">
-                <a class="item" href="{{ urlTo('email/verify/refresh') }}">
+                <a class="item" href="{{ $url->to('email/verify/refresh') }}">
                     <div class="content">Need a new verification email?</div>
                 </a>
             </div>
