@@ -108,7 +108,10 @@ Add the following to your `config/app.php` in then `aliases` array:
     'Style'         => Laranix\Themer\Style\Facade::class,
 
 ### Artisan Commands
-Open `app/Console/Kernel.php` and add `\Laranix\Installer\InstallLaranixCommand::class` to the `$commands` array.
+Open `app/Console/Kernel.php` and add the following to the `$commands` array:
+
+    \Laranix\Installer\InstallLaranixCommand::class,
+    \Laranix\Themer\Commands\ClearCompiled::class
 
 * Make sure to remove the default Laravel user and password migrations from 'database/migrations/'
 * You can also remove from the relevant app folders:
