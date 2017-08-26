@@ -177,7 +177,7 @@ class Verification extends Controller
             }
         }
 
-        return redirect(urlTo('email/verify/refresh'))
+        return redirect($this->url->to('email/verify/refresh'))
             ->with('verify_refresh_message',
                    'If the email is registered in our system, you will receive an email with a new verification code shortly');
     }
@@ -190,12 +190,12 @@ class Verification extends Controller
     protected function redirectAfterValidVerification() : RedirectResponse
     {
         if ($this->request->user() === null) {
-            $message = 'Your email has been verified, you may now <a href="' . urlTo('login') . '">login</a>';
+            $message = 'Your email has been verified, you may now <a href="' . $this->url->to('login') . '">login</a>';
         } else {
             $message = 'Your email has been updated';
         }
 
-        return redirect(urlTo('email/verify/result'))
+        return redirect($this->url->to('email/verify/result'))
             ->with([
                 // TODO Localise
                 'verification_notice_header'   => 'Email Verified',
@@ -213,12 +213,12 @@ class Verification extends Controller
     protected function redirectAfterInvalidVerification(int $verifyResult) : RedirectResponse
     {
         if ($verifyResult === Token::TOKEN_EXPIRED) {
-            $message = 'Your token has expired, please <a href="' . urlTo('email/verify/refresh') . '">request a new one</a>';
+            $message = 'Your token has expired, please <a href="' . $this->url->to('email/verify/refresh') . '">request a new one</a>';
         } else {
             $message = 'The provided information does not match our records';
         }
 
-        return redirect(urlTo('email/verify/result'))
+        return redirect($this->url->to('email/verify/result'))
             ->with([
                 'verification_notice_header'   => 'Email Verification Error',
                 'verification_notice_message'  => $message,

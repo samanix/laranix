@@ -66,7 +66,7 @@ class Register extends Controller implements UserCreator, UserGroupAdder
 
             event(new Registered($user));
 
-            return redirect(urlTo('register/success'))
+            return redirect($this->url->to('register/success'))
                     ->with([
                         'registered_username'   => $user->username,
                         'registered_email'      => $user->email,
@@ -120,7 +120,7 @@ class Register extends Controller implements UserCreator, UserGroupAdder
 
         // Any values are null then redirect
         if (in_array(null, $data, true)) {
-            return redirect(urlTo('register'));
+            return redirect($this->url->to('register'));
         }
 
         $session->keep('registered_username', 'registered_email', 'verify_token_expiry', 'token_valid_for');

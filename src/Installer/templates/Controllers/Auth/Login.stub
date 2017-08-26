@@ -60,7 +60,7 @@ class Login extends Controller
         $user->updateLastLogin()->save();
 
         return redirect()
-                ->intended(urlTo($this->redirectPath()))
+                ->intended($this->url->to($this->redirectPath()))
                 ->with([
                     // TODO Localise
                     'login_notice'          => true,
@@ -82,7 +82,7 @@ class Login extends Controller
 
         event(new Restricted($user, $message));
 
-        return redirect(urlTo('login'))
+        return redirect($this->url->to('login'))
             ->withErrors([
                 'login_account_status' => $message,
             ])
@@ -140,7 +140,7 @@ class Login extends Controller
             return null;
         }
 
-        return redirect(urlTo('login'))
+        return redirect($this->url->to('login'))
             ->with([
                 // TODO Localise phrases
                 'login_notice'          => true,
