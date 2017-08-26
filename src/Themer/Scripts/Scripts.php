@@ -1,5 +1,5 @@
 <?php
-namespace Laranix\Themer\Script;
+namespace Laranix\Themer\Scripts;
 
 use Laranix\Support\IO\Str\Str;
 use Laranix\Themer\ResourceSettings;
@@ -152,7 +152,7 @@ class Scripts extends ThemerResource
      * @param \Laranix\Themer\Theme $theme
      * @param string                $type
      * @param string                $resource
-     * @return \Laranix\Themer\ResourceSettings|\Laranix\Themer\Script\Settings
+     * @return \Laranix\Themer\ResourceSettings|\Laranix\Themer\Scripts\Settings
      */
     protected function createLocalResourceFileSettings(Theme $theme, string $type, string $resource): ResourceSettings
     {
@@ -173,16 +173,6 @@ class Scripts extends ThemerResource
      * @return string
      */
     protected function getDirectory(): string
-    {
-        return 'scripts';
-    }
-
-    /**
-     * Set config key in themer config
-     *
-     * @return string
-     */
-    protected function getConfigKey(): string
     {
         return 'scripts';
     }

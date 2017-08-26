@@ -1,5 +1,5 @@
 <?php
-namespace Laranix\Themer\Image;
+namespace Laranix\Themer\Images;
 
 use Laranix\Support\Exception\NotImplementedException;
 use Laranix\Support\IO\Str\Str;
@@ -289,16 +289,6 @@ class Images extends ThemerResource
     protected function getDirectory(): string
     {
         return 'images';
-    }
-
-    /**
-     * Set config key in themer config
-     *
-     * @return string
-     */
-    protected function getConfigKey(): string
-    {
-        return 'image';
     }
 
     /**

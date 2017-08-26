@@ -77,13 +77,6 @@ abstract class ThemerResource
     abstract protected function getDirectory() : string;
 
     /**
-     * Set config key in themer config
-     *
-     * @return string
-     */
-    abstract protected function getConfigKey() : string;
-
-    /**
      * Set settings class name
      *
      * @return string|null
@@ -131,13 +124,6 @@ abstract class ThemerResource
      * @var string
      */
     protected $directory;
-
-    /**
-     * Config key in themer.php
-     *
-     * @var string
-     */
-    protected $configKey;
 
     /**
      * Resource settings class name
@@ -189,7 +175,6 @@ abstract class ThemerResource
         );
 
         $this->directory        = $this->getDirectory();
-        $this->configKey        = $this->getConfigKey();
         $this->settingsClass    = $this->getSettingsClass();
     }
 

@@ -1,5 +1,5 @@
 <?php
-namespace Laranix\Themer\Style;
+namespace Laranix\Themer\Styles;
 
 use Laranix\Support\IO\Str\Str;
 use Laranix\Themer\ResourceSettings;
@@ -129,7 +129,7 @@ class Styles extends ThemerResource
      * @param \Laranix\Themer\Theme $theme
      * @param string                $type
      * @param string                $resource
-     * @return \Laranix\Themer\ResourceSettings|\Laranix\Themer\Style\Settings
+     * @return \Laranix\Themer\ResourceSettings|\Laranix\Themer\Styles\Settings
      */
     protected function createLocalResourceFileSettings(Theme $theme, string $type, string $resource): ResourceSettings
     {
@@ -149,16 +149,6 @@ class Styles extends ThemerResource
      * @return string
      */
     protected function getDirectory(): string
-    {
-        return 'styles';
-    }
-
-    /**
-     * Set config key in themer config
-     *
-     * @return string
-     */
-    protected function getConfigKey(): string
     {
         return 'styles';
     }
