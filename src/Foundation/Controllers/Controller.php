@@ -9,6 +9,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Laranix\AntiSpam\Sequence\Sequence;
 use Laranix\AntiSpam\Recaptcha\Recaptcha;
 use Laranix\Support\IO\LoadsViews;
+use Laranix\Support\IO\Url\Url;
 use Laranix\Themer\LoadsThemer;
 use Laranix\Themer\ResourceSettings as ThemerFileSettings;
 
@@ -37,6 +38,11 @@ class Controller extends BaseController
     protected $config;
 
     /**
+     * @var \Laranix\Support\IO\Url\Url
+     */
+    protected $url;
+
+    /**
      * Ignore paths for themer auto init
      *
      * @var array
@@ -53,6 +59,7 @@ class Controller extends BaseController
         $this->app      = $application;
         $this->request  = $this->app->make('request');
         $this->config   = $this->app->make('config');
+        $this->url      = $this->app->make(Url::class);
 
         if ($this->shouldAutoPrepareForResponse()) {
             $this->prepareForResponse();

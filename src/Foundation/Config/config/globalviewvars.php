@@ -9,4 +9,6 @@ return [
      */
     'auth'          => 'auth.driver',
     'config'        => 'config',
+    'url'           => \Laranix\Support\IO\Url\Url::class,
+    'href'          => \Laranix\Support\IO\Url\Href::class,
 ];
