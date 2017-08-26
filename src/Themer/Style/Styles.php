@@ -8,11 +8,6 @@ use Laranix\Themer\ThemerResource;
 
 class Styles extends ThemerResource
 {
-//    /**
-//     * @var array
-//     */
-//    protected $devices = ['all', 'print', 'screen', 'speech'];
-
     /**
      * Get repository key for remote resources
      *
@@ -21,7 +16,7 @@ class Styles extends ThemerResource
      */
     protected function getRemoteResourceRepositoryKey(ResourceSettings $settings) : string
     {
-        return sprintf('style.remote.%d', $settings->order);
+        return sprintf('styles.remote.%d', $settings->order);
     }
 
     /**
@@ -32,7 +27,7 @@ class Styles extends ThemerResource
      */
     protected function getLocalResourceRepositoryKey(ResourceSettings $settings) : string
     {
-        return sprintf('style.local.%s.%s.%d', $settings->theme->getKey(), $this->crcCache($settings->media), $settings->order);
+        return sprintf('styles.local.%s.%s.%d', $settings->theme->getKey(), $this->crcCache($settings->media), $settings->order);
     }
 
     /**
@@ -55,7 +50,7 @@ class Styles extends ThemerResource
     protected function getResourcePayload(array $options = []) : ?array
     {
         $local  = $this->parseLocalResources($this->resources->get('compiled'));
-        $remote = $this->resources->get('style.remote');
+        $remote = $this->resources->get('styles.remote');
 
         $sheets = $this->mergeResourceArrays($local, $remote);
 
@@ -90,7 +85,7 @@ class Styles extends ThemerResource
                 $compiledResourceFilePath   = $this->getResourcePath($compiledResources, $theme);
 
                 if (!is_file($compiledResourceFilePath)) {
-                    $this->mergeResources($theme, sprintf('style.local.%s.%s', $theme->getKey(), $media), $compiledResourceFilePath);
+                    $this->mergeResources($theme, sprintf('styles.local.%s.%s', $theme->getKey(), $media), $compiledResourceFilePath);
                 }
 
                 $stylesheets[] = $this->createLocalResourceFileSettings($theme, $media, $compiledResources);
@@ -155,7 +150,7 @@ class Styles extends ThemerResource
      */
     protected function getDirectory(): string
     {
-        return 'style';
+        return 'styles';
     }
 
     /**
@@ -165,7 +160,7 @@ class Styles extends ThemerResource
      */
     protected function getConfigKey(): string
     {
-        return 'style';
+        return 'styles';
     }
 
     /**
