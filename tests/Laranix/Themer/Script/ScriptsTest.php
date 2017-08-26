@@ -14,8 +14,9 @@ use Laranix\Themer\Themer;
 use Laranix\Themer\ThemeRepository;
 use Laranix\Tests\Laranix\Themes\Stubs\Themes;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use Laranix\Support\IO\Url\Url;
 
-class ScriptTest extends LaranixTestCase
+class ScriptsTest extends LaranixTestCase
 {
     /**
      * @var \Illuminate\Contracts\Config\Repository
@@ -265,7 +266,7 @@ EXPECTED;
         $writer = m::mock(Writer::class);
         $writer->shouldReceive('warning')->andThrow($throw);
 
-        return new Scripts($this->themer, $this->config, $writer);
+        return new Scripts($this->themer, $this->config, $writer, new Url('http://homestead.app'));
     }
 
     /**

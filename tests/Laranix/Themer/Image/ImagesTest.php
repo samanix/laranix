@@ -3,6 +3,7 @@ namespace Laranix\Tests\Laranix\Themer\Image;
 
 use Illuminate\Log\Writer;
 use Laranix\Support\Exception\NotImplementedException;
+use Laranix\Support\IO\Url\Url;
 use Laranix\Themer\Image\Images;
 use Laranix\Tests\LaranixTestCase;
 use Mockery as m;
@@ -43,7 +44,7 @@ class ImageTest extends LaranixTestCase
 
         $this->themer = new Themer($this->config, $request, new ThemeRepository($this->config));
 
-        $this->image = new Images($this->themer, $this->config, m::mock(Writer::class));
+        $this->image = new Images($this->themer, $this->config, m::mock(Writer::class), new Url('http://homestead.app'));
     }
 
     /**
