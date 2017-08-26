@@ -113,10 +113,10 @@ class Settings extends BaseSettings
      */
     protected function parseDefaults(Request $request)
     {
-        $this->ipv4 = ip2long($request->getClientIp());
-        $this->userAgent = $request->server('HTTP_USER_AGENT');
-        $this->method = $request->getMethod();
-        $this->url = urlSelf();
+        $this->ipv4         = ip2long($request->getClientIp());
+        $this->userAgent    = $request->server('HTTP_USER_AGENT');
+        $this->method       = $request->getMethod();
+        $this->url          = urlSelf();
 
         if ($this->user === -1) {
             /** @var \Laranix\Auth\User\User $user */
