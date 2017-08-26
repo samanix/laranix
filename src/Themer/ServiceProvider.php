@@ -2,6 +2,7 @@
 namespace Laranix\Themer;
 
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
+use Laranix\Support\IO\Url\Url;
 use Laranix\Themer\Image\Images;
 use Laranix\Themer\Script\Scripts;
 use Laranix\Themer\Style\Styles;
@@ -27,15 +28,15 @@ class ServiceProvider extends BaseServiceProvider
         });
 
         $this->app->singleton(Styles::class, function ($app) {
-            return new Styles($app->make(Themer::class), $app->make('config'), $app->make('log'));
+            return new Styles($app->make(Themer::class), $app->make('config'), $app->make('log'), $app->make(Url::class));
         });
 
         $this->app->singleton(Scripts::class, function ($app) {
-            return new Scripts($app->make(Themer::class), $app->make('config'), $app->make('log'));
+            return new Scripts($app->make(Themer::class), $app->make('config'), $app->make('log'), $app->make(Url::class));
         });
 
         $this->app->singleton(Images::class, function ($app) {
-            return new Images($app->make(Themer::class), $app->make('config'), $app->make('log'));
+            return new Images($app->make(Themer::class), $app->make('config'), $app->make('log'), $app->make(Url::class));
         });
     }
 

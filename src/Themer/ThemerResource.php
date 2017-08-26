@@ -5,6 +5,7 @@ use Illuminate\Contracts\Logging\Log as Logger;
 use Illuminate\Contracts\Config\Repository as Config;
 use Laranix\Support\Exception\InvalidInstanceException;
 use Laranix\Support\IO\Path;
+use Laranix\Support\IO\Url\Url;
 use Laranix\Support\IO\Url\UrlSettings;
 use Laranix\Support\IO\Repository;
 
@@ -105,9 +106,9 @@ abstract class ThemerResource
     protected $logger;
 
     /**
-     * @var \Illuminate\Contracts\View\Factory
+     * @var \Laranix\Support\IO\Url\Url
      */
-    protected $viewFactory;
+    protected $url;
 
     /**
      * @var bool
@@ -172,13 +173,15 @@ abstract class ThemerResource
      * @param \Laranix\Themer\Themer                  $themer
      * @param \Illuminate\Contracts\Config\Repository $config
      * @param \Illuminate\Contracts\Logging\Log       $logger
-     * @throws \Laranix\Support\Exception\NullValueException
+     * @param \Laranix\Support\IO\Url\Url             $url
      */
-    public function __construct(Themer $themer, Config $config, Logger $logger)
+    public function __construct(Themer $themer, Config $config, Logger $logger, Url $url)
     {
-        $this->themer         = $themer;
-        $this->config         = $config;
-        $this->logger         = $logger;
+        $this->themer   = $themer;
+        $this->config   = $config;
+        $this->logger   = $logger;
+        $this->url      = $url;
+
         $this->resources      = new Repository();
         $this->mergeResources = !in_array(
             $this->config->get('app.env', 'production'),
@@ -446,7 +449,7 @@ abstract class ThemerResource
             return $this->webPaths[$theme->getKey()];
         }
 
-        return $this->webPaths[$theme->getKey()] = urlMake(new UrlSettings([
+        return $this->webPaths[$theme->getKey()] = $this->url->make(new UrlSettings([
             'domain'        => $theme->getWebPath(),
             'path'          => $this->directory,
         ]));

@@ -135,7 +135,7 @@ class Scripts extends ThemerResource
                 '<script type="application/javascript" src="{{url}}"{{async}}{{defer}}{{crossorigin}}{{integrity}}></script>';
 
             $output[] = Str::format($str, [
-                'url'           => urlCreate(null, $resource->url, $resource->filename),
+                'url'           => $this->url->create(null, $resource->url, $resource->filename),
                 'async'         => $resource->async ? ' async' : null,
                 'defer'         => $resource->defer ? ' defer' : null,
                 'crossorigin'   => $resource->crossorigin !== null ? ' crossorigin="' . $resource->crossorigin . '"' : null,

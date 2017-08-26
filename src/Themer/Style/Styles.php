@@ -119,7 +119,7 @@ class Styles extends ThemerResource
                 '<link rel="stylesheet" type="text/css" href="{{url}}" media="{{media}}" {{integrity}} />';
 
             $output[] = Str::format($str, [
-                'url'           => urlCreate(null, $resource->url, $resource->filename),
+                'url'           => $this->url->create(null, $resource->url, $resource->filename),
                 'media'         => $resource->media,
                 'integrity'     => $resource->integrity !== null ? ' integrity="' . $resource->integrity . '"' : null,
             ]);
