@@ -31,11 +31,11 @@ class ThemeRepository implements Repository
      * Repository constructor.
      *
      * @param \Illuminate\Contracts\Config\Repository $config
-     * @param bool                          $load
+     * @param bool                                    $load
      */
     public function __construct(Config $config, bool $load = true)
     {
-        $this->config = $config;
+        $this->config   = $config;
 
         if ($load) {
             $this->load();
