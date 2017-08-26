@@ -4,8 +4,8 @@ namespace Laranix\Tests\Laranix\Themer\Scripts;
 use Illuminate\Log\Writer;
 use Laranix\Support\Exception\InvalidInstanceException;
 use Laranix\Support\Exception\KeyExistsException;
-use Laranix\Themer\Script\Scripts;
-use Laranix\Themer\Script\Settings;
+use Laranix\Themer\Scripts\Scripts;
+use Laranix\Themer\Scripts\Settings;
 use Laranix\Tests\LaranixTestCase;
 use Mockery as m;
 use Illuminate\Config\Repository;
@@ -259,7 +259,7 @@ EXPECTED;
 
     /**
      * @param string $throw
-     * @return \Laranix\Themer\Script\Scripts
+     * @return \Laranix\Themer\Scripts\Scripts
      */
     protected function createScript($throw = KeyExistsException::class)
     {
@@ -287,7 +287,7 @@ EXPECTED;
     /**
      * Get local scripts
      *
-     * @param \Laranix\Themer\Script\Scripts $script
+     * @param \Laranix\Themer\Scripts\Scripts $script
      */
     protected function loadLocalScripts(Scripts $script)
     {
@@ -308,7 +308,7 @@ EXPECTED;
     /**
      * Get remote scripts
      *
-     * @param \Laranix\Themer\Script\Scripts $script
+     * @param \Laranix\Themer\Scripts\Scripts $script
      */
     protected function loadRemoteScripts(Scripts $script)
     {

@@ -4,8 +4,8 @@ namespace Laranix\Tests\Laranix\Themer\Style;
 use Illuminate\Log\Writer;
 use Laranix\Support\Exception\InvalidInstanceException;
 use Laranix\Support\Exception\KeyExistsException;
-use Laranix\Themer\Style\Styles;
-use Laranix\Themer\Style\Settings;
+use Laranix\Themer\Styles\Styles;
+use Laranix\Themer\Styles\Settings;
 use Laranix\Tests\LaranixTestCase;
 use Mockery as m;
 use Illuminate\Config\Repository;
@@ -51,9 +51,9 @@ class StylesTest extends LaranixTestCase
         $style = $this->createStyle();
 
         $style->add([
-            'key'   => 'foo',
+            'key'       => 'foo',
             'filename'  => 'style.css',
-            'order' => 1
+            'order'     => 1
         ]);
 
         $this->assertTrue($style->resources->has('_added.foo.foo'));
@@ -85,10 +85,18 @@ class StylesTest extends LaranixTestCase
         $this->assertCount(4, $style->resources->get('_added.foo'));
         $this->assertCount(2, $style->resources->get('_added.bar'));
 
-        $this->assertCount(2, $style->resources->get('style.local.foo.' . $this->crc('print')));
-        $this->assertCount(1, $style->resources->get('style.local.foo.' . $this->crc('screen and (max-width:1000px)')));
-        $this->assertCount(2, $style->resources->get('style.local.foo.' . $this->crc('all')));
-        $this->assertCount(1, $style->resources->get('style.local.bar.' . $this->crc('all')));
+        $this->assertCount(2,
+                           $style->resources->get('styles.local.foo.' . $this->crc('print')));
+
+        $this->assertCount(1,
+                           $style->resources->get('styles.local.foo.' .
+                                                  $this->crc('screen and (max-width:1000px)')));
+
+        $this->assertCount(2,
+                           $style->resources->get('styles.local.foo.' . $this->crc('all')));
+
+        $this->assertCount(1,
+                           $style->resources->get('styles.local.bar.' . $this->crc('all')));
     }
 
     /**
@@ -100,10 +108,14 @@ class StylesTest extends LaranixTestCase
 
         $this->loadLocalStyle($style);
 
-        $this->assertSame(1, $style->resources->get('style.local.foo.' . $this->crc('all') . '.1')->order);
-        $this->assertSame(2, $style->resources->get('style.local.foo.' . $this->crc('all') . '.2')->order);
+        $this->assertSame(1,
+                          $style->resources->get('styles.local.foo.' . $this->crc('all') . '.1')->order);
 
-        $this->assertSame(4, $style->resources->get('style.local.foo.' . $this->crc('print') . '.4')->order);
+        $this->assertSame(2,
+                          $style->resources->get('styles.local.foo.' . $this->crc('all') . '.2')->order);
+
+        $this->assertSame(4,
+                          $style->resources->get('styles.local.foo.' . $this->crc('print') . '.4')->order);
     }
 
     /**
@@ -115,8 +127,15 @@ class StylesTest extends LaranixTestCase
 
         $this->loadLocalStyle($style);
 
-        $this->assertSame('style.min.css', $style->resources->get('style.local.foo.' . $this->crc('print') . '.3')->filename);
-        $this->assertSame('foostyle.css', $style->resources->get('style.local.foo.' . $this->crc('screen and (max-width:1000px)') . '.10')->filename);
+        $this->assertSame('style.min.css',
+                          $style->resources->get('styles.local.foo.' .
+                                                 $this->crc('print') . '.3')->filename
+        );
+
+        $this->assertSame('foostyle.css',
+                          $style->resources->get('styles.local.foo.' .
+                                                 $this->crc('screen and (max-width:1000px)') . '.10')->filename
+        );
     }
 
     /**
@@ -128,7 +147,9 @@ class StylesTest extends LaranixTestCase
 
         $this->loadLocalStyle($style);
 
-        $this->assertTrue($this->themer->themeIsDefault($style->resources->get('style.local.foo.' . $this->crc('screen and (max-width:1000px)') . '.10')->theme));
+        $this->assertTrue($this->themer->themeIsDefault(
+            $style->resources->get('styles.local.foo.' . $this->crc('screen and (max-width:1000px)') . '.10')->theme)
+        );
     }
 
     /**
@@ -156,7 +177,12 @@ class StylesTest extends LaranixTestCase
 
         $style = $this->createStyle(FileNotFoundException::class);
 
-        $style->add($this->getSettings(['key' => 'foo',   'filename' => 'foostyle.css',  'themeName' => 'bar',  'defaultFallback' => false]));
+        $style->add($this->getSettings([
+            'key'               => 'foo',
+            'filename'          => 'foostyle.css',
+            'themeName'         => 'bar',
+            'defaultFallback'   => false
+        ]));
     }
 
     /**
@@ -172,7 +198,7 @@ class StylesTest extends LaranixTestCase
         $this->assertTrue($style->resources->has('_added.foo.remote_baz'));
         $this->assertCount(5, $style->resources->get('_added.foo'));
 
-        $this->assertCount(6, $style->resources->get('style.remote'));
+        $this->assertCount(6, $style->resources->get('styles.remote'));
     }
 
     /**
@@ -186,11 +212,11 @@ class StylesTest extends LaranixTestCase
 
         $this->loadLocalStyle($style);
 
-        $this->assertNull($style->resources->get('style.local'));
+        $this->assertNull($style->resources->get('styles.local'));
 
-        $this->assertCount(6, $style->resources->get('style.remote'));
+        $this->assertCount(6, $style->resources->get('styles.remote'));
 
-        $this->assertNotNull($style->resources->get('style.remote.1')->url);
+        $this->assertNotNull($style->resources->get('styles.remote.1')->url);
     }
 
     /**
@@ -229,13 +255,13 @@ EXPECTED;
     {
         $script = $this->createStyle();
 
-        $this->assertSame(realpath(__DIR__ . '/../Stubs/themes/foo/style/style.css'),
+        $this->assertSame(realpath(__DIR__ . '/../Stubs/themes/foo/styles/style.css'),
                           $script->getResourcePath('style.css'));
 
-        $this->assertSame(realpath(__DIR__ . '/../Stubs/themes/bar/style/style2.css'),
+        $this->assertSame(realpath(__DIR__ . '/../Stubs/themes/bar/styles/style2.css'),
                           $script->getResourcePath('style2.css', $this->themer->getTheme('bar')));
 
-        $this->assertSame(realpath(__DIR__ . '/../Stubs/themes/bar/style/style.min.css'),
+        $this->assertSame(realpath(__DIR__ . '/../Stubs/themes/bar/styles/style.min.css'),
                           $script->getResourcePath('style.min.css', $this->themer->getTheme('bar')));
     }
 
@@ -246,19 +272,19 @@ EXPECTED;
     {
         $script = $this->createStyle();
 
-        $this->assertSame(config('app.url') . '/themes/foo/style/style.css',
+        $this->assertSame(config('app.url') . '/themes/foo/styles/style.css',
                           $script->getWebUrl('style.css'));
 
-        $this->assertSame('https://www.bar.com/themes/bar/style/style.min.css',
+        $this->assertSame('https://www.bar.com/themes/bar/styles/style.min.css',
                           $script->getWebUrl('style.min.css', $this->themer->getTheme('bar')));
 
-        $this->assertSame('https://www.baz.com/themes/baz/style/style2.css',
+        $this->assertSame('https://www.baz.com/themes/baz/styles/style2.css',
                           $script->getWebUrl('style2.css', $this->themer->getTheme('baz')));
     }
 
     /**
      * @param string $throw
-     * @return \Laranix\Themer\Style\Styles
+     * @return \Laranix\Themer\Styles\Styles
      */
     protected function createStyle($throw = KeyExistsException::class)
     {
@@ -286,7 +312,7 @@ EXPECTED;
     /**
      * Get local scripts
      *
-     * @param \Laranix\Themer\Style\Styles $style
+     * @param \Laranix\Themer\Styles\Styles $style
      */
     protected function loadLocalStyle(Styles $style)
     {
@@ -307,7 +333,7 @@ EXPECTED;
     /**
      * Get remote scripts
      *
-     * @param \Laranix\Themer\Style\Styles $style
+     * @param \Laranix\Themer\Styles\Styles $style
      */
     protected function loadRemoteStyle(Styles $style)
     {

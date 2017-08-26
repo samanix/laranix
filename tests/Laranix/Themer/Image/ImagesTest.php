@@ -4,7 +4,7 @@ namespace Laranix\Tests\Laranix\Themer\Image;
 use Illuminate\Log\Writer;
 use Laranix\Support\Exception\NotImplementedException;
 use Laranix\Support\IO\Url\Url;
-use Laranix\Themer\Image\Images;
+use Laranix\Themer\Images\Images;
 use Laranix\Tests\LaranixTestCase;
 use Mockery as m;
 use Illuminate\Config\Repository;
