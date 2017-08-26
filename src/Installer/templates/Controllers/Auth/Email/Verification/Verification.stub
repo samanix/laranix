@@ -9,7 +9,7 @@ use Laranix\Auth\User\Token\Token;
 use Laranix\Auth\Email\Verification\Manager as VerificationManager;
 use Laranix\Support\Exception\NullValueException;
 use Laranix\Auth\Email\Verification\EmailVerificationException;
-use Laranix\Themer\Script\Settings as ScriptSettings;
+use Laranix\Themer\Scripts\Settings as ScriptSettings;
 use Illuminate\Contracts\View\View;
 
 class Verification extends Controller

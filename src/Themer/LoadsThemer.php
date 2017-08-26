@@ -4,9 +4,9 @@ namespace Laranix\Themer;
 use Illuminate\Foundation\Application;
 use Illuminate\Contracts\Config\Repository;
 use Laranix\AntiSpam\Recaptcha\Recaptcha;
-use Laranix\Themer\Script\Scripts;
-use Laranix\Themer\Style\Styles;
-use Laranix\Themer\Image\Images;
+use Laranix\Themer\Scripts\Scripts;
+use Laranix\Themer\Styles\Styles;
+use Laranix\Themer\Images\Images;
 
 trait LoadsThemer
 {
@@ -76,7 +76,7 @@ trait LoadsThemer
     /**
      * Add a stylesheet
      *
-     * @param \Laranix\Themer\Style\Settings|array|null $settings
+     * @param \Laranix\Themer\Styles\Settings|array|null $settings
      * @return $this
      */
     protected function loadStylesheet($settings)

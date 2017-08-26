@@ -1,5 +1,5 @@
 <?php
-namespace Laranix\Themer\Image;
+namespace Laranix\Themer\Images;
 
 use Laranix\Themer\ResourceSettings as BaseSettings;
 

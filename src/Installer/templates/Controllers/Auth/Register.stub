@@ -10,7 +10,7 @@ use Laranix\Auth\Group\Repository as GroupRepository;
 use Laranix\Auth\User\Groups\{UserGroupAdder, AddsUserToGroup};
 use Laranix\Auth\User\{CreatesUsers, UserCreator};
 use Laranix\Auth\Email\Verification\Manager as VerificationManager;
-use Laranix\Themer\Script\Settings as ScriptSettings;
+use Laranix\Themer\Scripts\Settings as ScriptSettings;
 
 class Register extends Controller implements UserCreator, UserGroupAdder
 {

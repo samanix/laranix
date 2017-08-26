@@ -1,5 +1,5 @@
 <?php
-namespace Laranix\Themer\Style;
+namespace Laranix\Themer\Styles;
 
 use Laranix\Themer\ResourceSettings as BaseSettings;
 

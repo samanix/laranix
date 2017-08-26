@@ -8,7 +8,7 @@ use Laranix\Auth\Password\Reset\PasswordResetException;
 use Laranix\Auth\Password\Reset\Manager;
 use Laranix\Auth\User\Repository as UserRepository;
 use Laranix\Support\Exception\NullValueException;
-use Laranix\Themer\Script\Settings as ScriptSettings;
+use Laranix\Themer\Scripts\Settings as ScriptSettings;
 use Illuminate\Contracts\View\View;
 
 class Forgot extends Controller

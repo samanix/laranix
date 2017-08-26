@@ -1,5 +1,5 @@
 <?php
-namespace Laranix\Themer\Style;
+namespace Laranix\Themer\Scripts;
 
 use Illuminate\Support\Facades\Facade as BaseFacade;
 
@@ -7,6 +7,6 @@ class Facade extends BaseFacade
 {
     protected static function getFacadeAccessor()
     {
-        return Styles::class;
+        return Scripts::class;
     }
 }

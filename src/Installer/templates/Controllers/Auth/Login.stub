@@ -9,7 +9,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Laranix\Auth\User\User;
 use Laranix\Support\Exception\ArgumentOutOfRangeException;
-use Laranix\Themer\Script\Settings as ScriptSettings;
+use Laranix\Themer\Scripts\Settings as ScriptSettings;
 use Illuminate\Contracts\View\View;
 
 class Login extends Controller

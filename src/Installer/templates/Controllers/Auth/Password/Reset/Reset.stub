@@ -8,7 +8,7 @@ use Illuminate\Http\RedirectResponse;
 use Laranix\Auth\Password\{Hasher as PasswordHasher, HashesPasswords};
 use Laranix\Auth\Password\Reset\Manager as PasswordResetManager;
 use Laranix\Auth\User\Token\Token;
-use Laranix\Themer\Script\Settings as ScriptSettings;
+use Laranix\Themer\Scripts\Settings as ScriptSettings;
 
 class Reset extends Controller implements PasswordHasher
 {

@@ -2,8 +2,8 @@
 namespace Laranix\Themer\Commands;
 
 use Illuminate\Console\Command;
-use Laranix\Themer\Script\Scripts;
-use Laranix\Themer\Style\Styles;
+use Laranix\Themer\Scripts\Scripts;
+use Laranix\Themer\Styles\Styles;
 use Laranix\Themer\ThemeRepository;
 use Illuminate\Filesystem\Filesystem;
 
@@ -15,12 +15,12 @@ class ClearCompiled extends Command
     protected $themes;
 
     /**
-     * @var \Laranix\Themer\Style\Styles
+     * @var \Laranix\Themer\Styles\Styles
      */
     protected $styles;
 
     /**
-     * @var \Laranix\Themer\Script\Scripts
+     * @var \Laranix\Themer\Scripts\Scripts
      */
     protected $scripts;
 
@@ -47,8 +47,8 @@ class ClearCompiled extends Command
      * ClearCompiled constructor.
      *
      * @param \Laranix\Themer\ThemeRepository   $themes
-     * @param \Laranix\Themer\Style\Styles      $styles
-     * @param \Laranix\Themer\Script\Scripts    $scripts
+     * @param \Laranix\Themer\Styles\Styles     $styles
+     * @param \Laranix\Themer\Scripts\Scripts   $scripts
      * @param \Illuminate\Filesystem\Filesystem $filesystem
      */
     public function __construct(ThemeRepository $themes,
