@@ -40,8 +40,6 @@ class Images extends ThemerResource
             return $this->cacheImage($image);
         }
 
-        //dd($image);
-
         return $this->cacheImage($this->generateHtmlOutput($image));
     }
 
