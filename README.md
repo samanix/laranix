@@ -230,7 +230,7 @@ Other configurations you can edit are:
 From other packages:
 * markdown.php
 
-It is recommended to set `escape_markup` to `true` in this file.
+Remember to set `escape_markup` to `true` in this file if you are allowing user input.
 
 ### Database
 Run migrations using the `php artisan migrate` command.
