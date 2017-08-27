@@ -72,13 +72,6 @@ class Settings extends BaseSettings
     public $ipv4;
 
     /**
-     * Cage status.
-     *
-     * @var int
-     */
-    public $status = Cage::CAGE_ACTIVE;
-
-    /**
      * Settings constructor.
      *
      * @param array                    $attributes

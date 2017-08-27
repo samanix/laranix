@@ -64,8 +64,7 @@ class CageRepositoryTest extends LaranixTestCase
         $this->assertCount(1, $this->repository->getByUser(3, Repository::DEFAULT));
         $this->assertCount(2, $this->repository->getByUser(3, Repository::WITH_DELETED));
         $this->assertCount(1, $this->repository->getByUser(3, Repository::DELETED_ONLY));
-        $this->assertCount(1, $this->repository->getByUser(3, Repository::WITH_ACTIVE));
-        $this->assertSame(10, $this->repository->getByUser(3, Repository::WITH_ACTIVE, 10)->perPage());
+        $this->assertSame(10, $this->repository->getByUser(3, Repository::DEFAULT, 10)->perPage());
     }
 
     /**
@@ -76,8 +75,7 @@ class CageRepositoryTest extends LaranixTestCase
         $this->assertCount(3, $this->repository->getByIssuer(1, Repository::DEFAULT));
         $this->assertCount(4, $this->repository->getByIssuer(1, Repository::WITH_DELETED));
         $this->assertCount(1, $this->repository->getByIssuer(1, Repository::DELETED_ONLY));
-        $this->assertCount(2, $this->repository->getByIssuer(1, Repository::WITH_ACTIVE));
-        $this->assertSame(5, $this->repository->getByUser(1, Repository::WITH_ACTIVE, 5)->perPage());
+        $this->assertSame(5, $this->repository->getByUser(1, Repository::DEFAULT, 5)->perPage());
     }
 
     /**
@@ -88,8 +86,7 @@ class CageRepositoryTest extends LaranixTestCase
         $this->assertCount(1, $this->repository->getByArea('login', Repository::DEFAULT));
         $this->assertCount(2, $this->repository->getByArea('login', Repository::WITH_DELETED));
         $this->assertCount(1, $this->repository->getByArea('login', Repository::DELETED_ONLY));
-        $this->assertCount(1, $this->repository->getByArea('login', Repository::WITH_ACTIVE));
-        $this->assertSame(7, $this->repository->getByUser(1, Repository::WITH_ACTIVE, 7)->perPage());
+        $this->assertSame(7, $this->repository->getByUser(1, Repository::DEFAULT, 7)->perPage());
     }
 
     /**
@@ -97,11 +94,21 @@ class CageRepositoryTest extends LaranixTestCase
      */
     public function testGetByAttributes()
     {
-        $this->assertCount(1, $this->repository->getByAttributes(['cage_level' => 10, 'user_id' => 3], Repository::DEFAULT));
-        $this->assertCount(2, $this->repository->getByAttributes(['cage_level' => 10, 'user_id' => 3], Repository::WITH_DELETED));
-        $this->assertCount(1, $this->repository->getByAttributes(['cage_level' => 10, 'user_id' => 3], Repository::DELETED_ONLY));
-        $this->assertCount(1, $this->repository->getByAttributes(['cage_level' => 10, 'user_id' => 3], Repository::WITH_ACTIVE));
-        $this->assertSame(20, $this->repository->getByAttributes(['cage_level' => 10, 'user_id' => 3], Repository::WITH_ACTIVE, 20)->perPage());
+        $this->assertCount(1,
+                           $this->repository->getByAttributes(['cage_level' => 10, 'user_id' => 3],
+                                                              Repository::DEFAULT));
+
+        $this->assertCount(2,
+                           $this->repository->getByAttributes(['cage_level' => 10, 'user_id' => 3],
+                                                              Repository::WITH_DELETED));
+
+        $this->assertCount(1,
+                           $this->repository->getByAttributes(['cage_level' => 10, 'user_id' => 3],
+                                                              Repository::DELETED_ONLY));
+
+        $this->assertSame(20,
+                          $this->repository->getByAttributes(['cage_level' => 10, 'user_id' => 3],
+                                                             Repository::DEFAULT, 20)->perPage());
     }
 
     /**

@@ -12,10 +12,6 @@ class Cage extends Model
 {
     use SoftDeletes;
 
-    const CAGE_ACTIVE = 1;
-    const CAGE_EXPIRED = 2;
-    const CAGE_REMOVED = 4;
-
     /**
      * @var string
      */
@@ -26,7 +22,7 @@ class Cage extends Model
      *
      * @var array
      */
-    protected $fillable = ['cage_level', 'cage_area', 'cage_time', 'cage_reason', 'cage_issuer', 'user_id', 'cage_status'];
+    protected $fillable = ['cage_level', 'cage_area', 'cage_time', 'cage_reason', 'cage_issuer', 'user_id'];
 
     /**
      * Hidden attributes
@@ -198,16 +194,6 @@ class Cage extends Model
     }
 
     /**
-     * Get cage reason
-     *
-     * @return int
-     */
-    public function getStatusAttribute() : int
-    {
-        return $this->getAttributeFromArray('cage_status');
-    }
-
-    /**
      * Only get active cages
      *
      * @param \Illuminate\Database\Eloquent\Builder $query
@@ -216,9 +202,11 @@ class Cage extends Model
     public function scopeActive($query)
     {
         $table = $this->config->get('laranixauth.cage.table', 'user_cage');
-        $status = self::CAGE_ACTIVE;
 
-        return $query->whereRaw("(`{$table}`.`cage_time` = 0 OR (TIMESTAMPDIFF(MINUTE, `{$table}`.`created_at`, NOW()) <= `{$table}`.`cage_time`) AND `{$table}`.`cage_status` = {$status})");
+        return $query->whereRaw(
+            "(`{$table}`.`cage_time` = 0 OR 
+            (TIMESTAMPDIFF(MINUTE, `{$table}`.`created_at`, NOW()) <= `{$table}`.`cage_time`))"
+        );
     }
 
     /**
@@ -261,6 +249,29 @@ class Cage extends Model
     public function getRawIpv4Attribute() : ?int
     {
         return $this->getAttributeFromArray('user_ipv4');
+    }
+
+    /**
+     * Check if cage is expired
+     *
+     * @return bool
+     */
+    public function isExpired() : bool
+    {
+        return $this->getExpiryAttribute()->timestamp < Carbon::now()->timestamp
+            && $this->getTimeAttribute() !== 0
+            && !$this->isRemoved();
+    }
+
+    /**
+     * Check if cage is removed
+     * Make sure to run query with the 'withTrashed' scope
+     *
+     * @return bool
+     */
+    public function isRemoved() : bool
+    {
+        return $this->trashed();
     }
 
     // TODO join

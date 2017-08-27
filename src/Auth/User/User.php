@@ -183,9 +183,7 @@ class User extends Model implements
         $this->activeCagesCollection = new Collection();
 
         foreach ($this->allCages as $id => $cage) {
-            if ($cage->cage_status == Cage::CAGE_ACTIVE
-                && ($cage->created_at->diffInMinutes(Carbon::now()) <= $cage->cage_time || $cage->cage_time === 0)
-                && !$cage->trashed()) {
+            if (!$cage->isExpired() && !$cage->isRemoved()) {
                 $this->activeCagesCollection->push($cage);
             }
         }

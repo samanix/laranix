@@ -7,9 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 interface Repository
 {
     const DEFAULT = 1;
-    const WITH_ACTIVE = 2;
-    const WITH_DELETED = 4;
-    const DELETED_ONLY = 8;
+    const WITH_DELETED = 2;
+    const DELETED_ONLY = 4;
 
     /**
      * Get cage by ID

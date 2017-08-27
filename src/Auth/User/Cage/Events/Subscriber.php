@@ -35,14 +35,6 @@ class Subscriber extends Listener
     }
 
     /**
-     * @param \Laranix\Auth\User\Cage\Events\Removed $event
-     */
-    public function onRemoved(Removed $event)
-    {
-        $this->track(Settings::TYPEID_REMOVED, $event->cage->id, 25);
-    }
-
-    /**
      * @param \Laranix\Auth\User\Cage\Events\Deleted $event
      */
     public function onDeleted(Deleted $event)

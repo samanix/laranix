@@ -106,10 +106,6 @@ class CageRepository implements Repository
             return $query;
         }
 
-        if ($scopes & self::WITH_ACTIVE) {
-            return $query->active();
-        }
-
         if ($scopes & self::WITH_DELETED) {
             return $query->withTrashed();
         }
