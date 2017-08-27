@@ -15,7 +15,9 @@ class ServiceProvider extends BaseServiceProvider
      */
     public function register()
     {
-        $this->app->bind(Repository::class, TrackerRepository::class);
+        $this->app->bind(Repository::class, function($app) {
+            return new TrackerRepository($app->make('config'));
+        });
 
         $this->app->singleton(TrackWriter::class, function ($app) {
             return new Writer($app->make('config'), $app->make('request'));

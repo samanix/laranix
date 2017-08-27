@@ -21,7 +21,9 @@ class ServiceProvider extends BaseServiceProvider
      */
     public function register()
     {
-        $this->app->bind(Repository::class, ThemeRepository::class);
+        $this->app->bind(Repository::class, function ($app) {
+            return new ThemeRepository($app->make('config'));
+        });
 
         $this->app->singleton(Themer::class, function ($app) {
             return new Themer($app->make('config'), $app->make('request'), $app->make(ThemeRepository::class));

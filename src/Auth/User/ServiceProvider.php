@@ -15,7 +15,9 @@ class ServiceProvider extends BaseServiceProvider
      */
     public function register()
     {
-        $this->app->bind(Repository::class, UserRepository::class);
+        $this->app->bind(Repository::class, function() {
+            return new UserRepository;
+        });
     }
 
     /**
