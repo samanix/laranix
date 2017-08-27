@@ -34,7 +34,7 @@ class ClearCompiled extends Command
      *
      * @var string
      */
-    protected $signature = 'themer:clear {--T|theme=all  : Theme to clear compiled files for}';
+    protected $signature = 'laranix:themer:clear {--T|theme=all  : Theme to clear compiled files for}';
 
     /**
      * Console command description
@@ -94,7 +94,11 @@ class ClearCompiled extends Command
             return $this->themes->all();
         }
 
-        return $this->themes->get($theme, false);
+        try {
+            return $this->themes->get($theme, false);
+        } catch (\InvalidArgumentException $e) {
+            throw new \InvalidArgumentException('Theme ' . $theme . ' not found');
+        }
     }
 
     /**
