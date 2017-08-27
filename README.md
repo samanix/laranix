@@ -29,11 +29,11 @@ Laranix is open-sourced software licensed under the [MIT license](http://opensou
 * [andreasindal/laravel-markdown](https://github.com/andreasindal/laravel-markdown) 1.1.*
 
 
-### Features
-#### AntiSpam
+## Features
+### AntiSpam
 Provides invisible recaptcha entry on forms (sign up with Google), as well as a sequence ID field, which will prevent the form being submitted twice.
 
-#### Auth
+### Auth
 Custom auth package built on top of Laravels own, providing:
 
 * More feature rich User model
@@ -42,23 +42,23 @@ Custom auth package built on top of Laravels own, providing:
 * Email verification
 * User cages - protect an area so a user cannot access it
 
-#### Installer
+### Installer
 Installs, publishes and copies files required for Laranix to run
 
-#### Session
+### Session
 Adds IP locking to sessions, not required if you don't want to use it
 
-#### Support
+### Support
 Adds extra functionality, including:
 
 * Simple URL creator, that will always (try) and use the full URL - if it doesn't, somethings wrong with your setup
 * String formatting with named parameters (similar to C#)
 * Settings class, that allows you to use a class to determine parameters and their types
 
-#### Themer
+### Themer
 Provides themes and loads the files given, combines like for like files in to one automatically and updates if any file is added or changed
 
-#### Tracker
+### Tracker
 Provides breadcrumb like tracking for user actions
 
 ## Installation
@@ -111,7 +111,8 @@ Add the following to your `config/app.php` in then `aliases` array:
 Open `app/Console/Kernel.php` and add the following to the `$commands` array:
 
     \Laranix\Installer\InstallLaranixCommand::class,
-    \Laranix\Themer\Commands\ClearCompiled::class
+    \Laranix\Themer\Commands\ClearCompiled::class,
+    \Laranix\Auth\User\Token\Commands\ClearExpiredTokens::class,
 
 * Make sure to remove the default Laravel user and password migrations from 'database/migrations/'
 * You can also remove from the relevant app folders:
@@ -205,7 +206,7 @@ You may also wish to change the `guards.api.provider` to `laranixuser` too.
 
 Next, open the `config\mail.php` and change the `markdown.theme` to `laranix`.
 
-### .env Files
+#### .env Files
 Add/edit the following settings to your `.env`:
 
     APP_VERSION=your-app-version
@@ -232,12 +233,25 @@ From other packages:
 
 Remember to set `escape_markup` to `true` in this file if you are allowing user input.
 
+
 ### Database
 Run migrations using the `php artisan migrate` command.
 
 Seed your database with your default user groups using `php artisan db:seed --class=DefaultGroups`
 
+## Artisan Commands
+In addition to the `laranix:install` command, Laranix also provides some other commands.
 
+Remember to run `php artisan <command> --help` for options and information.
+
+`laranix:themer:clear`
+    Clears compiled style and script files from themes.
+
+`laranix:tokens:clear`
+    Clears expired tokens from the database for given config.
+    The config must provide a 'table' and an 'expiry' (such as in `laranixauth.password`).
+
+## Additional Notes
 ### Views
 Laranix provides several views to get you started, it also provides some mails in markdown format, so if you edit `config\laranixauth.php` to not use markdown on mails, you will have to edit the views in `resources/views/mail/auth/`.
 
