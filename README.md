@@ -245,9 +245,11 @@ In addition to the `laranix:install` command, Laranix also provides some other c
 Remember to run `php artisan <command> --help` for options and information.
 
 `laranix:themer:clear`
+
     Clears compiled style and script files from themes.
 
 `laranix:tokens:clear`
+
     Clears expired tokens from the database for given config.
     The config must provide a 'table' and an 'expiry' (such as in `laranixauth.password`).
 
