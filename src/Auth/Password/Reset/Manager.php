@@ -13,38 +13,12 @@ use Laranix\Auth\Password\Reset\Events\Failed;
 use Laranix\Auth\Password\Reset\Events\Reset as ResetEvent;
 use Laranix\Auth\Password\Reset\Events\Updated;
 use Laranix\Auth\Password\Events\Updated as PasswordUpdated;
+use Laranix\Support\Database\Model;
+use Laranix\Support\Settings;
 
 class Manager extends BaseManager implements PasswordHasher
 {
     use HashesPasswords;
-
-    /**
-     * The model for the tokens
-     *
-     * @var \Illuminate\Database\Eloquent\Model
-     */
-    protected $model = Reset::class;
-
-    /**
-     * Key to use inside the laranixauth config
-     *
-     * @var string
-     */
-    protected $configKey = 'password';
-
-    /**
-     * The mail class name to create the email from
-     *
-     * @var \Laranix\Support\Mail\Mail
-     */
-    protected $mailTemplateClass = PasswordMail::class;
-
-    /**
-    * The mail options class to use in the mail
-    *
-    * @var string
-    */
-    protected $mailOptionsClass = MailSettings::class;
 
     /**
      * Created event class name
@@ -73,6 +47,46 @@ class Manager extends BaseManager implements PasswordHasher
      * @var string
      */
     protected $completedEvent = ResetEvent::class;
+
+    /**
+     * Get the class name for the model
+     *
+     * @return string
+     */
+    protected function getModelClass() : string
+    {
+        return Reset::class;
+    }
+
+    /**
+     * Get the config key for the config file
+     *
+     * @return string
+     */
+    protected function getConfigKey() : string
+    {
+        return 'password';
+    }
+
+    /**
+     * Mail settings class
+     *
+     * @return string
+     */
+    protected function getMailSettingsClass() : string
+    {
+        return MailSettings::class;
+    }
+
+    /**
+     * Mail class
+     *
+     * @return string
+     */
+    protected function getMailTemplateClass() : string
+    {
+        return PasswordMail::class;
+    }
 
     /**
      * Update user after token verified

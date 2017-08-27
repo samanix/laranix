@@ -16,34 +16,6 @@ use Laranix\Support\Exception\EmailExistsException;
 class Manager extends BaseManager
 {
     /**
-     * The model for the tokens
-     *
-     * @var string
-     */
-    protected $model = Verification::class;
-
-    /**
-     * Key to use inside the laranixauth config
-     *
-     * @var string
-     */
-    protected $configKey = 'verification';
-
-    /**
-     * The mail class name to create the email from
-     *
-     * @var \Laranix\Support\Mail\Mail
-     */
-    protected $mailTemplateClass = VerificationMail::class;
-
-    /**
-    * The mail options class to use in the mail
-    *
-    * @var string
-    */
-    protected $mailOptionsClass = MailSettings::class;
-
-    /**
      * Created event class name
      *
      * @var string
@@ -70,6 +42,47 @@ class Manager extends BaseManager
      * @var string
      */
     protected $completedEvent = VerifiedEvent::class;
+
+    /**
+     * Get the class name for the model
+     *
+     * @return string
+     */
+    protected function getModelClass() : string
+    {
+        return Verification::class;
+    }
+
+    /**
+     * Get the config key for the config file
+     *
+     * @return string
+     */
+    protected function getConfigKey() : string
+    {
+        return 'verification';
+    }
+
+    /**
+     * Mail settings class
+     *
+     * @return string
+     */
+    protected function getMailSettingsClass() : string
+    {
+        return MailSettings::class;
+    }
+
+    /**
+     * Mail class
+     *
+     * @return string
+     */
+    protected function getMailTemplateClass() : string
+    {
+        return VerificationMail::class;
+    }
+
 
     /**
      * Update user after token verified

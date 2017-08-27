@@ -25,32 +25,18 @@ abstract class Manager
     protected $mailer;
 
     /**
-     * The model class name for the tokens
-     *
-     * @var \Laranix\Support\Database\Model
-     */
-    protected $model = null;
-
-    /**
      * Key to use inside the laranixauth config
      *
      * @var string
      */
-    protected $configKey = null;
-
-    /**
-     * The mail class name to create the email from
-     *
-     * @var \Laranix\Support\Mail\Mail
-     */
-    protected $mailTemplateClass = Mail::class;
+    protected $configKey;
 
     /**
      * The mail options class to use in the mail
      *
      * @var string
      */
-    protected $mailOptionsClass = MailSettings::class;
+    protected $mailSettingsClass;
 
     /**
      * Created event class name
@@ -82,6 +68,34 @@ abstract class Manager
     protected $completedEvent = null;
 
     /**
+     * Get the class name for the model
+     *
+     * @return string
+     */
+    abstract protected function getModelClass() : string;
+
+    /**
+     * Get the config key for the config file
+     *
+     * @return string
+     */
+    abstract protected function getConfigKey() : string;
+
+    /**
+     * Mail settings class
+     *
+     * @return string
+     */
+    abstract protected function getMailSettingsClass() : string;
+
+    /**
+     * Mail class
+     *
+     * @return string
+     */
+    abstract protected function getMailTemplateClass() : string;
+
+    /**
      * Update user after token verified
      *
      * @param \Illuminate\Contracts\Auth\Authenticatable|User $user
@@ -109,17 +123,7 @@ abstract class Manager
         $this->config   = $config;
         $this->mailer   = $mailer;
 
-        $this->checkPropertiesAreSet();
-    }
-
-    /**
-     * @throws \Laranix\Support\Exception\NullValueException
-     */
-    protected function checkPropertiesAreSet()
-    {
-        if ($this->model === null || !class_exists($this->model) || $this->configKey === null) {
-            throw new NullValueException('Null properties detected on UserAccountTokens');
-        }
+        $this->configKey = $this->getConfigKey();
     }
 
     /**
@@ -130,7 +134,9 @@ abstract class Manager
      */
     public function getModel() : Token
     {
-        return new $this->model;
+        $model = $this->getModelClass();
+
+        return new $model;
     }
 
     /**
@@ -391,8 +397,12 @@ abstract class Manager
 
         $route = $this->generateRoute($token);
 
+
+
         /** @var MailSettings $options */
-        return new $this->mailOptionsClass([
+        $options = $this->getMailSettingsClass();
+
+        return new $options([
             'to'            => [['email' => $token->email, 'name' => $user->username ?? $token->email]],
 
             // TODO Default values
@@ -473,11 +483,9 @@ abstract class Manager
      */
     protected function createMail(MailSettings $options) : Mail
     {
-        if ($this->mailTemplateClass === null || !class_exists($this->mailTemplateClass)) {
-            throw new NullValueException('Mail template class cannot be null');
-        }
+        $mail = $this->getMailTemplateClass();
 
-        return new $this->mailTemplateClass($options);
+        return new $mail($options);
     }
 
     /**
