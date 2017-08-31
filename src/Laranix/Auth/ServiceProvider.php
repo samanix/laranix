@@ -18,12 +18,12 @@ class ServiceProvider extends BaseServiceProvider
      */
     public function boot()
     {
-        $configFile = __DIR__.'/config/laranixauth.php';
+        $configFile = __DIR__ . '/config/laranixauth.php';
 
         $this->mergeConfigFrom($configFile, 'laranixauth');
 
         if ($this->app->runningInConsole()) {
-            $migrations = __DIR__.'/migrations';
+            $migrations = __DIR__ . '/migrations';
 
             $this->publishes([
                 $configFile => config_path('laranixauth.php'),

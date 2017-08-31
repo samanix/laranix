@@ -44,7 +44,7 @@ class ServiceProvider extends BaseServiceProvider
      */
     public function boot()
     {
-        $configFile = __DIR__.'/config/antispam.php';
+        $configFile = __DIR__ . '/config/antispam.php';
 
         $this->mergeConfigFrom($configFile, 'antispam');
 

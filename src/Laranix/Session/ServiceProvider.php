@@ -24,7 +24,7 @@ class ServiceProvider extends BaseServiceProvider
         });
 
         if ($this->app->runningInConsole()) {
-            $migrations = __DIR__.'/migrations';
+            $migrations = __DIR__ . '/migrations';
 
             $this->publishes([
                 $migrations => database_path('migrations'),

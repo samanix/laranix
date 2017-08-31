@@ -304,7 +304,7 @@ class InstallLaranixCommand extends Command
      */
     protected function getPath(string $relative) : string
     {
-        return realpath(__DIR__.'/templates/'.trim($relative, '/'));
+        return realpath(__DIR__ . '/templates/' .trim($relative, '/'));
     }
 
     /**

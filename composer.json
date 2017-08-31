@@ -3,6 +3,11 @@
   "description": "Laravel extended functionality",
   "minimum-stability": "dev",
   "license": "MIT",
+  "homepage": "https://samanix.com",
+  "support": {
+    "issues": "https://github.com/samanix/laranix/issues",
+    "source": "https://github.com/samanix/laranix"
+  },
   "authors": [
     {
       "name": "Sam Newsome",
@@ -15,6 +20,16 @@
     "guzzlehttp/guzzle": "6.3.*",
     "andreasindal/laravel-markdown": "1.1.*"
   },
+  "replace": {
+    "laranix/antispam": "self.version",
+    "laranix/auth": "self.version",
+    "laranix/foundation": "self.version",
+    "laranix/installer": "self.version",
+    "laranix/session": "self.version",
+    "laranix/support": "self.version",
+    "laranix/themer": "self.version",
+    "laranix/tracker": "self.version"
+  },
   "require-dev": {
     "fzaninotto/faker": "~1.4",
     "mockery/mockery": "0.9.*",
@@ -25,7 +40,7 @@
   },
   "autoload": {
     "psr-4": {
-      "Laranix\\": "src/"
+      "Laranix\\": "src/Laranix/"
     },
     "files": [
       "src/Support/helpers.php"
@@ -35,5 +50,8 @@
       "psr-4": {
           "Laranix\\Tests\\": "tests/"
       }
+  },
+  "config": {
+      "sort-packages": true
   }
 }

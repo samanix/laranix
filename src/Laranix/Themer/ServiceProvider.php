@@ -57,7 +57,7 @@ class ServiceProvider extends BaseServiceProvider
      */
     public function boot()
     {
-        $configFile = __DIR__.'/config/themer.php';
+        $configFile = __DIR__ . '/config/themer.php';
 
         $this->mergeConfigFrom($configFile, 'themer');
 
