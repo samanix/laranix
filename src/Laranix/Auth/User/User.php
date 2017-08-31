@@ -1,7 +1,7 @@
 <?php
 namespace Laranix\Auth\User;
 
-use \Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Notifications\Notifiable;
 use Laranix\Auth\Password\Hasher as PasswordHasher;
 use Laranix\Auth\Password\HashesPasswords;
