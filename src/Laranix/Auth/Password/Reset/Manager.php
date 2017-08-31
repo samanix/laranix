@@ -13,8 +13,6 @@ use Laranix\Auth\Password\Reset\Events\Failed;
 use Laranix\Auth\Password\Reset\Events\Reset as ResetEvent;
 use Laranix\Auth\Password\Reset\Events\Updated;
 use Laranix\Auth\Password\Events\Updated as PasswordUpdated;
-use Laranix\Support\Database\Model;
-use Laranix\Support\Settings;
 
 class Manager extends BaseManager implements PasswordHasher
 {
