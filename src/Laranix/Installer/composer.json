@@ -1,0 +1,40 @@
+{
+  "name": "laranix/installer",
+  "description": "Laranix Installer package",
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "license": "MIT",
+  "homepage": "https://samanix.com",
+  "support": {
+    "issues": "https://github.com/samanix/laranix/issues",
+    "source": "https://github.com/samanix/laranix"
+  },
+  "authors": [
+    {
+      "name": "Sam Newsome",
+      "email": "samanixcom@gmail.com"
+    }
+  ],
+  "require": {
+    "php": ">=7.1.0",
+    "illuminate/console": "5.5.*",
+    "illuminate/contracts": "5.5.*",
+    "illuminate/support": "5.5.*"
+  },
+  "autoload": {
+    "psr-4": {
+      "Laranix\\Installer\\": ""
+    }
+  },
+  "config": {
+      "sort-packages": true
+  },
+  "extra": {
+     "laravel": {
+        "providers": [
+          "Laranix\\Installer\\ServiceProvider"
+        ]
+    }
+  }
+}
+

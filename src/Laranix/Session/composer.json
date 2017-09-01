@@ -1,0 +1,44 @@
+{
+  "name": "laranix/session",
+  "description": "Laranix Session package",
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "license": "MIT",
+  "homepage": "https://samanix.com",
+  "support": {
+    "issues": "https://github.com/samanix/laranix/issues",
+    "source": "https://github.com/samanix/laranix"
+  },
+  "authors": [
+    {
+      "name": "Sam Newsome",
+      "email": "samanixcom@gmail.com"
+    }
+  ],
+  "require": {
+    "php": ">=7.1.0",
+    "illuminate/contracts": "5.5.*",
+    "illuminate/database": "5.5.*",
+    "illuminate/http": "5.5.*",
+    "illuminate/support": "5.5.*",
+    "laranix/auth": "~2.0",
+    "laranix/support": "~2.0",
+    "nesbot/carbon": "~1.20"
+  },
+  "autoload": {
+    "psr-4": {
+      "Laranix\\Session\\": ""
+    }
+  },
+  "config": {
+      "sort-packages": true
+  },
+  "extra": {
+     "laravel": {
+        "providers": [
+          "Laranix\\Session\\ServiceProvider"
+        ]
+    }
+  }
+}
+

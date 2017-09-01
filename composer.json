@@ -68,6 +68,7 @@
           "Laranix\\Auth\\ServiceProvider",
           "Laranix\\Foundation\\Config\\ServiceProvider",
           "Laranix\\Foundation\\Support\\ServiceProvider",
+          "Laranix\\Installer\\ServiceProvider",
           "Laranix\\Session\\ServiceProvider",
           "Laranix\\Themer\\ServiceProvider",
           "Laranix\\Tracker\\ServiceProvider"
@@ -81,7 +82,4 @@
         }
     }
   }
-
-  // laravel package discover
-  // update readme
 }

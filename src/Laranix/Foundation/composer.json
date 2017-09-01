@@ -1,0 +1,44 @@
+{
+  "name": "laranix/foundation",
+  "description": "Laranix Foundation package",
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "license": "MIT",
+  "homepage": "https://samanix.com",
+  "support": {
+    "issues": "https://github.com/samanix/laranix/issues",
+    "source": "https://github.com/samanix/laranix"
+  },
+  "authors": [
+    {
+      "name": "Sam Newsome",
+      "email": "samanixcom@gmail.com"
+    }
+  ],
+  "require": {
+    "php": ">=7.1.0",
+    "illuminate/contracts": "5.5.*",
+    "illuminate/routing": "5.5.*",
+    "illuminate/support": "5.5.*",
+    "laranix/antispam": "~2.0",
+    "laranix/support": "~2.0",
+    "laranix/themer": "~2.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Laranix\\Foundation\\": ""
+    }
+  },
+  "config": {
+      "sort-packages": true
+  },
+  "extra": {
+     "laravel": {
+        "providers": [
+          "Laranix\\Foundation\\Config\\ServiceProvider",
+          "Laranix\\Foundation\\Support\\ServiceProvider",
+        ]
+    }
+  }
+}
+
