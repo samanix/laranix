@@ -60,7 +60,7 @@ class InstallLaranixCommand extends Command
     /**
      * Run the command
      */
-    public function fire()
+    public function handle()
     {
         $this->allOptions = $this->options();
         $this->overwrite = $this->optionSet('overwrite');

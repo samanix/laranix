@@ -67,7 +67,7 @@ class ClearCompiled extends Command
     /**
      * Run the command
      */
-    public function fire()
+    public function handle()
     {
         $themes = $this->getThemes($this->option('theme'));
 

@@ -42,7 +42,7 @@ class ClearExpiredTokens extends Command
     /**
      * Run the command
      */
-    public function fire()
+    public function handle()
     {
         $models = $this->getModelArguments();
 
