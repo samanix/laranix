@@ -2,7 +2,7 @@
 namespace Laranix\Support\IO;
 
 use Illuminate\Contracts\Config\Repository as Config;
-use Illuminate\Foundation\Application;
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\View;
 
 trait LoadsViews
@@ -15,7 +15,7 @@ trait LoadsViews
     /**
      * Load view factory
      *
-     * @param \Illuminate\Foundation\Application $app
+     * @param \Illuminate\Contracts\Foundation\Application $app
      */
     protected function loadView(Application $app)
     {
@@ -25,8 +25,8 @@ trait LoadsViews
     /**
      * Load global variables available in all views
      *
-     * @param \Illuminate\Foundation\Application      $app
-     * @param \Illuminate\Contracts\Config\Repository $config
+     * @param \Illuminate\Contracts\Foundation\Application  $app
+     * @param \Illuminate\Contracts\Config\Repository       $config
      */
     protected function loadGlobalViewVariables(Application $app, Config $config)
     {

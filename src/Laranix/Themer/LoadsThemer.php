@@ -1,7 +1,7 @@
 <?php
 namespace Laranix\Themer;
 
-use Illuminate\Foundation\Application;
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Config\Repository;
 use Laranix\AntiSpam\Recaptcha\Recaptcha;
 use Laranix\Themer\Scripts\Scripts;
@@ -23,7 +23,7 @@ trait LoadsThemer
     /**
      * Initialise and load themer components
      *
-     * @param \Illuminate\Foundation\Application $app
+     * @param \Illuminate\Contracts\Foundation\Application $app
      */
     protected function loadThemer(Application $app)
     {

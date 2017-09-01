@@ -1,13 +1,13 @@
 <?php
 namespace Laranix\Support;
 
-use Illuminate\Foundation\Application;
+use Illuminate\Contracts\Foundation\Application;
 use Closure;
 
 class Middleware
 {
     /**
-     * @var \Illuminate\Foundation\Application
+     * @var \Illuminate\Contracts\Foundation\Application
      */
     protected $app;
 
@@ -28,7 +28,7 @@ class Middleware
     /**
      * LaranixMiddleware constructor.
      *
-     * @param \Illuminate\Foundation\Application $app
+     * @param \Illuminate\Contracts\Foundation\Application $app
      */
     public function __construct(Application $app)
     {

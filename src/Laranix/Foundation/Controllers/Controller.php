@@ -1,7 +1,7 @@
 <?php
 namespace Laranix\Foundation\Controllers;
 
-use Illuminate\Foundation\Application;
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -52,7 +52,7 @@ class Controller extends BaseController
     /**
      * LaranixBaseController constructor.
      *
-     * @param \Illuminate\Foundation\Application $application
+     * @param \Illuminate\Contracts\Foundation\Application $application
      */
     public function __construct(Application $application)
     {
