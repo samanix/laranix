@@ -3,6 +3,7 @@ namespace Laranix\Themer;
 
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 use Laranix\Support\IO\Url\Url;
+use Laranix\Themer\Commands\ClearCompiled;
 use Laranix\Themer\Images\Images;
 use Laranix\Themer\Scripts\Scripts;
 use Laranix\Themer\Styles\Styles;
@@ -65,6 +66,10 @@ class ServiceProvider extends BaseServiceProvider
             $this->publishes([
                 $configFile => config_path('themer.php'),
             ], 'laranix-configs');
+
+            $this->commands([
+                ClearCompiled::class,
+            ]);
         }
     }
 }

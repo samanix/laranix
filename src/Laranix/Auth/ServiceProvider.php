@@ -2,6 +2,7 @@
 namespace Laranix\Auth;
 
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
+use Laranix\Auth\User\Token\Commands\ClearExpiredTokens;
 
 class ServiceProvider extends BaseServiceProvider
 {
@@ -33,6 +34,10 @@ class ServiceProvider extends BaseServiceProvider
             $this->publishes([
                 $migrations => database_path('migrations'),
             ], 'laranix-migrations');
+
+            $this->commands([
+                ClearExpiredTokens::class,
+            ]);
         }
     }
 }
