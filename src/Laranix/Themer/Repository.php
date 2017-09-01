@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Sam
- * Date: 2017-03-15
- * Time: 14:34
- */
 namespace Laranix\Themer;
 
 interface Repository
