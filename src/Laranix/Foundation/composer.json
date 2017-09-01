@@ -36,7 +36,7 @@
      "laravel": {
         "providers": [
           "Laranix\\Foundation\\Config\\ServiceProvider",
-          "Laranix\\Foundation\\Support\\ServiceProvider",
+          "Laranix\\Foundation\\Support\\ServiceProvider"
         ]
     }
   }
