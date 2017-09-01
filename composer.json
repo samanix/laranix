@@ -2,6 +2,7 @@
   "name": "samanix/laranix",
   "description": "Laravel extended functionality",
   "minimum-stability": "dev",
+  "prefer-stable": true,
   "license": "MIT",
   "homepage": "https://samanix.com",
   "support": {
@@ -16,9 +17,9 @@
   ],
   "require": {
     "php": ">=7.1.0",
-    "laravel/framework": "5.4.*",
-    "guzzlehttp/guzzle": "6.3.*",
-    "andreasindal/laravel-markdown": "1.1.*"
+    "andreasindal/laravel-markdown": "~2.0",
+    "guzzlehttp/guzzle": "~6.0",
+    "laravel/framework": "5.5.*"
   },
   "replace": {
     "laranix/antispam": "self.version",
@@ -31,12 +32,12 @@
     "laranix/tracker": "self.version"
   },
   "require-dev": {
+    "barryvdh/laravel-debugbar": "~3.0",
+    "barryvdh/laravel-ide-helper": "~2.4",
     "fzaninotto/faker": "~1.4",
-    "mockery/mockery": "0.9.*",
-    "phpunit/phpunit": "~5.7",
-    "barryvdh/laravel-debugbar": "dev-master",
-    "barryvdh/laravel-ide-helper": "dev-master",
-    "laravel/dusk": "1.1.*"
+    "laravel/dusk": "2.0.*",
+    "mockery/mockery": "~1.0",
+    "phpunit/phpunit": "~6.0"
   },
   "autoload": {
     "psr-4": {
@@ -53,5 +54,34 @@
   },
   "config": {
       "sort-packages": true
+  },
+  "extra": {
+     "laravel": {
+        "providers": [
+          "Laranix\\AntiSpam\\ServiceProvider",
+          "Laranix\\Auth\\Email\\Verification\\ServiceProvider",
+          "Laranix\\Auth\\Group\\ServiceProvider",
+          "Laranix\\Auth\\Password\\Reset\\ServiceProvider",
+          "Laranix\\Auth\\User\\Cage\\ServiceProvider",
+          "Laranix\\Auth\\User\\Groups\\ServiceProvider",
+          "Laranix\\Auth\\User\\ServiceProvider",
+          "Laranix\\Auth\\ServiceProvider",
+          "Laranix\\Foundation\\Config\\ServiceProvider",
+          "Laranix\\Foundation\\Support\\ServiceProvider",
+          "Laranix\\Session\\ServiceProvider",
+          "Laranix\\Themer\\ServiceProvider",
+          "Laranix\\Tracker\\ServiceProvider"
+        ],
+        "aliases": {
+          "Recaptcha": "Laranix\\AntiSpam\\Recaptcha\\Facade",
+          "Sequence": "Laranix\\AntiSpam\\Sequence\\Facade",
+          "Images": "Laranix\\Themer\\Image\\Facade",
+          "Scripts": "Laranix\\Themer\\Script\\Facade",
+          "Styles": "Laranix\\Themer\\Style\\Facade"
+        }
+    }
   }
+
+  // laravel package discover
+  // update readme
 }
