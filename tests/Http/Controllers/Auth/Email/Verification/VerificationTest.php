@@ -395,7 +395,7 @@ class VerificationTest extends LaranixTestCase
             return $event->user->id == 1 && $event->token->email === 'foo2@bar.com';
         });
 
-        Mail::assertSent(VerificationMail::class, function ($mail) {
+        Mail::assertQueued(VerificationMail::class, function ($mail) {
             return $mail->hasTo('foo2@bar.com');
         });
     }

@@ -104,7 +104,7 @@ class RegisterTest extends LaranixTestCase
             return $event->user->id === $user->id;
         });
 
-        Mail::assertSent(VerificationMail::class, function ($mail) {
+        Mail::assertQueued(VerificationMail::class, function ($mail) {
             return $mail->hasTo('foo@bar.com');
         });
     }

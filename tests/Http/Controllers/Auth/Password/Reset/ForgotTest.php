@@ -79,7 +79,7 @@ class ForgotTest extends LaranixTestCase
             return $event->email === 'foo@bar.com';
         });
 
-        Mail::assertSent(ResetMail::class, function ($mail) {
+        Mail::assertQueued(ResetMail::class, function ($mail) {
             return $mail->hasTo('foo@bar.com');
         });
 
