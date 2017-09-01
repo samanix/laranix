@@ -44,7 +44,7 @@ class UserGroup extends Model
     /**
      * @var array
      */
-    protected $events = [
+    protected $dispatchesEvents = [
         'created' => Added::class,
         'deleted' => Removed::class,
     ];

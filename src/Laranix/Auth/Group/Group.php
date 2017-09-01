@@ -31,7 +31,7 @@ class Group extends Model
     /**
      * @var array
      */
-    protected $events = [
+    protected $dispatchesEvents = [
         'created' => Created::class,
     ];
 

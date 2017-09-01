@@ -33,7 +33,7 @@ class Tracker extends Model
     /**
      * @var array
      */
-    protected $events = [
+    protected $dispatchesEvents = [
         'created' => Created::class,
     ];
 

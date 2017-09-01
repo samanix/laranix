@@ -68,7 +68,7 @@ class User extends Model implements
     /**
      * @var array
      */
-    protected $events = [
+    protected $dispatchesEvents = [
         'created' => Created::class,
     ];
 
