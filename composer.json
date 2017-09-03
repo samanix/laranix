@@ -44,7 +44,7 @@
       "Laranix\\": "src/Laranix/"
     },
     "files": [
-      "src/Support/helpers.php"
+      "src/Laranix/Support/helpers.php"
     ]
   },
   "autoload-dev": {
