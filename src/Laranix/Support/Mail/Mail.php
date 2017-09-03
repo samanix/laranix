@@ -2,7 +2,7 @@
 namespace Laranix\Support\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Mail\Mailable;
+use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Laranix\Support\Exception\NullValueException;
 
