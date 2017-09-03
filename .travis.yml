@@ -1,0 +1,12 @@
+language: php
+
+php:
+  - php: '7.1'
+  - php: '7.2'
+  - nightly
+
+install:
+  - travis_retry composer update --prefer-dist --no-interaction --prefer-stable --no-suggest
+
+before_script:
+  - phpenv config-rm xdebug.ini
