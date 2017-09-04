@@ -28,6 +28,10 @@ trait LaranixTestSuite
     {
         parent::setUp();
 
+        if (!defined('LARAVEL_START')) {
+            define('LARAVEL_START', microtime(true));
+        }
+
         Event::fake();
         Mail::fake();
     }
@@ -64,7 +68,7 @@ trait LaranixTestSuite
             return;
         }
 
-        $this->artisan('migrate');
+        $this->artisan('migrate:fresh');
 
         $this->app[Kernel::class]->setArtisan(null);
 
