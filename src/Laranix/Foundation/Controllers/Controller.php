@@ -23,7 +23,7 @@ class Controller extends BaseController
     protected $preparedForResponsed = false;
 
     /**
-     * @var \Illuminate\Foundation\Application
+     * @var \Illuminate\Contracts\Foundation\Application
      */
     protected $app;
 
