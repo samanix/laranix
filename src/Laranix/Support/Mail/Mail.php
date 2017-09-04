@@ -2,13 +2,13 @@
 namespace Laranix\Support\Mail;
 
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
-use Illuminate\Queue\SerializesModels;
 use Laranix\Support\Exception\NullValueException;
 
-class Mail extends Mailable
+class Mail extends Mailable implements ShouldQueue
 {
-    use Queueable, SerializesModels;
+    use Queueable;
 
     /**
      * Mail options
