@@ -162,3 +162,16 @@ if (!function_exists('socialMedia')) {
         return urlCreate(null, $url['url'] ?? null, $url['path'] ?? null);
     }
 }
+
+if (!function_exists('runningCli')) {
+    /**
+     * Check if app is running in cli
+     *
+     * @return bool
+     */
+    function runningCli() : bool
+    {
+        return php_sapi_name() == 'cli' || php_sapi_name() == 'phpdbg';
+    }
+
+}
