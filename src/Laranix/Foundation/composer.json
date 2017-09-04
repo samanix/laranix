@@ -17,12 +17,10 @@
   ],
   "require": {
     "php": ">=7.1.0",
-    "illuminate/contracts": "5.5.*",
-    "illuminate/routing": "5.5.*",
-    "illuminate/support": "5.5.*",
     "laranix/antispam": "~2.0",
     "laranix/support": "~2.0",
-    "laranix/themer": "~2.0"
+    "laranix/themer": "~2.0",
+    "laravel/framework": "5.5.*"
   },
   "autoload": {
     "psr-4": {
