@@ -99,6 +99,7 @@ However, before running any commands for Laranix:
   * Any default Laravel views
   * Any default Laravel models
   * Any files/folders in resources/assets provided by default by Laravel
+* It is recommended to run `php artisan preset none` as well, although this is not required
 
 Run `php artisan laranix:install -AO`.
 
