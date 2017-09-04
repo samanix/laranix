@@ -20,7 +20,6 @@ Thumbs.db
 /tests/sandbox
 /packages
 TODO.md
-*.min.css
 *.css.map
 vars.css
 .php_cs.cache
