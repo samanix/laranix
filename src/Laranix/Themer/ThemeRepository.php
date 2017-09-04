@@ -188,7 +188,7 @@ class ThemeRepository implements Repository
             throw new NullValueException("Cannot set default theme when theme does not exist");
         }
 
-        if (!$default->verified() && !runningCli()) {
+        if (!$default->verified()) {
             throw new \InvalidArgumentException("Cannot set default theme to an unverified theme");
         }
 
