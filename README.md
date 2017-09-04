@@ -196,34 +196,44 @@ Add/edit the following settings to your `.env`:
 Other configurations you can edit are:
 
 ***laranixauth.php***
+
 Configures Auth components.
 
 ***themer.php***
+
 Configures Themer component.
 
 ***appsettings.php***
+
 Provides some extra custom settings for your app.
 
 ***globalviewvars.php***
+
 Add variables that will be shared globally to **all** views.
 
 ***themerdefaultfiles.php***
+
 Add files that Themer will load on all requests where Themer is initialised.
 
 ***socialmedia.php***
+
 Provides links to various social media outlets, you are free to add your own.
 
 ***defaultusergroups.php***
+
 Add and configure default user groups for when the database is seeded.
 
 ***antispam.php***
+
 Configures AntiSpam components.
 
 ***tracker.php***
+
 Configures Tracker component.
 
 ##### Other Packages
 ***markdown.php***
+
 Remember to set `escape_markup` to `true` in this file if you are allowing user input.
 
 
