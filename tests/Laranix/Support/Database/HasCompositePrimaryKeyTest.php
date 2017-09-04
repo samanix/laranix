@@ -8,6 +8,6 @@ class HasCompositePrimaryKeyTest extends LaranixTestCase
     // TODO
     public function test()
     {
-        return true;
+        $this->assertTrue(true);
     }
 }

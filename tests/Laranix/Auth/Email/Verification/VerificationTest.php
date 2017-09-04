@@ -14,6 +14,6 @@ class VerificationTest extends LaranixTestCase
      */
     public function test()
     {
-        return true;
+        $this->assertTrue(true);
     }
 }

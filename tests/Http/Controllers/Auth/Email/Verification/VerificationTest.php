@@ -258,7 +258,7 @@ class VerificationTest extends LaranixTestCase
      */
     public function testPostVerify()
     {
-        return true;
+        $this->assertTrue(true);
     }
 
     /**
