@@ -35,12 +35,6 @@ class Themes
                 ],
             ],
 
-            // Views
-            'views' => [
-                'style'     => 'style',
-                'scripts'   => 'scripts',
-            ],
-
             'cookie' => 'cookie',
             'umask' => 0755,
 

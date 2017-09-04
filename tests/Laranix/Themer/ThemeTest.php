@@ -1,7 +1,6 @@
 <?php
 namespace Laranix\Tests\Laranix\Themer;
 
-use Laranix\Support\IO\Url\Url;
 use Laranix\Themer\Theme;
 use Laranix\Themer\ThemeSettings;
 use Laranix\Tests\LaranixTestCase;
@@ -38,7 +37,7 @@ class ThemeTest extends LaranixTestCase
         $this->assertSame('foo', $theme->getKey());
         $this->assertSame('bar', $theme->getName());
         $this->assertSame(public_path('theme'), $theme->getPath());
-        $this->assertSame(Url::to('/url/to/theme'), $theme->getWebPath());
+        $this->assertSame(urlTo('/url/to/theme'), $theme->getWebPath());
 
         $this->assertTrue($theme->getSetting('enabled'));
         $this->assertFalse($theme->getSetting('override'));
@@ -57,7 +56,7 @@ class ThemeTest extends LaranixTestCase
 
         $this->assertSame(public_path($pathExpect), $theme->getPath());
 
-        $this->assertSame(Url::to($paths['webPath']), $theme->getWebPath());
+        $this->assertSame(urlTo($paths['webPath']), $theme->getWebPath());
     }
 
     /**

@@ -113,15 +113,6 @@ class CageTest extends LaranixTestCase
     }
 
     /**
-     * Test get cage status
-     */
-    public function testGetStatusAttribute()
-    {
-        $this->assertSame(3, Cage::withTrashed()->find(1)->status);
-        $this->assertSame(1, Cage::find(2)->status);
-    }
-
-    /**
      * Test active scope
      */
     public function testActiveScope()
@@ -165,5 +156,25 @@ class CageTest extends LaranixTestCase
     {
         $this->assertSame(ip2long('1.1.1.3'), Cage::find(3)->rawIpv4);
         $this->assertSame(ip2long('1.1.1.5'), Cage::find(5)->rawIpv4);
+    }
+
+    /**
+     * Test isExpired function
+     */
+    public function testIsExpired()
+    {
+        $this->assertFalse(Cage::withTrashed()->find(1)->isExpired());
+        $this->assertTrue(Cage::find(3)->isExpired());
+        $this->assertFalse(Cage::find(5)->isExpired());
+    }
+
+    /**
+     * Test is cage is removed
+     */
+    public function testIsRemoved()
+    {
+        $this->assertTrue(Cage::withTrashed()->find(1)->isRemoved());
+        $this->assertFalse(Cage::withTrashed()->find(3)->isRemoved());
+        $this->assertFalse(Cage::find(5)->isRemoved());
     }
 }

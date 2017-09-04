@@ -10,14 +10,16 @@ use Laranix\Auth\Email\Verification\Events\Verified;
 use Laranix\Auth\Email\Verification\Verification;
 use Laranix\Auth\User\Token\Token;
 use Laranix\Auth\User\User;
+use Laranix\Tests\Http\HasSharedViewVariable;
 use Laranix\Tests\LaranixTestCase;
-use Laranix\Support\IO\Url\Url;
 use Illuminate\Support\Facades\Mail;
 use Laranix\Auth\Email\Verification\Mail as VerificationMail;
 use Illuminate\Support\Facades\Event;
 
 class VerificationTest extends LaranixTestCase
 {
+    use HasSharedViewVariable;
+
     /**
      * @var bool
      */
@@ -41,6 +43,8 @@ class VerificationTest extends LaranixTestCase
         $response->assertStatus(200);
 
         $response->assertViewHas(['token' => null, 'email' => null]);
+
+        $this->assertTrue($this->hasSharedViewVariables('sequence', 'recaptcha'));
     }
 
     /**
@@ -160,7 +164,7 @@ class VerificationTest extends LaranixTestCase
 
         $response->assertSessionHas([
             'verification_notice_header'   => 'Email Verified',
-            'verification_notice_message'  => 'Your email has been verified, you may now <a href="' . Url::to('login') . '">login</a>',
+            'verification_notice_message'  => 'Your email has been verified, you may now <a href="' . urlTo('login') . '">login</a>',
             'verification_notice_is_error' => false,
         ]);
 
@@ -235,7 +239,7 @@ class VerificationTest extends LaranixTestCase
 
         $response->assertSessionHas([
             'verification_notice_header'   => 'Email Verification Error',
-            'verification_notice_message'  => 'Your token has expired, please <a href="' . Url::to('email/verify/refresh') . '">request a new one</a>',
+            'verification_notice_message'  => 'Your token has expired, please <a href="' . urlTo('email/verify/refresh') . '">request a new one</a>',
             'verification_notice_is_error' => true,
         ]);
 
@@ -347,7 +351,7 @@ class VerificationTest extends LaranixTestCase
     {
         $this->createFactories();
 
-        $response = $this->post('email/verify/refresh', ['email' => 'not@here.com'], ['HTTP_REFERER' => Url::to('email/verify/refresh')]);
+        $response = $this->post('email/verify/refresh', ['email' => 'not@here.com'], ['HTTP_REFERER' => urlTo('email/verify/refresh')]);
 
         $response->assertStatus(302);
 
@@ -373,7 +377,7 @@ class VerificationTest extends LaranixTestCase
 
         $this->createFactories();
 
-        $response = $this->post('email/verify/refresh', ['email' => 'foo2@bar.com'], ['HTTP_REFERER' => Url::to('email/verify/refresh')]);
+        $response = $this->post('email/verify/refresh', ['email' => 'foo2@bar.com'], ['HTTP_REFERER' => urlTo('email/verify/refresh')]);
 
         $response->assertStatus(302);
 
@@ -391,7 +395,7 @@ class VerificationTest extends LaranixTestCase
             return $event->user->id == 1 && $event->token->email === 'foo2@bar.com';
         });
 
-        Mail::assertSent(VerificationMail::class, function ($mail) {
+        Mail::assertQueued(VerificationMail::class, function ($mail) {
             return $mail->hasTo('foo2@bar.com');
         });
     }

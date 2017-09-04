@@ -1,1 +1,0 @@
-{!! $image->display('laranix_500x100_default.png', ['class' => 'ui fluid image', 'alt' => 'Laranix', 'id' => 'header-image']) !!}

@@ -6,13 +6,14 @@ use Laranix\Auth\Password\Reset\Events\ForgotAttempt;
 use Laranix\Auth\Password\Reset\Mail as ResetMail;
 use Laranix\Auth\Password\Reset\Events\Created;
 use Laranix\Auth\User\User;
+use Laranix\Tests\Http\HasSharedViewVariable;
 use Laranix\Tests\LaranixTestCase;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Mail;
 
 class ForgotTest extends LaranixTestCase
 {
-    use DatabaseMigrations;
+    use DatabaseMigrations, HasSharedViewVariable;
 
     /**
      * @var bool
@@ -36,6 +37,8 @@ class ForgotTest extends LaranixTestCase
         $response->assertStatus(200);
 
         $response->assertViewHas('forgot_password_message');
+
+        $this->assertTrue($this->hasSharedViewVariables('sequence', 'recaptcha'));
     }
 
     /**
@@ -76,7 +79,7 @@ class ForgotTest extends LaranixTestCase
             return $event->email === 'foo@bar.com';
         });
 
-        Mail::assertSent(ResetMail::class, function ($mail) {
+        Mail::assertQueued(ResetMail::class, function ($mail) {
             return $mail->hasTo('foo@bar.com');
         });
 

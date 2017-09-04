@@ -1,5 +1,5 @@
 .idea
-.subsplit
+.subsplit/
 composer.phar
 composer.lock
 .DS_Store

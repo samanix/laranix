@@ -6,6 +6,7 @@ use Laranix\Auth\Group\Group;
 use Laranix\Auth\User\Events\Created;
 use Laranix\Auth\User\Groups\Events\Added;
 use Laranix\Auth\User\User;
+use Laranix\Tests\Http\HasSharedViewVariable;
 use Laranix\Tests\LaranixTestCase;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Mail;
@@ -13,6 +14,8 @@ use Laranix\Auth\Email\Verification\Mail as VerificationMail;
 
 class RegisterTest extends LaranixTestCase
 {
+    use HasSharedViewVariable;
+
     /**
      * @var bool
      */
@@ -33,6 +36,8 @@ class RegisterTest extends LaranixTestCase
         $response = $this->get('register');
 
         $response->assertStatus(200);
+
+        $this->assertTrue($this->hasSharedViewVariables('sequence', 'recaptcha'));
     }
 
     /**
@@ -99,7 +104,7 @@ class RegisterTest extends LaranixTestCase
             return $event->user->id === $user->id;
         });
 
-        Mail::assertSent(VerificationMail::class, function ($mail) {
+        Mail::assertQueued(VerificationMail::class, function ($mail) {
             return $mail->hasTo('foo@bar.com');
         });
     }

@@ -3,13 +3,15 @@ namespace Laranix\Tests\Http\Controllers\Auth;
 
 use Laranix\Auth\Events\Login\Restricted;
 use Laranix\Auth\User\User;
+use Laranix\Tests\Http\HasSharedViewVariable;
 use Laranix\Tests\LaranixTestCase;
-use Laranix\Support\IO\Url\Url;
 use Illuminate\Support\Facades\Event;
 
 
 class LoginTest extends LaranixTestCase
 {
+    use HasSharedViewVariable;
+
     /**
      * @var bool
      */
@@ -30,6 +32,8 @@ class LoginTest extends LaranixTestCase
         $response = $this->get('login');
 
         $response->assertStatus(200);
+
+        $this->assertTrue($this->hasSharedViewVariables('sequence', 'recaptcha'));
     }
 
     /**
@@ -39,7 +43,7 @@ class LoginTest extends LaranixTestCase
     {
         $this->createFactories();
 
-        $response = $this->post('login', ['email' => 'foo@baz.com', 'password' => 'secret'], ['HTTP_REFERER' => Url::to('login')]);
+        $response = $this->post('login', ['email' => 'foo@baz.com', 'password' => 'secret'], ['HTTP_REFERER' => urlTo('login')]);
 
         $response->assertStatus(302);
 

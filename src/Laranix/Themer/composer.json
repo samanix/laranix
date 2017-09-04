@@ -1,0 +1,49 @@
+{
+  "name": "laranix/themer",
+  "description": "Laranix Themer package",
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "license": "MIT",
+  "homepage": "https://samanix.com",
+  "support": {
+    "issues": "https://github.com/samanix/laranix/issues",
+    "source": "https://github.com/samanix/laranix"
+  },
+  "authors": [
+    {
+      "name": "Sam Newsome",
+      "email": "samanixcom@gmail.com"
+    }
+  ],
+  "require": {
+    "php": ">=7.1.0",
+    "illuminate/console": "5.5.*",
+    "illuminate/contracts": "5.5.*",
+    "illuminate/filesystem": "5.5.*",
+    "illuminate/http": "5.5.*",
+    "illuminate/support": "5.5.*",
+    "laranix/antispam": "~2.0",
+    "laranix/support": "~2.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Laranix\\Themer\\": ""
+    }
+  },
+  "config": {
+      "sort-packages": true
+  },
+  "extra": {
+     "laravel": {
+        "providers": [
+          "Laranix\\Themer\\ServiceProvider"
+        ],
+        "aliases": {
+          "Images": "Laranix\\Themer\\Image\\Facade",
+          "Scripts": "Laranix\\Themer\\Script\\Facade",
+          "Styles": "Laranix\\Themer\\Style\\Facade"
+        }
+    }
+  }
+}
+

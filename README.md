@@ -24,16 +24,16 @@ Laranix is open-sourced software licensed under the [MIT license](http://opensou
 
 ### Requirements
 * PHP 7.1+
-* [laravel/framework](https://github.com/laravel/framework) 5.4.*
-* [guzzlehttp/guzzle](https://github.com/guzzle/guzzle) 6.3.*
-* [andreasindal/laravel-markdown](https://github.com/andreasindal/laravel-markdown) 1.1.*
+* [laravel/framework](https://github.com/laravel/framework) 5.5.*
+* [guzzlehttp/guzzle](https://github.com/guzzle/guzzle) ~6.0
+* [andreasindal/laravel-markdown](https://github.com/andreasindal/laravel-markdown) ~2.0
 
 
-### Features
-#### AntiSpam
+## Features
+### AntiSpam
 Provides invisible recaptcha entry on forms (sign up with Google), as well as a sequence ID field, which will prevent the form being submitted twice.
 
-#### Auth
+### Auth
 Custom auth package built on top of Laravels own, providing:
 
 * More feature rich User model
@@ -42,23 +42,26 @@ Custom auth package built on top of Laravels own, providing:
 * Email verification
 * User cages - protect an area so a user cannot access it
 
-#### Installer
-Installs, publishes and copies files required for Laranix to run
+### Foundation
+Provides base packages and configs for your app.
 
-#### Session
-Adds IP locking to sessions, not required if you don't want to use it
+### Installer
+Installs, publishes and copies files for Laranix to your app.
 
-#### Support
+### Session
+Adds IP locking to sessions, not required if you don't want to use it.
+
+### Support
 Adds extra functionality, including:
 
 * Simple URL creator, that will always (try) and use the full URL - if it doesn't, somethings wrong with your setup
 * String formatting with named parameters (similar to C#)
 * Settings class, that allows you to use a class to determine parameters and their types
 
-#### Themer
+### Themer
 Provides themes and loads the files given, combines like for like files in to one automatically and updates if any file is added or changed
 
-#### Tracker
+### Tracker
 Provides breadcrumb like tracking for user actions
 
 ## Installation
@@ -67,27 +70,12 @@ Provides breadcrumb like tracking for user actions
 
 Or add to composer.json and then run `composer update`:
 
-`"samanix\laranix": "2.0.*"`
+`"samanix\laranix": "~2.0"`
 
-### Add Service Providers
-Add the following to your `config/app.php` in the `providers` array:
+### Service Providers
+Services are automatically registered since Laravel 5.5 using package discovery in the `composer.json`.
 
-    Laranix\Tracker\ServiceProvider::class,
-    Laranix\AntiSpam\ServiceProvider::class,
-	Laranix\Auth\Email\Verification\ServiceProvider::class,
-    Laranix\Auth\Group\ServiceProvider::class,
-    Laranix\Auth\Password\Reset\ServiceProvider::class,
-    Laranix\Auth\User\Cage\ServiceProvider::class,
-    Laranix\Auth\User\Groups\ServiceProvider::class,
-    Laranix\Auth\User\ServiceProvider::class,
-    Laranix\Auth\ServiceProvider::class,
-    Laranix\Foundation\Config\ServiceProvider::class,
-	Laranix\Session\ServiceProvider::class,
-    Laranix\Themer\ServiceProvider::class,
-    Indal\Markdown\MarkdownServiceProvider::class
-
-
-You can also comment our or remove:
+However, in the `config/app.php` you may still wish to comment out or remove:
 
     Illuminate\Auth\Passwords\PasswordResetServiceProvider::class,
 
@@ -98,16 +86,12 @@ There are a number of other packages provided with the dev install of Laranix, s
     laravel/dusk
 
 ### Optional: Register Facades
-Add the following to your `config/app.php` in then `aliases` array:
-
-    'Recaptcha'     => Laranix\AntiSpam\Recaptcha\Facade::class,
-    'Sequence'      => Laranix\AntiSpam\Sequence\Facade::class,
-    'Image'         => Laranix\Themer\Image\Facade::class,
-    'Script'        => Laranix\Themer\Script\Facade::class,
-    'Style'         => Laranix\Themer\Style\Facade::class,
+Registered automatically since Laravel 5.5.
 
 ### Artisan Commands
-Open `app/Console/Kernel.php` and add `\Laranix\Installer\InstallLaranixCommand::class` to the `$commands` array.
+Registered automatically since Laravel 5.5.
+
+However, before running any commands for Laranix:
 
 * Make sure to remove the default Laravel user and password migrations from 'database/migrations/'
 * You can also remove from the relevant app folders:
@@ -115,6 +99,7 @@ Open `app/Console/Kernel.php` and add `\Laranix\Installer\InstallLaranixCommand:
   * Any default Laravel views
   * Any default Laravel models
   * Any files/folders in resources/assets provided by default by Laravel
+* It is recommended to run `php artisan preset none` as well, although this is not required
 
 Run `php artisan laranix:install -AO`.
 
@@ -129,27 +114,24 @@ The following commands are also run automatically if the required option is set:
 
 If you skip these commands, you can run the artisan ones at a later time.
 
-**The command also attempts to run `composer dump-autoload`, if you get an error about this, please ensure you run manually afterwards.**
+**The command also attempts to run `composer dump-autoload`, if you get an error about this, please ensure you run
+manually afterwards.**
 
 ### Controller
-Laranix runs its own base controller, you can extend this class in your own controllers, by default its located at `App\Http\Controllers\Controller`.
+Laranix runs its own base controller, you can extend this class in your own controllers, or roll your own entirely, if
+you do either of these, remember to update the controllers installed by Laranix.
 
-The base controller contains methods that can be called that will scaffold certain scenarios.
+The Laranix base controller resides in `Laranix\Foundation\Controllers\Controller`.
+
+The base controller contains methods and traits that can be called that will scaffold certain scenarios.
 
 ### Routes
-There are some routes provided for authentication as well as an entry page, you are free to change these,
-but the routes should be named the same as Laranix relies on route names as opposed to paths.
+There are some routes provided for authentication as well as an entry page, you are free to change these.
 
-**When running `laranix:install`, the `web.php` routes file is overwritten entirely with Laranix routes. Take a backup first if required.**
+**When running `laranix:install`, the `web.php` routes file is overwritten entirely with Laranix routes. Take a backup
+first if required.**
 
 *It is only overwritten if the `-O|overwrite` parameter is set.*
-
-### Services
-Add your global scripts and stylesheets to the `$defaultSheets` and `$defaultScripts` variable in the `App\Services\Laranix\ThemerDefaultFileLoader.php`.
-
-Add any variables you want globally available in your views to the `App\Services\Laranix\GlobalViewVariables.php`.
-
-Add or edit default user groups in `App\Services\Laranix\DefaultUserGroups.php`.
 
 ### Events
 Add the following to your `App\Providers\EventServiceProvider.php` inside the `$listen` array:
@@ -168,7 +150,8 @@ Add the following to your `App\Providers\EventServiceProvider.php` inside the `$
     ],
 
 
-Add the following to your `App\Providers\EventServiceProvider.php` inside the `$subscribe` array (create if it does not exist):
+Add the following to your `App\Providers\EventServiceProvider.php` inside the `$subscribe` array
+(create if it does not exist):
 
     \Laranix\Auth\Email\Verification\Events\Subscriber::class,
     \Laranix\Auth\Events\Login\Subscriber::class,
@@ -201,7 +184,7 @@ You may also wish to change the `guards.api.provider` to `laranixuser` too.
 
 Next, open the `config\mail.php` and change the `markdown.theme` to `laranix`.
 
-### .env Files
+#### .env Files
 Add/edit the following settings to your `.env`:
 
     APP_VERSION=your-app-version
@@ -209,31 +192,64 @@ Add/edit the following settings to your `.env`:
     RECAPTCHA_SECRET=secret-key
     SESSION_DRIVER=laranix
 
-#### Other files
+#### Other Config files
 Other configurations you can edit are:
 
-* laranixauth.php
-* themer.php
-* appsettings.php
-* globalviewvars.php
-* themerdefaultfiles.php
-* socialmedia.php
-* defaultusergroups.php
-* antispam.php
-* tracker.php
+***laranixauth.php***
+Configures Auth components.
 
+***themer.php***
+Configures Themer component.
 
-From other packages:
-* markdown.php
+***appsettings.php***
+Provides some extra custom settings for your app.
 
-It is recommended to set `escape_markup` to `true` in this file.
+***globalviewvars.php***
+Add variables that will be shared globally to **all** views.
+
+***themerdefaultfiles.php***
+Add files that Themer will load on all requests where Themer is initialised.
+
+***socialmedia.php***
+Provides links to various social media outlets, you are free to add your own.
+
+***defaultusergroups.php***
+Add and configure default user groups for when the database is seeded.
+
+***antispam.php***
+Configures AntiSpam components.
+
+***tracker.php***
+Configures Tracker component.
+
+##### Other Packages
+***markdown.php***
+Remember to set `escape_markup` to `true` in this file if you are allowing user input.
+
 
 ### Database
 Run migrations using the `php artisan migrate` command.
 
-Seed your database with your default user groups using `php artisan db:seed --class=DefaultGroups`
+Seed your database with your default user groups using `php artisan db:seed --class=DefaultGroups` if Laranix has been
+installed with the `--D|seeds` option.
 
+## Artisan Commands
+In addition to the `laranix:install` command, Laranix also provides some other commands.
 
+> Remember to run `php artisan <command> --help` for options and information.
+
+`laranix:themer:clear`
+Clears compiled style and script files from themes.
+
+`laranix:tokens:clear`
+Clears expired tokens from the database for given models.
+
+Default models for Laranix tokens are:
+
+* `\\Laranix\\Auth\\Email\\Verification\\Verification`
+* `\\Laranix\\Auth\\Password\\Reset\\Reset`
+
+## Additional Notes
 ### Views
 Laranix provides several views to get you started, it also provides some mails in markdown format, so if you edit `config\laranixauth.php` to not use markdown on mails, you will have to edit the views in `resources/views/mail/auth/`.
 
