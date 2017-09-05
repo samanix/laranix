@@ -1,7 +1,6 @@
 #!/usr/bin/env sh
 LARANIX=${TRAVIS_BUILD_DIR}
-APP_BUILD=${HOME}/laranix
-APP_ROOT=${APP_BUILD}/laranix
+APP_ROOT=${HOME}/laranix
 
 cd ${HOME}
 
