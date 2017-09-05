@@ -7,7 +7,7 @@ cd ${HOME}
 composer self-update
 
 # Get test repo
-git clone --depth=50 --branch=2.0 https://github.com/laranix/tests.git laranix
+git clone --depth=50 --branch=${TRAVIS_BRANCH} https://github.com/laranix/tests.git laranix
 
 cd ${APP_BUILD}
 cp .env.travis .env
