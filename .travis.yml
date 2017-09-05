@@ -1,0 +1,22 @@
+language: php
+
+matrix:
+  fast_finish: true
+  include:
+    - php: 7.1
+
+sudo: false
+
+addons:
+  mariadb: '10.2'
+
+before_install:
+  - chmod +x $TRAVIS_BUILD_DIR/.travis/build.sh
+  - $TRAVIS_BUILD_DIR/.travis/build.sh
+
+before_script:
+  - phpenv config-rm xdebug.ini
+  - cd $HOME/laranix
+
+script:
+  - vendor/bin/phpunit
