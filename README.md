@@ -70,9 +70,7 @@ Provides breadcrumb like tracking for user actions
 ### Composer
 `composer require samanix\laranix`
 
-Or add to composer.json and then run `composer update`:
-
-`"samanix\laranix": "~2.0"`
+Or add `"samanix\laranix": "~2.0"` to your composer.json and then run `composer update`.
 
 ### Service Providers
 Services are automatically registered since Laravel 5.5 using package discovery in the `composer.json`.
