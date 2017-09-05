@@ -16,6 +16,6 @@ before_install:
 
 before_script:
   - phpenv config-rm xdebug.ini
-  - cd $HOME/laranix
+  - cd $HOME/laranix/laranix
 
 script: vendor/bin/phpunit
