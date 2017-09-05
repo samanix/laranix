@@ -1,6 +1,6 @@
 # Laranix
 
-[![Build Status](https://travis-ci.org/laranix/tests.svg)](https://travis-ci.org/laranix/tests)
+[![Build Status](https://travis-ci.org/samanix/laranix.svg)](https://travis-ci.org/samanix/laranix)
 
 ## About
 [Laranix](https://samanix.com/laranix) by [Samanix](https://samanix.com)
