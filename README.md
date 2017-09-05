@@ -1,6 +1,6 @@
 # Laranix
 
-[![Build Status](https://travis-ci.org/laranix/tests.svg?branch=2.0)](https://travis-ci.org/laranix/tests)
+[![Build Status](https://travis-ci.org/laranix/tests.svg)](https://travis-ci.org/laranix/tests)
 
 ## About
 [Laranix](https://samanix.com/laranix) by [Samanix](https://samanix.com)
@@ -269,6 +269,5 @@ Laranix provides several views to get you started, it also provides some mails i
 Remember to update `webpack.mix.js` if you roll your own theme settings.
 
 ### Tests
-Provided but will require a Laravel install to work. Copy out or add directories to the relevant phpunit.xml file.
 
-The `phpunit.xml` files are provided as examples only.
+See [here](tests/README.md).

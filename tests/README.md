@@ -1,5 +1,7 @@
 # Tests
 
+[![Build Status](https://travis-ci.org/laranix/tests.svg)](https://travis-ci.org/laranix/tests)
+
 Tests are run automatically in the [`laranix/tests`](https://github.com/laranix/tests) package.
 
 Provided but will require a Laravel install to work. Copy out or add directories to phpunit.xml.
