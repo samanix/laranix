@@ -21,3 +21,5 @@ ln -s ${LARANIX} ${APP_ROOT}/laranix
 composer update --prefer-dist --no-interaction --prefer-stable --no-suggest
 
 mysql -e 'CREATE DATABASE travis_test; set global max_connections = 1001;'
+
+php artisan key:generate
