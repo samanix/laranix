@@ -18,5 +18,4 @@ before_script:
   - phpenv config-rm xdebug.ini
   - cd $HOME/laranix
 
-script:
-  - vendor/bin/phpunit
+script: vendor/bin/phpunit

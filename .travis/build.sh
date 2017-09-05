@@ -1,6 +1,7 @@
 #!/usr/bin/env sh
 LARANIX=${TRAVIS_BUILD_DIR}
 APP_BUILD=${HOME}/laranix
+APP_ROOT=${APP_BUILD}/laranix
 
 cd ${HOME}
 
@@ -9,13 +10,13 @@ composer self-update
 # Get test repo
 git clone --depth=50 --branch=${TRAVIS_BRANCH} https://github.com/laranix/tests.git laranix
 
-cd ${APP_BUILD}
+cd ${APP_ROOT}
 cp .env.travis .env
 composer update --prefer-dist --no-interaction --prefer-stable --no-suggest
 
-rm -fr ${APP_BUILD}vendor/samanix/laranix/
+rm -fr ${APP_ROOT}vendor/samanix/laranix/
 
-ln -s ${LARANIX} ${APP_BUILD}/laranix
+ln -s ${LARANIX} ${APP_ROOT}/laranix
 
 composer update --prefer-dist --no-interaction --prefer-stable --no-suggest
 
