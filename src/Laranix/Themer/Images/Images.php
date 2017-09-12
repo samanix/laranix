@@ -76,7 +76,7 @@ class Images extends ThemerResource
      */
     protected function getCachedImage(ResourceSettings $image) : string
     {
-        return $this->resources->get($image->key);
+        return $this->resources->get($image->key)->htmlstring;
     }
 
     /**
