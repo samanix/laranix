@@ -121,7 +121,7 @@ manually afterwards.**
 Laranix runs its own base controller, you can extend this class in your own controllers, or roll your own entirely, if
 you do either of these, remember to update the controllers installed by Laranix.
 
-The Laranix base controller resides in `Laranix\Foundation\Controllers\Controller`.
+The Laranix base controller resides in `\Laranix\Foundation\Controllers\Controller`.
 
 The base controller contains methods and traits that can be called that will scaffold certain scenarios.
 
@@ -134,7 +134,7 @@ first if required.**
 *It is only overwritten if the `-O|overwrite` parameter is set.*
 
 ### Events
-Add the following to your `App\Providers\EventServiceProvider.php` inside the `$listen` array:
+Add the following to your `app/Providers/EventServiceProvider.php` inside the `$listen` array:
 
     \Laranix\Auth\Email\Events\Updated::class => [
         \Laranix\Auth\Email\Listeners\Updated::class,
@@ -175,7 +175,7 @@ Open the `config\auth.php` and edit the `providers` array, add:
 
     'laranixuser' => [
          'driver'   => 'eloquent',
-         'model'    => Laranix\Auth\User\User::class,
+         'model'    => \Laranix\Auth\User\User::class,
     ],
 
 Then change the `guards.web.provider` value to `laranixuser`.
@@ -256,12 +256,13 @@ Clears expired tokens from the database for given models.
 
 Default models for Laranix tokens are:
 
-* `\\Laranix\\Auth\\Email\\Verification\\Verification`
-* `\\Laranix\\Auth\\Password\\Reset\\Reset`
+* `\Laranix\Auth\Email\Verification\Verification`
+* `\Laranix\Auth\Password\Reset\Reset`
 
 ## Additional Notes
 ### Views
-Laranix provides several views to get you started, it also provides some mails in markdown format, so if you edit `config\laranixauth.php` to not use markdown on mails, you will have to edit the views in `resources/views/mail/auth/`.
+Laranix provides several views to get you started, it also provides some mails in markdown format, so if you edit
+`config\laranixauth.php` to not use markdown on mails, you will have to edit the views in `resources/views/mail/auth/`.
 
 ### Webpack
 Remember to update `webpack.mix.js` if you roll your own theme settings.
