@@ -84,7 +84,7 @@ class UserRepository implements Repository
                       ->where($model->getAuthIdentifierName(), $id)
                       ->first();
 
-        return $user !== null && hash_equals($model->getRememberToken(), $token) ? $user : null;
+        return $user !== null && hash_equals($model->getRememberToken() ?? '', $token) ? $user : null;
     }
 
     /**
@@ -102,7 +102,7 @@ class UserRepository implements Repository
                       ->where($model->getAuthIdentifierName(), $id)
                       ->first();
 
-        return $user !== null && hash_equals($model->getApiToken(), $token) ? $user : null;
+        return $user !== null && hash_equals($model->getApiToken() ?? '', $token) ? $user : null;
     }
 
     /**
