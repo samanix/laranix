@@ -272,7 +272,7 @@ abstract class Manager
 
         $user = $row->user;
 
-        if ($row->email !== $email) {
+        if (hash_equals($row->email, $email)) {
             $this->fireFailedEvent($user, $row, $email);
 
             return Token::TOKEN_INVALID;
