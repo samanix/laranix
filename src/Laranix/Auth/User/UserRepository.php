@@ -80,10 +80,11 @@ class UserRepository implements Repository
     {
         $model = $this->getModel();
 
-        return $model->newQuery()
-            ->where($model->getAuthIdentifierName(), $id)
-            ->where($model->getRememberTokenName(), $token)
-            ->first();
+        $user = $model->newQuery()
+                      ->where($model->getAuthIdentifierName(), $id)
+                      ->first();
+
+        return $user !== null && hash_equals($model->getRememberToken(), $token) ? $user : null;
     }
 
     /**
@@ -97,10 +98,11 @@ class UserRepository implements Repository
     {
         $model = $this->getModel();
 
-        return $model->newQuery()
-            ->where($model->getAuthIdentifierName(), $id)
-            ->where($model->getApiTokenName(), $token)
-            ->first();
+        $user = $model->newQuery()
+                      ->where($model->getAuthIdentifierName(), $id)
+                      ->first();
+
+        return $user !== null && hash_equals($model->getApiToken(), $token) ? $user : null;
     }
 
     /**
