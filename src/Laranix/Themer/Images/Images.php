@@ -148,19 +148,19 @@ class Images extends ThemerResource
     protected function generateHtmlOutput(ResourceSettings $image) : ResourceSettings
     {
         $str = <<<'IMAGESTR'
-<img src="{{url}}" alt="{{alt}}" {{title}} {{width}} {{height}} {{class}} {{id}} {{crossorigin}} {{extra}} />
+<img src="{{url}}" alt="{{alt}}" {{title}} {{width}} {{height}} {{class}} {{id}} {{cors}} {{extra}} />
 IMAGESTR;
 
         $image->htmlstring = Str::format($str, [
-            'url'           => $this->getWebUrl($image->image, $image->theme),
-            'alt'           => $image->alt,
-            'title'         => $image->title !== null ? 'title="' . $image->title . '"' : null,
-            'width'         => $image->width !== null ? 'width="' . $image->width . '"' : null,
-            'height'        => $image->height !== null ? 'height="' . $image->height . '"' : null,
-            'class'         => $image->class !== null ? 'class="' . $image->class . '"' : null,
-            'id'            => $image->id !== null ? 'id="' . $image->id . '"' : null,
-            'crossorigin'   => $image->crossorigin !== null ? ' crossorigin="' . $image->crossorigin . '"' : null,
-            'extra'         => $this->createResourceOutput($image->extra),
+            'url'       => $this->getWebUrl($image->image, $image->theme),
+            'alt'       => $image->alt,
+            'title'     => $image->title !== null ? 'title="' . $image->title . '"' : null,
+            'width'     => $image->width !== null ? 'width="' . $image->width . '"' : null,
+            'height'    => $image->height !== null ? 'height="' . $image->height . '"' : null,
+            'class'     => $image->class !== null ? 'class="' . $image->class . '"' : null,
+            'id'        => $image->id !== null ? 'id="' . $image->id . '"' : null,
+            'cors'      => $image->crossorigin !== null ? 'crossorigin="' . $image->crossorigin . '"' : null,
+            'extra'     => $this->createResourceOutput($image->extra),
         ]);
 
         return $image;
