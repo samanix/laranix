@@ -110,8 +110,12 @@ class Images extends ThemerResource
      * @param bool        $default
      * @return \Laranix\Themer\ResourceSettings|Settings
      */
-    protected function createImageSettings($image, ?string $alt = null, array $extra = [], bool $default = false) : ResourceSettings
-    {
+    protected function createImageSettings(
+        $image,
+        ?string $alt = null,
+        array $extra = [],
+        bool $default = false
+    ): ResourceSettings {
         if ($image instanceof Settings) {
             $settings = $image;
         } elseif (is_array($image)) {
@@ -143,8 +147,9 @@ class Images extends ThemerResource
      */
     protected function generateHtmlOutput(ResourceSettings $image) : ResourceSettings
     {
-        $str = /** @lang text */
-                '<img src="{{url}}" alt="{{alt}}" {{title}} {{width}} {{height}} {{class}} {{id}} {{crossorigin}} {{extra}} />';
+        $str = <<<'IMAGESTR'
+<img src="{{url}}" alt="{{alt}}" {{title}} {{width}} {{height}} {{class}} {{id}} {{crossorigin}} {{extra}} />
+IMAGESTR;
 
         $image->htmlstring = Str::format($str, [
             'url'           => $this->getWebUrl($image->image, $image->theme),
