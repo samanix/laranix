@@ -34,7 +34,12 @@ class Scripts extends ThemerResource
      */
     protected function getLocalResourceRepositoryKey(ResourceSettings $settings) : string
     {
-        return sprintf('scripts.local.%s.%s.%d', $settings->theme->getKey(), $this->getAttributes($settings), $settings->order);
+        return sprintf(
+            'scripts.local.%s.%s.%d',
+            $settings->theme->getKey(),
+            $this->getAttributes($settings),
+            $settings->order
+        );
     }
 
     /**
@@ -104,7 +109,11 @@ class Scripts extends ThemerResource
                 $compiledResourceFilePath   = $this->getResourcePath($compiledResource, $theme);
 
                 if (!is_file($compiledResourceFilePath)) {
-                    $this->mergeResources($theme, sprintf('scripts.local.%s.%s', $theme->getKey(), $type), $compiledResourceFilePath);
+                    $this->mergeResources(
+                        $theme,
+                        sprintf('scripts.local.%s.%s', $theme->getKey(), $type),
+                        $compiledResourceFilePath
+                    );
                 }
 
                 $location = $this->getLocation(strpos($type, 'head') !== false);
@@ -131,15 +140,16 @@ class Scripts extends ThemerResource
         $output = [];
 
         foreach ($resources as $resource) {
-            $str = /** @lang text */
-                '<script type="application/javascript" src="{{url}}"{{async}}{{defer}}{{crossorigin}}{{integrity}}></script>';
+            $str = <<<'SCRIPTSTR'
+'<script type="application/javascript" src="{{url}}" {{async}} {{defer}} {{integ}} {{cors}}></script>';
+SCRIPTSTR;
 
             $output[] = Str::format($str, [
-                'url'           => $this->url->create(null, $resource->url, $resource->filename),
-                'async'         => $resource->async ? ' async' : null,
-                'defer'         => $resource->defer ? ' defer' : null,
-                'crossorigin'   => $resource->crossorigin !== null ? ' crossorigin="' . $resource->crossorigin . '"' : null,
-                'integrity'     => $resource->integrity !== null ? ' integrity="' . $resource->integrity . '"' : null,
+                'url'   => $this->url->create(null, $resource->url, $resource->filename),
+                'async' => $resource->async ? 'async' : null,
+                'defer' => $resource->defer ? 'defer' : null,
+                'integ' => $resource->integrity !== null ? 'integrity="' . $resource->integrity . '"' : null,
+                'cors'  => $resource->crossorigin !== null ? 'crossorigin="' . $resource->crossorigin . '"' : null,
             ]);
         }
 
