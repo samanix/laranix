@@ -27,7 +27,12 @@ class Styles extends ThemerResource
      */
     protected function getLocalResourceRepositoryKey(ResourceSettings $settings) : string
     {
-        return sprintf('styles.local.%s.%s.%d', $settings->theme->getKey(), $this->crcCache($settings->media), $settings->order);
+        return sprintf(
+            'styles.local.%s.%s.%d',
+            $settings->theme->getKey(),
+            $this->crcCache($settings->media),
+            $settings->order
+        );
     }
 
     /**
@@ -85,7 +90,11 @@ class Styles extends ThemerResource
                 $compiledResourceFilePath   = $this->getResourcePath($compiledResources, $theme);
 
                 if (!is_file($compiledResourceFilePath)) {
-                    $this->mergeResources($theme, sprintf('styles.local.%s.%s', $theme->getKey(), $media), $compiledResourceFilePath);
+                    $this->mergeResources(
+                        $theme,
+                        sprintf('styles.local.%s.%s', $theme->getKey(), $media),
+                        $compiledResourceFilePath
+                    );
                 }
 
                 $stylesheets[] = $this->createLocalResourceFileSettings($theme, $media, $compiledResources);
@@ -110,13 +119,15 @@ class Styles extends ThemerResource
         $output = [];
 
         foreach ($resources as $resource) {
-            $str = /** @lang text */
-                '<link rel="stylesheet" type="text/css" href="{{url}}" media="{{media}}" {{integrity}} />';
+            $str = <<<'STYLESTR'
+<link rel="stylesheet" type="text/css" href="{{url}}" media="{{media}}" {{integ}} {{cors}} />
+STYLESTR;
 
             $output[] = Str::format($str, [
-                'url'           => $this->url->create(null, $resource->url, $resource->filename),
-                'media'         => $resource->media,
-                'integrity'     => $resource->integrity !== null ? ' integrity="' . $resource->integrity . '"' : null,
+                'url'   => $this->url->create(null, $resource->url, $resource->filename),
+                'media' => $resource->media,
+                'integ' => $resource->integrity !== null ? 'integrity="' . $resource->integrity . '"' : null,
+                'cors'  => $resource->crossorigin !== null ? 'crossorigin="' . $resource->crossorigin . '"' : null,
             ]);
         }
 
