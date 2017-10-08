@@ -141,15 +141,15 @@ class Scripts extends ThemerResource
 
         foreach ($resources as $resource) {
             $str = <<<'SCRIPTSTR'
-'<script type="application/javascript" src="{{url}}" {{async}} {{defer}} {{integ}} {{cors}}></script>';
+<script type="application/javascript" src="{{url}}"{{async}}{{defer}}{{integ}}{{cors}}></script>
 SCRIPTSTR;
 
             $output[] = Str::format($str, [
                 'url'   => $this->url->create(null, $resource->url, $resource->filename),
-                'async' => $resource->async ? 'async' : null,
-                'defer' => $resource->defer ? 'defer' : null,
-                'integ' => $resource->integrity !== null ? 'integrity="' . $resource->integrity . '"' : null,
-                'cors'  => $resource->crossorigin !== null ? 'crossorigin="' . $resource->crossorigin . '"' : null,
+                'async' => $resource->async ? ' async' : null,
+                'defer' => $resource->defer ? ' defer' : null,
+                'integ' => $resource->integrity !== null ? ' integrity="' . $resource->integrity . '"' : null,
+                'cors'  => $resource->crossorigin !== null ? ' crossorigin="' . $resource->crossorigin . '"' : null,
             ]);
         }
 

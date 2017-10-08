@@ -217,7 +217,7 @@ class ScriptsTest extends LaranixTestCase
             <<<EXPECTED
 <script type="application/javascript" src="http://url.com/script1.js" async defer></script>
 <script type="application/javascript" src="http://url.com/script2.js"></script>
-<script type="application/javascript" src="http://url.com/script3.js" defer crossorigin="anonymous" integrity="sha1-123"></script>
+<script type="application/javascript" src="http://url.com/script3.js" defer integrity="sha1-123" crossorigin="anonymous"></script>
 EXPECTED;
 
         $this->assertSame($expect, $script->output());
