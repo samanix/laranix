@@ -91,7 +91,6 @@ class Styles extends ThemerResource
 
                 if (!is_file($compiledResourceFilePath)) {
                     $this->mergeResources(
-                        $theme,
                         sprintf('styles.local.%s.%s', $theme->getKey(), $media),
                         $compiledResourceFilePath
                     );

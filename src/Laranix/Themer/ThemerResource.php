@@ -511,11 +511,10 @@ abstract class ThemerResource
     /**
      * Merge resources
      *
-     * @param \Laranix\Themer\Theme $theme
      * @param string                $key
      * @param string                $compileResourceFileName
      */
-    protected function mergeResources(Theme $theme, string $key, string $compileResourceFileName)
+    protected function mergeResources(string $key, string $compileResourceFileName)
     {
         $resources = $this->resources->get($key);
 
@@ -528,7 +527,7 @@ abstract class ThemerResource
         ob_start();
 
         foreach ($resources as $resource) {
-            include $this->getResourcePath($resource->resource, $theme);
+            include $resource->resourcePath;
         }
 
         $compileResource = fopen($compileResourceFileName, 'w');

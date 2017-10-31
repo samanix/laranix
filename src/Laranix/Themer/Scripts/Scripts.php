@@ -110,7 +110,6 @@ class Scripts extends ThemerResource
 
                 if (!is_file($compiledResourceFilePath)) {
                     $this->mergeResources(
-                        $theme,
                         sprintf('scripts.local.%s.%s', $theme->getKey(), $type),
                         $compiledResourceFilePath
                     );
