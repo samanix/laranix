@@ -86,17 +86,17 @@ class Styles extends ThemerResource
             $theme = $this->getTheme($themeName);
 
             foreach ($mediaGroup as $media => $sheet) {
-                $compiledResources          = sprintf('compiled_%s.css', $this->crc($media . $sheet));
-                $compiledResourceFilePath   = $this->getResourcePath($compiledResources, $theme);
+                $compiledFilename = sprintf('compiled_%s.css', $this->crc($media . $sheet));
+                $compiledFilePath = $this->getResourcePath($compiledFilename, $theme);
 
-                if (!is_file($compiledResourceFilePath)) {
+                if (!is_file($compiledFilePath)) {
                     $this->mergeResources(
                         sprintf('styles.local.%s.%s', $theme->getKey(), $media),
-                        $compiledResourceFilePath
+                        $compiledFilePath
                     );
                 }
 
-                $stylesheets[] = $this->createLocalResourceFileSettings($theme, $media, $compiledResources);
+                $stylesheets[] = $this->createLocalResourceFileSettings($theme, $media, $compiledFilename);
             }
         }
 
@@ -138,14 +138,14 @@ STYLESTR;
      *
      * @param \Laranix\Themer\Theme $theme
      * @param string                $type
-     * @param string                $resource
+     * @param string                $filename
      * @return \Laranix\Themer\ResourceSettings|\Laranix\Themer\Styles\Settings
      */
-    protected function createLocalResourceFileSettings(Theme $theme, string $type, string $resource): ResourceSettings
+    protected function createLocalResourceFileSettings(Theme $theme, string $type, string $filename): ResourceSettings
     {
         return new Settings([
-            'key'       => $this->crc(sprintf('%s%s%s', $theme->getKey(), $type, $resource)),
-            'resource'  => $resource,
+            'key'       => $this->crc(sprintf('%s%s%s', $theme->getKey(), $type, $filename)),
+            'filename'  => $filename,
             'url'       => $this->getBaseUrl($theme),
             'theme'     => $theme,
             'order'     => ++$this->order,

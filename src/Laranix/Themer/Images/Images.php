@@ -277,11 +277,11 @@ IMAGESTR;
      *
      * @param \Laranix\Themer\Theme $theme
      * @param string                $type
-     * @param string                $resource
+     * @param string                $filename
      * @return \Laranix\Themer\ResourceSettings
      * @throws \Laranix\Support\Exception\NotImplementedException
      */
-    protected function createLocalResourceFileSettings(Theme $theme, string $type, string $resource): ResourceSettings
+    protected function createLocalResourceFileSettings(Theme $theme, string $type, string $filename): ResourceSettings
     {
         throw new NotImplementedException('Method not required for ' . get_class($this));
     }

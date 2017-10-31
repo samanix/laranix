@@ -64,10 +64,14 @@ abstract class ThemerResource
      *
      * @param \Laranix\Themer\Theme $theme
      * @param string                $type
-     * @param string                $resource
+     * @param string                $filename
      * @return \Laranix\Themer\ResourceSettings
      */
-    abstract protected function createLocalResourceFileSettings(Theme $theme, string $type, string $resource) : ResourceSettings;
+    abstract protected function createLocalResourceFileSettings(
+        Theme $theme,
+        string $type,
+        string $filename
+    ): ResourceSettings;
 
     /**
      * Set the subdirectory in the theme for the resource type

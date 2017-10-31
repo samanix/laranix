@@ -105,19 +105,19 @@ class Scripts extends ThemerResource
             $theme = $this->getTheme($themeName);
 
             foreach ($attr as $type => $script) {
-                $compiledResource           = sprintf('compiled_%s.js', $this->crc($type . $script));
-                $compiledResourceFilePath   = $this->getResourcePath($compiledResource, $theme);
+                $compiledFilename = sprintf('compiled_%s.js', $this->crc($type . $script));
+                $compiledFilePath = $this->getResourcePath($compiledFilename, $theme);
 
-                if (!is_file($compiledResourceFilePath)) {
+                if (!is_file($compiledFilePath)) {
                     $this->mergeResources(
                         sprintf('scripts.local.%s.%s', $theme->getKey(), $type),
-                        $compiledResourceFilePath
+                        $compiledFilePath
                     );
                 }
 
                 $location = $this->getLocation(strpos($type, 'head') !== false);
 
-                $scripts[$location][] = $this->createLocalResourceFileSettings($theme, $type, $compiledResource);
+                $scripts[$location][] = $this->createLocalResourceFileSettings($theme, $type, $compiledFilename);
             }
         }
 
@@ -160,14 +160,14 @@ SCRIPTSTR;
      *
      * @param \Laranix\Themer\Theme $theme
      * @param string                $type
-     * @param string                $resource
+     * @param string                $filename
      * @return \Laranix\Themer\ResourceSettings|\Laranix\Themer\Scripts\Settings
      */
-    protected function createLocalResourceFileSettings(Theme $theme, string $type, string $resource): ResourceSettings
+    protected function createLocalResourceFileSettings(Theme $theme, string $type, string $filename): ResourceSettings
     {
         return new Settings([
-            'key'       => $this->crc(sprintf('%s%s%s', $theme->getKey(), $type, $resource)),
-            'resource'  => $resource,
+            'key'       => $this->crc(sprintf('%s%s%s', $theme->getKey(), $type, $filename)),
+            'filename'  => $filename,
             'url'       => $this->getBaseUrl($theme),
             'theme'     => $theme,
             'async'     => strpos($type, 'async') !== false,
