@@ -170,13 +170,13 @@ IMAGESTR;
 
         return Str::format($str, [
             'url'       => $image->url,
-            'alt'       => $image->alt,
-            'title'     => $image->title !== null ? 'title="' . $image->title . '"' : null,
-            'width'     => $image->width !== null ? 'width="' . $image->width . '"' : null,
-            'height'    => $image->height !== null ? 'height="' . $image->height . '"' : null,
-            'class'     => $image->class !== null ? 'class="' . $image->class . '"' : null,
-            'id'        => $image->id !== null ? 'id="' . $image->id . '"' : null,
-            'cors'      => $image->crossorigin !== null ? 'crossorigin="' . $image->crossorigin . '"' : null,
+            'alt'       => e($image->alt),
+            'title'     => $image->title !== null ? 'title="' . e($image->title) . '"' : null,
+            'width'     => $image->width !== null ? 'width="' . e($image->width) . '"' : null,
+            'height'    => $image->height !== null ? 'height="' . e($image->height) . '"' : null,
+            'class'     => $image->class !== null ? 'class="' . e($image->class) . '"' : null,
+            'id'        => $image->id !== null ? 'id="' . e($image->id) . '"' : null,
+            'cors'      => $image->crossorigin !== null ? 'crossorigin="' . e($image->crossorigin) . '"' : null,
             'extra'     => $this->createResourceOutput($image->extra),
         ]);
     }
@@ -196,7 +196,7 @@ IMAGESTR;
         $extra = [];
 
         foreach ($resources as $attr => $value) {
-            $extra[] = $attr . '="' . $value . '"';
+            $extra[] = e($attr) . '="' . e($value) . '"';
         }
 
         return implode(' ', $extra);
