@@ -2,7 +2,7 @@
 
 @section('pagetitle', 'Welcome')
 
-@section('meta-keywords', 'Welcome')
+@section('meta:keywords', 'Welcome')
 
 @section('content')
 <div class="ui container">

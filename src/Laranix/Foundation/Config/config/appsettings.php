@@ -9,6 +9,11 @@ return [
     'success_view'  => 'state.success',
     'error_view'    => 'state.error',
 
+    'fbadmins'  => env('FB_ADMINS'),
+    'fbappid'   => env('FB_APPID'),
+
+    'analytics' => env('G_ANALYTICS'),
+
 //    // Mail defaults
 //    // Unused currently
 //    'mail' => [

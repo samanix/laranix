@@ -3,14 +3,30 @@
     <head>
         <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-        <meta name="application-name" content="{{ $config->get('app.name') }} v{{ $config->get('appsettings.version') }}" />
-        <meta name="keywords" content="@yield('meta-keywords', $config->get('app.name'))" />
-        <meta name="description" content="@yield('meta-description', $config->get('app.name'))" />
-        <meta name="robots" content="@yield('meta-robots', 'index,follow')" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="application-name" content="{{ $config->get('app.name') }} v{{ $config->get('appsettings.version') }}">
+        <meta name="keywords" content="@yield('meta:keywords', $config->get('app.name'))">
+        <meta name="description" content="@yield('meta:description', $config->get('app.name'))">
+        <meta name="robots" content="@yield('meta:robots', 'index,follow')">
         <meta name="csrf-token" content="{{ csrf_token() }}" />
 
+        <meta property="fb:admins" content="{{ $config->get('pn.details.fbadmins') }}" />
+        <meta property="fb:app_id" content="{{ $config->get('pn.details.fbappid') }}" />
+
+        <meta property="og:title" content="@yield('pagetitle', $config->get('app.name')) - {{ $config->get('app.name') }}" />
+        <meta property="og:type" content="@yield('meta:og:type', 'website')" />
+        <meta property="og:url" content="{{ urlSelf() }}" />
+        <meta property="og:image" content="@yield('meta:og:image', $images->url('laranix_500x100_default.png'))" />
+        <meta property="og:description" content="@yield('meta:description', $config->get('app.name'))" />
+        <meta property="og:site_name" content="{{ $config->get('app.name') }}" />
+        <meta property="og:locale" content="en_GB" />
+
+        @stack('meta:extra')
+
         @yield('meta-tags', '')
+
+        <link rel="icon" type="image/png" href="favicon-32x32.png" sizes="32x32" />
+        <link rel="icon" type="image/png" href="favicon-16x16.png" sizes="16x16" />
 
         <title>@yield('pagetitle', $config->get('app.name')) - {{ $config->get('app.name') }}</title>
 
