@@ -22,7 +22,7 @@ class Images extends ThemerResource
      */
     public function display($image, ?string $alt = null, array $extra = [], bool $default = false): ?string
     {
-        return $this->generateImagePayload($image, $alt, $extra, $default)->htmlstring;
+        return $this->generateImagePayload($image, $alt, $extra, $default)->htmlstring ?? null;
     }
 
     /**
@@ -50,7 +50,7 @@ class Images extends ThemerResource
      */
     public function url($image, ?string $alt = null, array $extra = [], bool $default = false): ?string
     {
-        return $this->generateImagePayload($image, $alt, $extra, $default)->url;
+        return $this->generateImagePayload($image, $alt, $extra, $default)->url ?? null;
     }
 
     /**
@@ -62,7 +62,7 @@ class Images extends ThemerResource
      * @param $default
      * @return \Laranix\Themer\ResourceSettings|\Laranix\Themer\Images\LocalSettings
      */
-    protected function generateImagePayload($image, ?string $alt, array $extra, bool $default): ResourceSettings
+    protected function generateImagePayload($image, ?string $alt, array $extra, bool $default): ?ResourceSettings
     {
         $image = $this->createImageSettings($image, $alt, $extra, $default);
 
@@ -103,7 +103,7 @@ class Images extends ThemerResource
      * @param \Laranix\Themer\ResourceSettings $image
      * @return \Laranix\Themer\ResourceSettings|\Laranix\Themer\Images\LocalSettings
      */
-    protected function getCachedImage(ResourceSettings $image): ResourceSettings
+    protected function getCachedImage(ResourceSettings $image): ?ResourceSettings
     {
         return $this->resources->get($image->key);
     }
