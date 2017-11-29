@@ -34,5 +34,7 @@ return [
         'testing',
         'local',
         'debug',
+        'dev',
+        'development',
     ],
 ];
