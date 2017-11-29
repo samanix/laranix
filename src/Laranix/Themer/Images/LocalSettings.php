@@ -3,7 +3,7 @@ namespace Laranix\Themer\Images;
 
 use Laranix\Themer\ResourceSettings as BaseSettings;
 
-class Settings extends BaseSettings
+class LocalSettings extends BaseSettings
 {
     /**
      * @var array
@@ -78,4 +78,9 @@ class Settings extends BaseSettings
      * @var string
      */
     public $htmlstring;
+
+    /**
+     * @var string
+     */
+    public $url;
 }

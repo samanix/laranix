@@ -3,6 +3,7 @@ namespace Laranix\Themer\Images;
 
 use Laranix\Support\Exception\NotImplementedException;
 use Laranix\Support\IO\Str\Str;
+use Laranix\Support\IO\Url\UrlSettings;
 use Laranix\Themer\ResourceSettings;
 use Laranix\Themer\Theme;
 use Laranix\Themer\ThemerResource;
@@ -12,35 +13,16 @@ class Images extends ThemerResource
     /**
      * Display an image
      *
-     * @param string|Settings|array $image
-     * @param null|string           $alt
-     * @param array                 $extra
-     * @param bool                  $default
+     * @param string|LocalSettings|array $image
+     * @param null|string                $alt
+     * @param array                      $extra
+     * @param bool                       $default
      * @return null|string
      * @internal param array $params
      */
-    public function display($image, ?string $alt = null, array $extra = [], bool $default = false) : ?string
+    public function display($image, ?string $alt = null, array $extra = [], bool $default = false): ?string
     {
-        $image = $this->createImageSettings($image, $alt, $extra, $default);
-
-        if ($this->hasCachedImage($image)) {
-            return $this->getCachedImage($image);
-        }
-
-        $image->hasRequiredSettings();
-
-        if (!$this->exists($image->image, $image->theme)) {
-            if (!$default && $this->themeIsDefault($image->theme)) {
-                return $this->display($image, $alt, $extra, true);
-            }
-
-            $this->missing($image->image, $image->theme);
-
-            // Null returned
-            return $this->cacheImage($image);
-        }
-
-        return $this->cacheImage($this->generateHtmlOutput($image));
+        return $this->generateImagePayload($image, $alt, $extra, $default)->htmlstring;
     }
 
     /**
@@ -58,6 +40,53 @@ class Images extends ThemerResource
     }
 
     /**
+     * Get url for image
+     *
+     * @param $image
+     * @param $alt
+     * @param $extra
+     * @param $default
+     * @return null|string
+     */
+    public function url($image, ?string $alt = null, array $extra = [], bool $default = false): ?string
+    {
+        return $this->generateImagePayload($image, $alt, $extra, $default)->url;
+    }
+
+    /**
+     * Create the image payload
+     *
+     * @param $image
+     * @param $alt
+     * @param $extra
+     * @param $default
+     * @return \Laranix\Themer\ResourceSettings|\Laranix\Themer\Images\LocalSettings
+     */
+    protected function generateImagePayload($image, ?string $alt, array $extra, bool $default): ResourceSettings
+    {
+        $image = $this->createImageSettings($image, $alt, $extra, $default);
+
+        if ($this->hasCachedImage($image)) {
+            return $this->getCachedImage($image);
+        }
+
+        $image->hasRequiredSettings();
+
+        if (!$image instanceof RemoteSettings && !$this->exists($image->image, $image->theme)) {
+            if (!$default && $this->themeIsDefault($image->theme)) {
+                return $this->generateImagePayload($image, $alt, $extra, true);
+            }
+
+            $this->missing($image->image, $image->theme);
+
+            // Null returned
+            return $this->cacheImage($image);
+        }
+
+        return $this->cacheImage($image);
+    }
+
+    /**
      * Check for cached image
      *
      * @param \Laranix\Themer\ResourceSettings $image
@@ -72,24 +101,24 @@ class Images extends ThemerResource
      * Get cached image
      *
      * @param \Laranix\Themer\ResourceSettings $image
-     * @return string
+     * @return \Laranix\Themer\ResourceSettings|\Laranix\Themer\Images\LocalSettings
      */
-    protected function getCachedImage(ResourceSettings $image) : string
+    protected function getCachedImage(ResourceSettings $image): ResourceSettings
     {
-        return $this->resources->get($image->key)->htmlstring;
+        return $this->resources->get($image->key);
     }
 
     /**
      * Store image in the cache
      *
-     * @param ResourceSettings|Settings    $image
-     * @return string|null
+     * @param ResourceSettings|LocalSettings $image
+     * @return \Laranix\Themer\ResourceSettings|\Laranix\Themer\Images\LocalSettings
      */
-    protected function cacheImage(ResourceSettings $image) : ?string
+    protected function cacheImage(ResourceSettings $image): ResourceSettings
     {
         $this->resources->add($image->key, $image);
 
-        return $image->htmlstring;
+        return $image;
     }
 
     /**
@@ -108,33 +137,21 @@ class Images extends ThemerResource
      * @param null|string $alt
      * @param array       $extra
      * @param bool        $default
-     * @return \Laranix\Themer\ResourceSettings|Settings
+     * @return \Laranix\Themer\ResourceSettings|\Laranix\Themer\Images\LocalSettings|\Laranix\Themer\Images\RemoteSettings
      */
-    protected function createImageSettings(
-        $image,
-        ?string $alt = null,
-        array $extra = [],
-        bool $default = false
-    ): ResourceSettings {
-        if ($image instanceof Settings) {
-            $settings = $image;
-        } elseif (is_array($image)) {
-            if (!empty($extra)) {
-                $image['extra'] = array_merge($image['extra'] ?? [], $extra);
-            }
-
-            $settings = new Settings($image);
+    protected function createImageSettings($image, ?string $alt, array $extra, bool $default): ResourceSettings
+    {
+        // Remote image
+        if (filter_var($image, FILTER_VALIDATE_URL) ||
+            $image instanceof UrlSettings ||
+            $image instanceof RemoteSettings) {
+            $settings = $this->getRemoteImageSettings($image, $alt, $extra, $default);
         } else {
-            $settings = new Settings([
-                'image'     => $image,
-                'alt'       => $alt ?? $image,
-                'extra'     => $extra,
-            ]);
+            $settings = $this->getLocalImageSettings($image, $alt, $extra, $default);
         }
 
-        $settings->theme    = $default ? $this->getDefaultTheme() : $this->getTheme();
-        $settings->default  = $default;
-        $settings->key      = $this->cacheKey($settings);
+        $settings->htmlstring   = $this->generateHtmlOutput($settings);
+        $settings->key          = $this->cacheKey($settings);
 
         return $settings;
     }
@@ -142,17 +159,17 @@ class Images extends ThemerResource
     /**
      * Images output string
      *
-     * @param \Laranix\Themer\ResourceSettings|Settings $image
-     * @return \Laranix\Themer\ResourceSettings
+     * @param \Laranix\Themer\ResourceSettings|LocalSettings $image
+     * @return string
      */
-    protected function generateHtmlOutput(ResourceSettings $image) : ResourceSettings
+    protected function generateHtmlOutput(ResourceSettings $image): string
     {
         $str = <<<'IMAGESTR'
 <img src="{{url}}" alt="{{alt}}" {{title}} {{width}} {{height}} {{class}} {{id}} {{cors}} {{extra}} />
 IMAGESTR;
 
-        $image->htmlstring = Str::format($str, [
-            'url'       => $this->getWebUrl($image->image, $image->theme),
+        return Str::format($str, [
+            'url'       => $image->url,
             'alt'       => $image->alt,
             'title'     => $image->title !== null ? 'title="' . $image->title . '"' : null,
             'width'     => $image->width !== null ? 'width="' . $image->width . '"' : null,
@@ -162,8 +179,6 @@ IMAGESTR;
             'cors'      => $image->crossorigin !== null ? 'crossorigin="' . $image->crossorigin . '"' : null,
             'extra'     => $this->createResourceOutput($image->extra),
         ]);
-
-        return $image;
     }
 
     /**
@@ -171,7 +186,6 @@ IMAGESTR;
      *
      * @param array|null $resources
      * @return string|null
-     * @throws \Laranix\Support\Exception\NotImplementedException
      */
     protected function createResourceOutput(?array $resources) : ?string
     {
@@ -186,6 +200,62 @@ IMAGESTR;
         }
 
         return implode(' ', $extra);
+    }
+
+    /**
+     * Create settings for local image
+     *
+     * @param             $image
+     * @param null|string $alt
+     * @param array       $extra
+     * @param bool        $default
+     * @return \Laranix\Themer\ResourceSettings|\Laranix\Themer\Images\LocalSettings
+     */
+    protected function getLocalImageSettings($image, ?string $alt, array $extra, bool $default): ResourceSettings
+    {
+        if ($image instanceof LocalSettings) {
+            $settings = $image;
+        } elseif (is_array($image)) {
+            if (!empty($extra)) {
+                $image['extra'] = array_merge($image['extra'] ?? [], $extra);
+            }
+
+            $settings = new LocalSettings($image);
+        } else {
+            $settings = new LocalSettings([
+                'image' => $image,
+                'alt'   => $alt ?? $image,
+                'extra' => $extra,
+            ]);
+        }
+
+        $settings->theme        = $default ? $this->getDefaultTheme() : $this->getTheme();
+        $settings->default      = $default;
+        $settings->url          = $this->getWebUrl($settings->image, $settings->theme);
+
+        return $settings;
+    }
+
+    /**
+     * @param             $image
+     * @param null|string $alt
+     * @param array       $extra
+     * @param bool        $default
+     * @return \Laranix\Themer\ResourceSettings|\Laranix\Themer\Images\RemoteSettings
+     */
+    protected function getRemoteImageSettings($image, ?string $alt, array $extra, bool $default): ResourceSettings
+    {
+        if ($image instanceof RemoteSettings) {
+            return $image;
+        }
+
+        return new RemoteSettings([
+            'theme'   => $default ? $this->getDefaultTheme() : $this->getTheme(),
+            'default' => $default,
+            'url'     => $this->url->url($image),
+            'alt'     => $alt ?? '',
+            'extra'   => $extra,
+        ]);
     }
 
     /**

@@ -4,8 +4,11 @@ namespace Laranix\Tests\Laranix\Themer\Image;
 use Illuminate\Log\Writer;
 use Laranix\Support\Exception\NotImplementedException;
 use Laranix\Support\IO\Url\Url;
+use Laranix\Support\IO\Url\UrlSettings;
 use Laranix\Themer\Images\Images;
 use Laranix\Tests\LaranixTestCase;
+use Laranix\Themer\Images\LocalSettings;
+use Laranix\Themer\Images\RemoteSettings;
 use Mockery as m;
 use Illuminate\Config\Repository;
 use Illuminate\Http\Request;
@@ -96,28 +99,97 @@ class ImageTest extends LaranixTestCase
 
     /**
      * Test image display
+     *
+     * @dataProvider imageDisplayProvider
+     * @param array $args
      */
-    public function testDisplayImage()
+    public function testDisplayImage(...$args)
     {
-        $imgurl = $this->image->getWebUrl('laranix.png');
-        $imgurl2 = $this->image->getWebUrl('samanix.png');
+        $expected = array_pop($args);
 
-        $this->assertSame('<img src="' . $imgurl . '" alt="img" title="title" />',
-                          $this->image->display('laranix.png', 'img', ['title' => 'title']));
+        $this->assertSame($expected, $this->image->display(...$args));
+    }
 
-        $this->assertSame('<img src="' . $imgurl . '" alt="laranix.png" />',
-                          $this->image->show('laranix.png'));
+    /**
+     * Get image url
+     *
+     * @dataProvider imageUrlProvider
+     * @param array $args
+     */
+    public function testGetImageUrl(...$args)
+    {
+        $expected = array_pop($args);
 
-        $this->assertSame('<img src="' . $imgurl2 . '" alt="samanix.png" />',
-                          $this->image->show('samanix.png'));
+        $this->assertSame($expected, $this->image->url(...$args));
+    }
 
-        $this->assertSame('<img src="' . $imgurl . '" alt="foo" id="fooimage" title="bar" />',
-                          $this->image->display(['image' => 'laranix.png', 'alt' => 'foo', 'id' => 'fooimage', 'extra' => ['title' => 'bar']]));
+    /**
+     * Display provider
+     *
+     * @return array
+     */
+    public function imageDisplayProvider()
+    {
+        return [
+            [
+                'laranix.png', 'foo', ['id' => 'fooimage', 'title' => 'bar'],
+                '<img src="http://homestead.app/themes/foo/images/laranix.png" alt="foo" id="fooimage" title="bar" />'
+            ],
+            [
+                'https://foo.com/bar.jpg',
+                '<img src="https://foo.com/bar.jpg" alt="" />'
+            ],
+            [
+                new UrlSettings(['domain' => 'foo.com', 'path' => 'bar.png']),
+                '<img src="http://foo.com/bar.png" alt="" />'
+            ],
+            [
+                ['image' => 'laranix.png', 'alt' => 'foo', 'id' => 'fooimage', 'extra' => ['title' => 'bar']],
+                '<img src="http://homestead.app/themes/foo/images/laranix.png" alt="foo" id="fooimage" title="bar" />'
+            ],
+            [
+                new LocalSettings(['image' => 'laranix.png', 'alt' => 'hello']),
+                '<img src="http://homestead.app/themes/foo/images/laranix.png" alt="hello" />'
+            ],
+            [
+                new RemoteSettings(['url' => 'https://foo.com/foo.png', 'alt' => 'hello']),
+                '<img src="https://foo.com/foo.png" alt="hello" />'
+            ]
+        ];
+    }
 
-        $this->assertSame('<img src="' . $imgurl . '" alt="foo" id="fooimage" title="baz" />',
-                          $this->image->display(['image' => 'laranix.png', 'alt' => 'foo', 'id' => 'fooimage', 'extra' => ['title' => 'bar']], 'bar', ['title' => 'baz']));
-
-        $this->assertSame('<img src="' . $imgurl . '" alt="foo" id="fooimage" title="baz" data-foo="bar" />',
-                          $this->image->display(['image' => 'laranix.png', 'alt' => 'foo', 'id' => 'fooimage'], 'bar', ['title' => 'baz', 'data-foo' => 'bar']));
+    /**
+     * Url provider
+     *
+     * @return array
+     */
+    public function imageUrlProvider()
+    {
+        return [
+            [
+                'laranix.png', 'foo', ['id' => 'fooimage', 'title' => 'bar'],
+                'http://homestead.app/themes/foo/images/laranix.png'
+            ],
+            [
+                'https://foo.com/bar.jpg',
+                'https://foo.com/bar.jpg'
+            ],
+            [
+                new UrlSettings(['domain' => 'foo.com', 'path' => 'bar.png']),
+                'http://foo.com/bar.png'
+            ],
+            [
+                ['image' => 'laranix.png', 'alt' => 'foo', 'id' => 'fooimage', 'extra' => ['title' => 'bar']],
+                'http://homestead.app/themes/foo/images/laranix.png'
+            ],
+            [
+                new LocalSettings(['image' => 'laranix.png', 'alt' => 'hello']),
+                'http://homestead.app/themes/foo/images/laranix.png'
+            ],
+            [
+                new RemoteSettings(['url' => 'https://foo.com/foo.png', 'alt' => 'hello']),
+                'https://foo.com/foo.png'
+            ]
+        ];
     }
 }
