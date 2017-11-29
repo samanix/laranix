@@ -144,8 +144,8 @@ class ImageTest extends LaranixTestCase
                 '<img src="http://foo.com/bar.png" alt="" />'
             ],
             [
-                ['image' => 'laranix.png', 'alt' => 'foo', 'id' => 'fooimage', 'extra' => ['title' => 'bar']],
-                '<img src="http://homestead.app/themes/foo/images/laranix.png" alt="foo" id="fooimage" title="bar" />'
+                ['image' => 'laranix.png', 'alt' => 'foo"', 'id' => 'fooimage', 'extra' => ['title' => 'bar']],
+                '<img src="http://homestead.app/themes/foo/images/laranix.png" alt="foo&quot;" id="fooimage" title="bar" />'
             ],
             [
                 new LocalSettings(['image' => 'laranix.png', 'alt' => 'hello']),
