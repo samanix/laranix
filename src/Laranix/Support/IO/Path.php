@@ -4,6 +4,13 @@ namespace Laranix\Support\IO;
 class Path
 {
     /**
+     * Cached paths
+     *
+     * @var array
+     */
+    protected static $cache = [];
+
+    /**
      * Combine files/folders in to path.
      *
      * @param \null[]|\string[] ...$parts
@@ -13,6 +20,12 @@ class Path
     {
         if (empty($parts)) {
             return null;
+        }
+
+        $key = hash('crc32', json_encode($parts));
+
+        if (isset(self::$cache[$key])) {
+            return self::$cache[$key];
         }
 
         $maxIndex = count($parts) - 1;
@@ -44,6 +57,6 @@ class Path
             return realpath($fullPath);
         }
 
-        return $fullPath;
+        return self::$cache[$key] = $fullPath;
     }
 }
