@@ -130,6 +130,6 @@ abstract class Model extends BaseModel
      */
     protected function getAttributeFromArray($key, $default = null)
     {
-        return isset($this->attributes[$key]) ? $this->attributes[$key] : $default;
+        return $this->attributes[$key] ?? $default;
     }
 }
