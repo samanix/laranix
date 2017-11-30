@@ -43,6 +43,7 @@ trait LoadsThemer
      * Load the default themer files
      *
      * @param \Illuminate\Contracts\Config\Repository $config
+     * @throws \Laranix\Support\Exception\InvalidInstanceException
      */
     protected function loadThemerDefaultFiles(Repository $config)
     {
@@ -56,6 +57,7 @@ trait LoadsThemer
      * @param \Illuminate\Contracts\Config\Repository $config
      * @param \Laranix\AntiSpam\Recaptcha\Recaptcha   $recaptcha
      * @param array                                   $scripts
+     * @throws \Laranix\Support\Exception\InvalidInstanceException
      */
     protected function loadThemerDefaultFormFiles(Repository $config, Recaptcha $recaptcha, ...$scripts)
     {
@@ -78,10 +80,13 @@ trait LoadsThemer
      *
      * @param \Laranix\Themer\Styles\Settings|array|null $settings
      * @return $this
+     * @throws \Laranix\Support\Exception\InvalidInstanceException
      */
     protected function loadStylesheet($settings)
     {
-        $this->styles->add($settings);
+        if ($this->preparedForResponse) {
+            $this->styles->add($settings);
+        }
 
         return $this;
     }
@@ -90,10 +95,11 @@ trait LoadsThemer
      * Add multiple stylesheets
      *
      * @param mixed ...$styles
+     * @throws \Laranix\Support\Exception\InvalidInstanceException
      */
     protected function loadStylesheets(...$styles)
     {
-        $files = $this->getFilePayload($styles[0] ?? null);
+        $files = $this->getFilePayload($styles ?? null);
 
         if (empty($files)) {
             return;
@@ -109,10 +115,13 @@ trait LoadsThemer
      *
      * @param \Laranix\Themer\ResourceSettings|array|null $settings
      * @return $this
+     * @throws \Laranix\Support\Exception\InvalidInstanceException
      */
     protected function loadScript($settings)
     {
-        $this->scripts->add($settings);
+        if ($this->preparedForResponse) {
+            $this->scripts->add($settings);
+        }
 
         return $this;
     }
@@ -121,10 +130,11 @@ trait LoadsThemer
      * Add multiple scripts
      *
      * @param array $scripts
+     * @throws \Laranix\Support\Exception\InvalidInstanceException
      */
     protected function loadScripts(...$scripts)
     {
-        $files = $this->getFilePayload($scripts[0] ?? null);
+        $files = $this->getFilePayload($scripts ?? null);
 
         if (empty($files)) {
             return;

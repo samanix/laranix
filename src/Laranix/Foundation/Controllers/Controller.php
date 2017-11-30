@@ -20,7 +20,7 @@ class Controller extends BaseController
     /**
      * @var bool
      */
-    protected $preparedForResponsed = false;
+    protected $preparedForResponse = false;
 
     /**
      * @var \Illuminate\Contracts\Foundation\Application
@@ -53,6 +53,7 @@ class Controller extends BaseController
      * LaranixBaseController constructor.
      *
      * @param \Illuminate\Contracts\Foundation\Application $application
+     * @throws \Laranix\Support\Exception\InvalidInstanceException
      */
     public function __construct(Application $application)
     {
@@ -123,7 +124,8 @@ class Controller extends BaseController
      */
     protected function shouldAutoPrepareForResponse() : bool
     {
-        if ($this->request->isMethod('get') && !in_array($this->request->path(), $this->autoPrepareResponseExcept)) {
+        if ($this->request->isMethod('get')
+            && !in_array($this->request->path(), $this->autoPrepareResponseExcept)) {
             return true;
         }
 
@@ -132,10 +134,12 @@ class Controller extends BaseController
 
     /**
      * Prepare for a request response
+     *
+     * @throws \Laranix\Support\Exception\InvalidInstanceException
      */
     protected function prepareForResponse()
     {
-        if ($this->preparedForResponsed) {
+        if ($this->preparedForResponse) {
             return;
         }
 
@@ -146,13 +150,14 @@ class Controller extends BaseController
 
         $this->loadGlobalViewVariables($this->app, $this->config);
 
-        $this->preparedForResponsed = true;
+        $this->preparedForResponse = true;
     }
 
     /**
      * Add parts required for rendering a form
      *
      * @param array|ThemerFileSettings|null $scripts
+     * @throws \Laranix\Support\Exception\InvalidInstanceException
      */
     protected function prepareForFormResponse(...$scripts)
     {
