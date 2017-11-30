@@ -17,7 +17,7 @@ Contributions are encouraged via [pull requests](https://bitbucket.org/samanix-p
 
 
 ### Security
-For security related issues, please contact <samanixcom@gmail.com>.
+For security related issues, please contact <sam@samanix.com>.
 
 
 ### License
