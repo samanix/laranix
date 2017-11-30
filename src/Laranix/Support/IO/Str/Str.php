@@ -14,15 +14,17 @@ class Str
      */
     public static function format(string $string, array $values, $options = null) : string
     {
-        if (is_array($options)) {
-            $options = new Settings($options);
-        } elseif ($options === null) {
-            $options = new Settings();
+        if ($options instanceof Settings) {
+            $settings = $options;
+        } elseif (is_array($options)) {
+            $settings = new Settings($options);
+        } else {
+            $settings = new Settings();
         }
 
-        $options->hasRequiredSettings();
+        $settings->hasRequiredSettings();
 
-        return self::parseString($string, $values, $options);
+        return self::parseString($string, $values, $settings);
     }
 
     /**
