@@ -4,6 +4,19 @@ use Laranix\Support\IO\Url\Url;
 use Laranix\Support\IO\Url\Href;
 use Laranix\Support\Settings;
 
+if (!function_exists('urlUrl')) {
+    /**
+     * Create a url from variable type
+     *
+     * @param $url
+     * @return null|string
+     */
+    function urlUrl($url): string
+    {
+        return app(Url::class)->url($url);
+    }
+}
+
 if (!function_exists('urlMake')) {
     /**
      * Make url string
@@ -11,7 +24,7 @@ if (!function_exists('urlMake')) {
      * @param \Laranix\Support\Settings $settings
      * @return string
      */
-    function urlMake(Settings $settings) : string
+    function urlMake(Settings $settings): string
     {
         return app(Url::class)->make($settings);
     }
@@ -30,13 +43,14 @@ if (!function_exists('urlCreate')) {
      *
      * @return string
      */
-    function urlCreate(?string $scheme = null,
-                       ?string $domain = null,
-                       $path = null,
-                       ?array $query = [],
-                       ?string $fragment = null,
-                       bool $trailingSlash = false) : string
-    {
+    function urlCreate(
+        ?string $scheme = null,
+        ?string $domain = null,
+        $path = null,
+        ?array $query = [],
+        ?string $fragment = null,
+        bool $trailingSlash = false
+    ): string {
         return app(Url::class)->create($scheme, $domain, $path, $query, $fragment, $trailingSlash);
     }
 }
@@ -51,11 +65,12 @@ if (!function_exists('urlTo')) {
      * @param bool              $trailingSlash
      * @return string
      */
-    function urlTo($path = null,
-                   ?array $query = [],
-                   ?string $fragment = null,
-                   bool $trailingSlash = false) : string
-    {
+    function urlTo(
+        $path = null,
+        ?array $query = [],
+        ?string $fragment = null,
+        bool $trailingSlash = false
+    ): string {
         return app(Url::class)->to($path, $query, $fragment, $trailingSlash);
     }
 }
@@ -66,7 +81,7 @@ if (!function_exists('urlSelf')) {
      *
      * @return string
      */
-    function urlSelf() : string
+    function urlSelf(): string
     {
         return app(Url::class)->self();
     }
@@ -79,7 +94,7 @@ if (!function_exists('hrefMake')) {
      * @param \Laranix\Support\Settings $settings
      * @return string
      */
-    function hrefMake(Settings $settings) : string
+    function hrefMake(Settings $settings): string
     {
         return app(Href::class)->make($settings);
     }
@@ -94,7 +109,7 @@ if (!function_exists('hrefCreate')) {
      * @param array  $params
      * @return string
      */
-    function hrefCreate(string $content, $url, array $params = []) : string
+    function hrefCreate(string $content, $url, array $params = []): string
     {
         return app(Href::class)->create($content, $url, $params);
     }
@@ -110,8 +125,12 @@ if (!function_exists('modelDiff')) {
      * @param array $ignore
      * @return array|string
      */
-    function modelDiff(array $old, array $new, bool $json_encode = true, array $ignore = ['created_at', 'updated_at', 'deleted_at'])
-    {
+    function modelDiff(
+        array $old,
+        array $new,
+        bool $json_encode = true,
+        array $ignore = ['created_at', 'updated_at', 'deleted_at']
+    ) {
         $diff = [];
 
         $ignore = array_flip($ignore);
@@ -151,7 +170,7 @@ if (!function_exists('socialMedia')) {
      *
      * @return string|null
      */
-    function socialMedia(string $key) : ?string
+    function socialMedia(string $key): ?string
     {
         $url = config("socialmedia.{$key}");
 
@@ -169,7 +188,7 @@ if (!function_exists('runningCli')) {
      *
      * @return bool
      */
-    function runningCli() : bool
+    function runningCli(): bool
     {
         return php_sapi_name() == 'cli' || php_sapi_name() == 'phpdbg';
     }
