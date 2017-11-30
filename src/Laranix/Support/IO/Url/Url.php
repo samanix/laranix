@@ -39,13 +39,14 @@ class Url extends UrlCreator
      *
      * @return string|null
      */
-    public function create(?string $scheme = null,
-                           ?string $domain = null,
-                           $path = null,
-                           ?array $query = [],
-                           ?string $fragment = null,
-                           bool $trailingSlash = false) : string
-    {
+    public function create(
+        ?string $scheme = null,
+        ?string $domain = null,
+        $path = null,
+        ?array $query = [],
+        ?string $fragment = null,
+        bool $trailingSlash = false
+    ): string {
         return $this->make(new UrlSettings([
             'scheme'        => $scheme,
             'domain'        => $domain,
@@ -65,11 +66,12 @@ class Url extends UrlCreator
      * @param bool              $trailingSlash
      * @return string
      */
-    public function to($path = null,
-                       ?array $query = [],
-                       ?string $fragment = null,
-                       bool $trailingSlash = false) : string
-    {
+    public function to(
+        $path = null,
+        ?array $query = [],
+        ?string $fragment = null,
+        bool $trailingSlash = false
+    ): string {
         return $this->create(null, $this->appUrl, $path, $query, $fragment, $trailingSlash);
     }
 
