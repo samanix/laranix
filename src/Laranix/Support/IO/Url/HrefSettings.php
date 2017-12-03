@@ -12,7 +12,7 @@ class HrefSettings extends Settings
      */
     protected $required = [
         'content'   => 'string',
-        'url'       => 'string|UrlSettings',
+        'url'       => 'string|array|UrlSettings',
         'attributes'=> 'optional|array',
     ];
 

@@ -27,12 +27,12 @@ class Href extends UrlCreator
     /**
      * HTML href output
      *
-     * @param string $content
-     * @param string $url
-     * @param array  $attributes
+     * @param string                                            $content
+     * @param string|array|\Laranix\Support\IO\Url\UrlSettings  $url
+     * @param array                                             $attributes
      * @return string
      */
-    public function create(string $content, string $url, array $attributes = []) : string
+    public function create(string $content, $url, array $attributes = []) : string
     {
         return $this->make(new HrefSettings([
             'content'   => $content,
@@ -44,12 +44,12 @@ class Href extends UrlCreator
     /**
      * Create alias
      *
-     * @param string $content
-     * @param string $url
-     * @param array  $attributes
+     * @param string                                            $content
+     * @param string|array|\Laranix\Support\IO\Url\UrlSettings  $url
+     * @param array                                             $attributes
      * @return string
      */
-    public function to(string $content, string $url, array $attributes = []) : string
+    public function to(string $content, $url, array $attributes = []) : string
     {
         return $this->create($content, $url, $attributes);
     }
@@ -76,8 +76,9 @@ class Href extends UrlCreator
      */
     protected function parseUrl($url) : string
     {
-        if (filter_var($url, FILTER_VALIDATE_URL) !== false
-            || Str::startsWith($url, '#')) {
+        // Ignore if its a valid url already, or an anchor link
+        if (is_string($url) &&
+            (filter_var($url, FILTER_VALIDATE_URL) !== false || Str::startsWith($url, '#'))) {
             return $url;
         }
 
