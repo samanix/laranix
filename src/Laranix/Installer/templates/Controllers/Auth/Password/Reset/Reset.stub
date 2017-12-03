@@ -20,10 +20,11 @@ class Reset extends Controller implements PasswordHasher
      * If no token supplied, redirect to the request form
      *
      * @return \Illuminate\Contracts\View\View
+     * @throws \Laranix\Support\Exception\InvalidInstanceException
      */
     public function getPasswordResetForm() : View
     {
-        $this->prepareForFormResponse(new ScriptSettings([
+        $this->prepareForFormResponse(true, new ScriptSettings([
             'key'       => 'pass-reset-form',
             'filename'  => 'forms/passreset.js',
         ]));

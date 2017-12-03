@@ -25,10 +25,11 @@ class Login extends Controller
      * Get login form
      *
      * @return \Illuminate\Contracts\View\View
+     * @throws \Laranix\Support\Exception\InvalidInstanceException
      */
-    public function getLogin() : View
+    public function getLogin(): View
     {
-        $this->prepareForFormResponse(new ScriptSettings([
+        $this->prepareForFormResponse(true, new ScriptSettings([
             'key'       => 'login-form',
             'filename'  => 'forms/login.js',
         ]));
@@ -50,6 +51,8 @@ class Login extends Controller
      * @param \Illuminate\Http\Request $request
      * @param mixed|User               $user
      * @return \Illuminate\Http\RedirectResponse
+     * @throws \Laranix\Support\Exception\NullValueException
+     * @throws \Laranix\Support\Exception\ArgumentOutOfRangeException
      */
     protected function authenticated(Request $request, $user) : RedirectResponse
     {
@@ -73,6 +76,7 @@ class Login extends Controller
     /**
      * @param \Illuminate\Contracts\Auth\Authenticatable|User $user
      * @return \Illuminate\Http\RedirectResponse
+     * @throws \Laranix\Support\Exception\ArgumentOutOfRangeException
      */
     protected function accountRestricted(Authenticatable $user) : RedirectResponse
     {

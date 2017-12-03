@@ -20,10 +20,11 @@ class Register extends Controller implements UserCreator, UserGroupAdder
      * Show registration form
      *
      * @return \Illuminate\Contracts\View\View
+     * @throws \Laranix\Support\Exception\InvalidInstanceException
      */
-    public function getRegister() : View
+    public function getRegister(): View
     {
-        $this->prepareForFormResponse(new ScriptSettings([
+        $this->prepareForFormResponse(true, new ScriptSettings([
             'key'       => 'register-form',
             'filename'  => 'forms/register.js',
         ]));

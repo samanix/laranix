@@ -122,7 +122,7 @@ class Controller extends BaseController
      *
      * @return bool
      */
-    protected function shouldAutoPrepareForResponse() : bool
+    protected function shouldAutoPrepareForResponse(): bool
     {
         if ($this->request->isMethod('get')
             && !in_array($this->request->path(), $this->autoPrepareResponseExcept)) {

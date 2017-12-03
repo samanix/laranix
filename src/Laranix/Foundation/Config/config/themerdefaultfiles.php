@@ -67,5 +67,20 @@ return [
                 'order'     => 4,
             ],
         ],
+
+        // Recaptcha script
+        'recaptcha' => [
+            [
+                'key'       => 'recaptcha',
+                'filename'  => 'api.js',
+                'url'       => [
+                    'scheme' => 'https',
+                    'domain' => 'www.google.com',
+                    'path'   => 'recaptcha',
+                ],
+                'order'     => 100,
+                'async'     => true,
+            ],
+        ],
     ],
 ];

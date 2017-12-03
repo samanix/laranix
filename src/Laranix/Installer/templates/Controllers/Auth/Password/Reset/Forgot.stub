@@ -17,10 +17,11 @@ class Forgot extends Controller
      * Show forgot password form
      *
      * @return \Illuminate\Contracts\View\View
+     * @throws \Laranix\Support\Exception\InvalidInstanceException
      */
-    public function getPasswordForgotForm() : View
+    public function getPasswordForgotForm(): View
     {
-        $this->prepareForFormResponse(new ScriptSettings([
+        $this->prepareForFormResponse(true, new ScriptSettings([
             'key'       => 'pass-forgot-form',
             'filename'  => 'forms/passforgot.js',
         ]));
@@ -61,7 +62,7 @@ class Forgot extends Controller
                 throw new PasswordResetException("Failed to begin password reset process: {$e->getMessage()}", 0, $e);
             }
 
-            // Log otherwise
+            // TODO Log otherwise
         }
 
         // TODO Localise

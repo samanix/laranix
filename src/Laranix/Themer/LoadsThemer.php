@@ -65,13 +65,7 @@ trait LoadsThemer
         $this->loadScripts(array_merge($config->get('themerdefaultfiles.scripts.form'), $scripts));
 
         if ($recaptcha !== null && $recaptcha->enabled()) {
-            $this->loadScript([
-                'key'       => 'recaptcha',
-                'filename'  => 'api.js',
-                'url'       => 'https://www.google.com/recaptcha',
-                'order'     => 10,
-                'async'     => true,
-            ]);
+            $this->loadScript($config->get('themerdefaultfiles.scripts.recaptcha'));
         }
     }
 
