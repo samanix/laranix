@@ -142,7 +142,7 @@ class Images extends ThemerResource
     protected function createImageSettings($image, ?string $alt, array $extra, bool $default): ResourceSettings
     {
         // Remote image
-        if (filter_var($image, FILTER_VALIDATE_URL) ||
+        if (filter_var($image, FILTER_VALIDATE_URL) === true ||
             $image instanceof UrlSettings ||
             $image instanceof RemoteSettings) {
             $settings = $this->getRemoteImageSettings($image, $alt, $extra, $default);
