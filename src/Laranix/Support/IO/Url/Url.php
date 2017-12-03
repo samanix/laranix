@@ -12,12 +12,16 @@ class Url extends UrlCreator
      * Create a url from variable type
      *
      * @param $url
-     * @return null|string
+     * @return null|string|array
      */
     public function url($url)
     {
         if (is_string($url)) {
             return $this->parseStringUrl($url);
+        }
+
+        if (is_array($url)) {
+            return $this->make(new UrlSettings($url));
         }
 
         if ($url instanceof UrlSettings) {
