@@ -156,19 +156,22 @@ class Controller extends BaseController
     /**
      * Add parts required for rendering a form
      *
+     * @param bool                          $withRecaptcha
      * @param array|ThemerFileSettings|null $scripts
      * @throws \Laranix\Support\Exception\InvalidInstanceException
      */
-    protected function prepareForFormResponse(...$scripts)
+    protected function prepareForFormResponse(bool $withRecaptcha = true, ...$scripts)
     {
-        $recaptcha = $this->app->make(Recaptcha::class);
+        if ($withRecaptcha) {
+            $recaptcha = $this->app->make(Recaptcha::class);
+        }
 
         $this->share([
             'sequence'  => $this->app->make(Sequence::class),
-            'recaptcha' => $recaptcha,
+            'recaptcha' => $recaptcha ?? null,
         ]);
 
-        $this->loadThemerDefaultFormFiles($this->config, $recaptcha, $scripts);
+        $this->loadThemerDefaultFormFiles($this->config, $recaptcha ?? null, $scripts);
     }
 
     /**

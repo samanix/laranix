@@ -54,17 +54,17 @@ trait LoadsThemer
     /**
      * Load the default themer files
      *
-     * @param \Illuminate\Contracts\Config\Repository $config
-     * @param \Laranix\AntiSpam\Recaptcha\Recaptcha   $recaptcha
-     * @param array                                   $scripts
+     * @param \Illuminate\Contracts\Config\Repository       $config
+     * @param \Laranix\AntiSpam\Recaptcha\Recaptcha|null    $recaptcha
+     * @param array                                         $scripts
      * @throws \Laranix\Support\Exception\InvalidInstanceException
      */
-    protected function loadThemerDefaultFormFiles(Repository $config, Recaptcha $recaptcha, ...$scripts)
+    protected function loadThemerDefaultFormFiles(Repository $config, ?Recaptcha $recaptcha, ...$scripts)
     {
         $this->loadStylesheets($config->get('themerdefaultfiles.styles.form'));
-        $this->loadScripts(array_merge($config->get('themerdefaultfiles.scripts.form'), $scripts[0]));
+        $this->loadScripts(array_merge($config->get('themerdefaultfiles.scripts.form'), $scripts));
 
-        if ($recaptcha->enabled()) {
+        if ($recaptcha !== null && $recaptcha->enabled()) {
             $this->loadScript([
                 'key'       => 'recaptcha',
                 'filename'  => 'api.js',
