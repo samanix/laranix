@@ -99,7 +99,7 @@ class UrlTest extends LaranixTestCase
             ['http', 'foo.com', '/bar', null, 'baz', true, 'http://foo.com/bar/#baz'],
             ['http', 'https://bar.com', null, ['baz' => 'foo'], null, false, 'http://bar.com?baz=foo'],
             ['https', '//baz.com', 'foo/bar', ['foo' => 'bar'], null, true, 'https://baz.com/foo/bar/?foo=bar'],
-            ['http:', 'url.com', '/baz/', ['foo' => 'bar', 'query' => 'value'], null, true, 'http://url.com/baz/?foo=bar&query=value'],
+            ['http:', 'url.com', '/baz/', ['foo' => 'bar', 'query' => 'value foo'], null, true, 'http://url.com/baz/?foo=bar&query=value%20foo'],
             ['http://', null, '/foo', null, null, true, 'http://homestead.app/foo/'],
             ['http', 'foo.com', '/bar', ['foo' => 'bar'], '#baz', false, 'http://foo.com/bar?foo=bar#baz'],
             ['http', 'foo.com', '/bar/bar baz', null, null, false, 'http://foo.com/bar/bar%20baz'],

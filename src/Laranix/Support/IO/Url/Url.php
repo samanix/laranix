@@ -16,6 +16,10 @@ class Url extends UrlCreator
      */
     public function url($url)
     {
+        if (filter_var($url, FILTER_VALIDATE_URL) === true) {
+            return $url;
+        }
+
         if (is_string($url)) {
             return $this->parseStringUrl($url);
         }
@@ -249,7 +253,7 @@ class Url extends UrlCreator
             return null;
         }
 
-        return '?' . http_build_query($query);
+        return '?' . http_build_query($query, null, '&', PHP_QUERY_RFC3986);
     }
 
     /**
