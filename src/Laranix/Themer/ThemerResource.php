@@ -292,7 +292,7 @@ abstract class ThemerResource
         }
 
         if ($settings->url === null && !$this->mergeResources) {
-            $settings->url = $this->getBaseUrl($settings->theme);
+            $settings->url = $this->getThemeBaseUrl($settings->theme);
         }
 
         $this->resources->add($settings->repositoryKey, $settings);
@@ -419,9 +419,9 @@ abstract class ThemerResource
      * @param \Laranix\Themer\Theme $theme
      * @return string
      */
-    public function getWebUrl(string $resource, Theme $theme = null) : string
+    public function getThemeResourceUrl(string $resource, Theme $theme = null) : string
     {
-        return $this->createPath($this->getBaseUrl($theme), $resource);
+        return $this->createPath($this->getThemeBaseUrl($theme), $resource);
     }
 
     /**
@@ -430,7 +430,7 @@ abstract class ThemerResource
      * @param \Laranix\Themer\Theme $theme
      * @return string
      */
-    protected function getBaseUrl(?Theme $theme = null) : string
+    protected function getThemeBaseUrl(?Theme $theme = null) : string
     {
         $theme = $theme ?? $this->getTheme();
 
@@ -442,6 +442,39 @@ abstract class ThemerResource
             'domain'        => $theme->getWebPath(),
             'path'          => $this->directory,
         ]));
+    }
+
+    /**
+     * Get the url for output
+     *
+     * @param $url
+     * @param $file
+     * @return string
+     * @throws \Laranix\Support\Exception\InvalidInstanceException
+     */
+    protected function parseOutputUrl($url, $file): string
+    {
+        if (is_string($url)) {
+            $url = rtrim($url, '/') . '/' . ltrim($file,  '/');
+
+            return $this->url->url($url);
+        }
+
+        if (is_array($url)) {
+            $url = new UrlSettings($url);
+        }
+
+        if (!($url instanceof UrlSettings)) {
+            throw new InvalidInstanceException('Url is not a valid instance of UrlSettings');
+        }
+
+        if (is_string($url->path)) {
+            $url->path = explode('/', $url->path);
+        }
+
+        $url->path[] = $file;
+
+        return $this->url->url($url);
     }
 
     /**

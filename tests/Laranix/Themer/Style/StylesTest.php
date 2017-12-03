@@ -6,6 +6,7 @@ use Laranix\Support\Exception\InvalidInstanceException;
 use Laranix\Support\Exception\KeyExistsException;
 use Laranix\Themer\Styles\Styles;
 use Laranix\Themer\Styles\Settings;
+use Laranix\Support\IO\Url\UrlSettings;
 use Laranix\Tests\LaranixTestCase;
 use Mockery as m;
 use Illuminate\Config\Repository;
@@ -170,6 +171,8 @@ class StylesTest extends LaranixTestCase
 
     /**
      * Test adding a script with no default fallback
+     *
+     * @throws \Laranix\Support\Exception\InvalidInstanceException
      */
     public function testAddNonExistentScriptWithNoDefaultFallback()
     {
@@ -229,20 +232,34 @@ class StylesTest extends LaranixTestCase
 
     /**
      * Test output
+     *
+     * @throws \Laranix\Support\Exception\InvalidInstanceException
      */
     public function testOutputReturnsExpected()
     {
         $style = $this->createStyle();
 
+        $array = [
+            'scheme' => 'http',
+            'domain' => 'url.com',
+            'path'   => 'path',
+        ];
+
+        $array2 = [
+            'scheme' => 'http',
+            'domain' => 'url.com',
+            'path'   => ['path', 'path2'],
+        ];
+
         $style->add(['key' => 'foo1', 'filename' => 'style1.css', 'url' => 'http://url.com', ]);
-        $style->add(['key' => 'foo2', 'filename' => 'style2.css', 'url' => 'http://url.com', 'media' => 'screen and (min-width: 768px)']);
-        $style->add(['key' => 'foo3', 'filename' => 'style3.css', 'url' => 'http://url.com', 'integrity' => 'sha1-123']);
+        $style->add(['key' => 'foo2', 'filename' => 'style2.css', 'url' => new UrlSettings($array), 'media' => 'screen and (min-width: 768px)']);
+        $style->add(['key' => 'foo3', 'filename' => 'style3.css', 'url' => $array2, 'integrity' => 'sha1-123']);
 
         $expect = /** @lang text */
             <<<EXPECTED
 <link rel="stylesheet" type="text/css" href="http://url.com/style1.css" media="all" />
-<link rel="stylesheet" type="text/css" href="http://url.com/style2.css" media="screen and (min-width: 768px)" />
-<link rel="stylesheet" type="text/css" href="http://url.com/style3.css" media="all" integrity="sha1-123" />
+<link rel="stylesheet" type="text/css" href="http://url.com/path/style2.css" media="screen and (min-width: 768px)" />
+<link rel="stylesheet" type="text/css" href="http://url.com/path/path2/style3.css" media="all" integrity="sha1-123" />
 EXPECTED;
 
         $this->assertSame($expect, $style->output());
@@ -273,13 +290,13 @@ EXPECTED;
         $script = $this->createStyle();
 
         $this->assertSame(config('app.url') . '/themes/foo/styles/style.css',
-                          $script->getWebUrl('style.css'));
+                          $script->getThemeResourceUrl('style.css'));
 
         $this->assertSame('https://www.bar.com/themes/bar/styles/style.min.css',
-                          $script->getWebUrl('style.min.css', $this->themer->getTheme('bar')));
+                          $script->getThemeResourceUrl('style.min.css', $this->themer->getTheme('bar')));
 
         $this->assertSame('https://www.baz.com/themes/baz/styles/style2.css',
-                          $script->getWebUrl('style2.css', $this->themer->getTheme('baz')));
+                          $script->getThemeResourceUrl('style2.css', $this->themer->getTheme('baz')));
     }
 
     /**

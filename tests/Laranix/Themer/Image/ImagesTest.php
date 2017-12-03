@@ -92,9 +92,9 @@ class ImageTest extends LaranixTestCase
      */
     public function testGetWebPath()
     {
-        $this->assertSame(config('app.url') . '/themes/foo/images/laranix.png', $this->image->getWebUrl('laranix.png'));
-        $this->assertSame('https://www.bar.com/themes/bar/images/samanix.png', $this->image->getWebUrl('samanix.png', $this->themer->getTheme('bar')));
-        $this->assertSame('https://www.baz.com/themes/baz/images/samanix.png', $this->image->getWebUrl('samanix.png', $this->themer->getTheme('baz')));
+        $this->assertSame(config('app.url') . '/themes/foo/images/laranix.png', $this->image->getThemeResourceUrl('laranix.png'));
+        $this->assertSame('https://www.bar.com/themes/bar/images/samanix.png', $this->image->getThemeResourceUrl('samanix.png', $this->themer->getTheme('bar')));
+        $this->assertSame('https://www.baz.com/themes/baz/images/samanix.png', $this->image->getThemeResourceUrl('samanix.png', $this->themer->getTheme('baz')));
     }
 
     /**

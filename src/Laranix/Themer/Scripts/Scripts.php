@@ -129,6 +129,7 @@ class Scripts extends ThemerResource
      *
      * @param array|null $resources
      * @return string|null
+     * @throws \Laranix\Support\Exception\InvalidInstanceException
      */
     protected function createResourceOutput(?array $resources) : ?string
     {
@@ -144,7 +145,7 @@ class Scripts extends ThemerResource
 SCRIPTSTR;
 
             $output[] = Str::format($str, [
-                'url'   => $this->url->create(null, $resource->url, $resource->filename),
+                'url'   => $this->parseOutputUrl($resource->url, $resource->filename),
                 'async' => $resource->async ? ' async' : null,
                 'defer' => $resource->defer ? ' defer' : null,
                 'integ' => $resource->integrity !== null ? ' integrity="' . $resource->integrity . '"' : null,
@@ -168,7 +169,7 @@ SCRIPTSTR;
         return new Settings([
             'key'       => $this->crc(sprintf('%s%s%s', $theme->getKey(), $type, $filename)),
             'filename'  => $filename,
-            'url'       => $this->getBaseUrl($theme),
+            'url'       => $this->getThemeBaseUrl($theme),
             'theme'     => $theme,
             'async'     => strpos($type, 'async') !== false,
             'defer'     => strpos($type, 'defer') !== false,

@@ -231,7 +231,7 @@ IMAGESTR;
 
         $settings->theme        = $default ? $this->getDefaultTheme() : $this->getTheme();
         $settings->default      = $default;
-        $settings->url          = $this->getWebUrl($settings->image, $settings->theme);
+        $settings->url          = $this->getThemeResourceUrl($settings->image, $settings->theme);
 
         return $settings;
     }

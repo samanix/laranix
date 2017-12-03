@@ -4,6 +4,7 @@ namespace Laranix\Tests\Laranix\Themer\Scripts;
 use Illuminate\Log\Writer;
 use Laranix\Support\Exception\InvalidInstanceException;
 use Laranix\Support\Exception\KeyExistsException;
+use Laranix\Support\IO\Url\UrlSettings;
 use Laranix\Themer\Scripts\Scripts;
 use Laranix\Themer\Scripts\Settings;
 use Laranix\Tests\LaranixTestCase;
@@ -204,20 +205,34 @@ class ScriptsTest extends LaranixTestCase
 
     /**
      * Test output
+     *
+     * @throws \Laranix\Support\Exception\InvalidInstanceException
      */
     public function testOutputReturnsExpected()
     {
         $script = $this->createScript();
 
+        $array = [
+            'scheme' => 'http',
+            'domain' => 'url.com',
+            'path'   => 'path',
+        ];
+
+        $array2 = [
+            'scheme' => 'http',
+            'domain' => 'url.com',
+            'path'   => ['path', 'path2'],
+        ];
+
         $script->add(['key' => 'foo1', 'filename' => 'script1.js', 'url' => 'http://url.com', 'async' => true]);
-        $script->add(['key' => 'foo2', 'filename' => 'script2.js', 'url' => 'http://url.com', 'defer' => false]);
-        $script->add(['key' => 'foo3', 'filename' => 'script3.js', 'url' => 'http://url.com', 'crossorigin' => 'anonymous', 'integrity' => 'sha1-123']);
+        $script->add(['key' => 'foo2', 'filename' => 'script2.js', 'url' => new UrlSettings($array), 'defer' => false]);
+        $script->add(['key' => 'foo3', 'filename' => 'script3.js', 'url' => $array2, 'crossorigin' => 'anonymous', 'integrity' => 'sha1-123']);
 
         $expect = /** @lang text */
             <<<EXPECTED
 <script type="application/javascript" src="http://url.com/script1.js" async defer></script>
-<script type="application/javascript" src="http://url.com/script2.js"></script>
-<script type="application/javascript" src="http://url.com/script3.js" defer integrity="sha1-123" crossorigin="anonymous"></script>
+<script type="application/javascript" src="http://url.com/path/script2.js"></script>
+<script type="application/javascript" src="http://url.com/path/path2/script3.js" defer integrity="sha1-123" crossorigin="anonymous"></script>
 EXPECTED;
 
         $this->assertSame($expect, $script->output());
@@ -248,13 +263,13 @@ EXPECTED;
         $script = $this->createScript();
 
         $this->assertSame(config('app.url') . '/themes/foo/scripts/script.js',
-                          $script->getWebUrl('script.js'));
+                          $script->getThemeResourceUrl('script.js'));
 
         $this->assertSame('https://www.bar.com/themes/bar/scripts/script.min.js',
-                          $script->getWebUrl('script.min.js', $this->themer->getTheme('bar')));
+                          $script->getThemeResourceUrl('script.min.js', $this->themer->getTheme('bar')));
 
         $this->assertSame('https://www.baz.com/themes/baz/scripts/script2.js',
-                          $script->getWebUrl('script2.js', $this->themer->getTheme('baz')));
+                          $script->getThemeResourceUrl('script2.js', $this->themer->getTheme('baz')));
     }
 
     /**

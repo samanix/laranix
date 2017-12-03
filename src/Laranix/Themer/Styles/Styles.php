@@ -108,6 +108,7 @@ class Styles extends ThemerResource
      *
      * @param array|null $resources
      * @return string|null
+     * @throws \Laranix\Support\Exception\InvalidInstanceException
      */
     protected function createResourceOutput(?array $resources) : ?string
     {
@@ -123,7 +124,7 @@ class Styles extends ThemerResource
 STYLESTR;
 
             $output[] = Str::format($str, [
-                'url'   => $this->url->create(null, $resource->url, $resource->filename),
+                'url'   => $this->parseOutputUrl($resource->url, $resource->filename),
                 'media' => $resource->media,
                 'integ' => $resource->integrity !== null ? 'integrity="' . $resource->integrity . '"' : null,
                 'cors'  => $resource->crossorigin !== null ? 'crossorigin="' . $resource->crossorigin . '"' : null,
@@ -146,7 +147,7 @@ STYLESTR;
         return new Settings([
             'key'       => $this->crc(sprintf('%s%s%s', $theme->getKey(), $type, $filename)),
             'filename'  => $filename,
-            'url'       => $this->getBaseUrl($theme),
+            'url'       => $this->getThemeBaseUrl($theme),
             'theme'     => $theme,
             'order'     => ++$this->order,
             'media'     => $this->getCrcValue($type),
