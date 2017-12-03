@@ -12,7 +12,7 @@ class Session extends Model
     /**
      * @var string
      */
-    protected $primaryKey = ['session_id', 'ipv4'];
+    protected $primaryKey = ['id', 'ipv4'];
 
     /**
      * Indicates if the IDs are auto-incrementing.
@@ -26,7 +26,7 @@ class Session extends Model
      *
      * @var array
      */
-    protected $fillable = ['session_id', 'user_id', 'ipv4', 'user_agent', 'session_data'];
+    protected $fillable = ['id', 'user_id', 'ipv4', 'user_agent', 'data'];
 
     /**
      * The attributes that should be visible for arrays.

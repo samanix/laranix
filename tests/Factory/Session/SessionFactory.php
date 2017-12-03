@@ -18,11 +18,11 @@ $factory->define(\Laranix\Session\Session::class, function (Faker\Generator $fak
     $data   = $sessions[$id];
 
     return [
-        'session_id'    => $data['id'],
+        'id'            => $data['id'],
         'user_id'       => $data['user'],
         'ipv4'          => ip2long($data['ip']),
         'user_agent'    => $faker->userAgent,
-        'session_data'  => base64_encode(serialize($data['data'])),
+        'data'          => base64_encode(serialize($data['data'])),
         'updated_at'    => $data['updated'],
         'created_at'    => $data['created'],
     ];

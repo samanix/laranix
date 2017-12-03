@@ -39,8 +39,8 @@ class SessionTest extends LaranixTestCase
      */
     public function testGetUserFromRelationship()
     {
-        $this->assertSame(1, Session::where('session_id', 1)->first()->user->getKey());
-        $this->assertSame(5, Session::where('session_id', 5)->first()->user->getKey());
+        $this->assertSame(1, Session::where('id', 1)->first()->user->getKey());
+        $this->assertSame(5, Session::where('id', 5)->first()->user->getKey());
     }
 
     /**
@@ -63,7 +63,7 @@ class SessionTest extends LaranixTestCase
 
         $handler->write(6, $data);
 
-        $this->assertNull(Session::where('session_id', 6)->first()->user);
+        $this->assertNull(Session::where('id', 6)->first()->user);
     }
 
     /**
@@ -71,7 +71,7 @@ class SessionTest extends LaranixTestCase
      */
     public function testGetIpv4Attribute()
     {
-        $this->assertSame('1.1.1.1', Session::where('session_id', 1)->first()->ipv4);
-        $this->assertSame('1.1.1.5', Session::where('session_id', 5)->first()->ipv4);
+        $this->assertSame('1.1.1.1', Session::where('id', 1)->first()->ipv4);
+        $this->assertSame('1.1.1.5', Session::where('id', 5)->first()->ipv4);
     }
 }

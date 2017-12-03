@@ -14,14 +14,14 @@ class CreateSessionsTable extends Migration
     public function up()
     {
         Schema::create(config('session.table', 'sessions'), function (Blueprint $table) {
-            $table->string('session_id');
+            $table->string('id');
             $table->unsignedInteger('user_id')->nullable();
             $table->unsignedInteger('ipv4')->nullable();
             $table->text('user_agent')->nullable();
-            $table->text('session_data');
+            $table->text('data');
             $table->timestamps();
 
-            $table->primary(['session_id', 'ipv4']);
+            $table->primary(['id', 'ipv4']);
 
             $table->index('user_id');
 

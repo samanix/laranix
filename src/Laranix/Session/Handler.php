@@ -48,7 +48,7 @@ class Handler implements SessionHandlerInterface
     /**
     * {@inheritdoc}
     */
-    public function open($savePath, $sessionName)
+    public function open($save_path, $name)
     {
         return true;
     }
@@ -64,17 +64,17 @@ class Handler implements SessionHandlerInterface
     /**
      * {@inheritdoc}
      */
-    public function read($sessionId)
+    public function read($session_id)
     {
-        $this->session = $this->readFromDatabase($sessionId, $this->request->getClientIp());
+        $this->session = $this->readFromDatabase($session_id, $this->request->getClientIp());
 
-        if ($this->session === null || $this->expired($this->session) || !isset($this->session->session_data)) {
+        if ($this->session === null || $this->expired($this->session) || !isset($this->session->data)) {
             return null;
         }
 
-        $this->sessionRead = $this->session->session_id;
+        $this->sessionRead = $this->session->id;
 
-        return base64_decode($this->session->session_data);
+        return base64_decode($this->session->data);
     }
 
     /**
@@ -99,12 +99,12 @@ class Handler implements SessionHandlerInterface
     /**
      * {@inheritdoc}
      */
-    public function write($sessionId, $data)
+    public function write($session_id, $data)
     {
-        $payload = $this->getPayload($sessionId, $data);
+        $payload = $this->getPayload($session_id, $data);
 
-        if ($this->sessionRead === null || $this->sessionRead !== $sessionId) {
-            $this->read($sessionId);
+        if ($this->sessionRead === null || $this->sessionRead !== $session_id) {
+            $this->read($session_id);
         }
 
         if ($this->session !== null) {
@@ -153,18 +153,18 @@ class Handler implements SessionHandlerInterface
     /**
      * Get session payload
      *
-     * @param string $sessionId
+     * @param string       $session_id
      * @param string|array $data
      * @return array
      */
-    protected function getPayload(string $sessionId, $data) : array
+    protected function getPayload(string $session_id, $data) : array
     {
         return [
-            'session_id'    => $sessionId,
+            'id'            => $session_id,
             'user_id'       => $this->request->user()->user_id ?? null,
             'ipv4'          => $this->getLongIp(),
             'user_agent'    => $this->request->server('HTTP_USER_AGENT'),
-            'session_data'  => base64_encode(is_array($data) ? serialize($data) : $data),
+            'data'          => base64_encode(is_array($data) ? serialize($data) : $data),
         ];
     }
 
@@ -175,7 +175,7 @@ class Handler implements SessionHandlerInterface
     {
         $this->getModel()
              ->newQuery()
-             ->where('session_id', $session_id)
+             ->where('id', $session_id)
              ->delete();
     }
 
@@ -193,15 +193,15 @@ class Handler implements SessionHandlerInterface
     /**
      * Read session from database
      *
-     * @param string     $sessionId
+     * @param string     $session_id
      * @param string|int $ip
      * @return \Illuminate\Database\Eloquent\Model|\Laranix\Session\Session|null
      */
-    protected function readFromDatabase(string $sessionId, $ip) : ?Model
+    protected function readFromDatabase(string $session_id, $ip) : ?Model
     {
         return $this->getModel()
                     ->newQuery()
-                    ->where('session_id', $sessionId)
+                    ->where('id', $session_id)
                     ->where('ipv4', $this->getLongIp($ip))
                     ->first();
     }

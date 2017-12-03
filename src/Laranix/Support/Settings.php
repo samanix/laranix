@@ -74,6 +74,7 @@ abstract class Settings
      *
      * @param   bool $refresh
      * @return  bool
+     * @throws \Laranix\Support\Exception\LaranixSettingsException
      */
     public function hasRequiredSettings(bool $refresh = false)
     {

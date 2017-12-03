@@ -118,8 +118,8 @@ class HandlerTest extends LaranixTestCase
         $this->assertTrue($handler->write(6, $data));
 
         $this->assertDatabaseHas(config('session.table'), [
-           'session_id'     => 6,
-           'session_data'   => base64_encode(serialize($data)),
+           'id'     => 6,
+           'data'   => base64_encode(serialize($data)),
         ]);
     }
 
@@ -131,7 +131,7 @@ class HandlerTest extends LaranixTestCase
         $this->createHandler('1.1.1.5')->destroy(5);
 
         $this->assertDatabaseMissing(config('session.table'), [
-            'session_id' => 5,
+            'id' => 5,
         ]);
     }
 
@@ -145,19 +145,19 @@ class HandlerTest extends LaranixTestCase
         $this->createHandler()->gc(config('session.lifetime', 120) * 60);
 
         $this->assertDatabaseMissing($table, [
-           'session_id' => 2,
+           'id' => 2,
         ]);
 
         $this->assertDatabaseMissing($table, [
-           'session_id' => 5,
+           'id' => 5,
         ]);
 
         $this->assertDatabaseHas($table, [
-           'session_id' => 1,
+           'id' => 1,
         ]);
 
         $this->assertDatabaseHas($table, [
-           'session_id' => 3,
+           'id' => 3,
         ]);
     }
 
