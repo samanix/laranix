@@ -29,7 +29,9 @@ class Register extends Controller implements UserCreator, UserGroupAdder
             'filename'  => 'forms/register.js',
         ]));
 
-        return $this->view->make($this->config->get('laranixauth.users.views.register_form', 'auth.register.form'));
+        return $this->view->make(
+            $this->config->get('laranixauth.users.views.register_form', 'auth.register.form')
+        );
     }
 
     /**
@@ -41,8 +43,11 @@ class Register extends Controller implements UserCreator, UserGroupAdder
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Exception
      */
-    public function postRegister(VerificationManager $verificationManager, GroupRepository $group, DatabaseManager $db) : RedirectResponse
-    {
+    public function postRegister(
+        VerificationManager $verificationManager,
+        GroupRepository $group,
+        DatabaseManager $db
+    ): RedirectResponse {
         $this->validateRegistration();
 
         $db->connection()->beginTransaction();
@@ -126,6 +131,9 @@ class Register extends Controller implements UserCreator, UserGroupAdder
 
         $session->keep('registered_username', 'registered_email', 'verify_token_expiry', 'token_valid_for');
 
-        return $this->view->make($this->config->get('laranixauth.users.views.register_success', 'auth.register.success'), $data);
+        return $this->view->make(
+            $this->config->get('laranixauth.users.views.register_success', 'auth.register.success'),
+            $data
+        );
     }
 }
