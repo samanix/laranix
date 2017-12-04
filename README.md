@@ -248,6 +248,9 @@ In addition to the `laranix:install` command, Laranix also provides some other c
 
 > Remember to run `php artisan <command> --help` for options and information.
 
+`laranix:themer:link`
+Links the image directory to the public theme image directory for the given theme.
+
 `laranix:themer:clear`
 Clears compiled style and script files from themes.
 
