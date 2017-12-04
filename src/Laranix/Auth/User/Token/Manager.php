@@ -412,9 +412,9 @@ abstract class Manager
 
             'userId'        => $user->getAuthIdentifier(),
             'username'      => $user->username,
-            'first_name'    => $user->first_name,
-            'last_name'     => $user->last_name,
-            'full_name'     => $user->full_name,
+            'firstName'     => $user->first_name,
+            'lastName'      => $user->last_name,
+            'fullName'      => $user->full_name,
 
             'token'         => $token->token,
             'expiry'        => $expiry->format('jS F Y g:i:sA T'),

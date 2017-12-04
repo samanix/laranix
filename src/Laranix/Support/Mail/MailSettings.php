@@ -139,15 +139,15 @@ class MailSettings extends Settings
     /**
      * @var string
      */
-    public $first_name;
+    public $firstName;
 
     /**
      * @var string
      */
-    public $last_name;
+    public $lastName;
 
     /**
      * @var string
      */
-    public $full_name;
+    public $fullName;
 }
