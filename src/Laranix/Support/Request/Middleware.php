@@ -1,5 +1,5 @@
 <?php
-namespace Laranix\Support;
+namespace Laranix\Support\Request;
 
 use Illuminate\Contracts\Foundation\Application;
 use Closure;

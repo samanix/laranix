@@ -1,7 +1,7 @@
 <?php
 namespace Laranix\Tracker\Middleware;
 
-use Laranix\Support\Middleware;
+use Laranix\Support\Request\Middleware;
 use Laranix\Tracker\Writer;
 
 class Flush extends Middleware

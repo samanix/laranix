@@ -4,7 +4,7 @@ namespace Laranix\AntiSpam\Middleware;
 use Closure;
 use Laranix\AntiSpam\Sequence\Sequence;
 use Laranix\AntiSpam\Recaptcha\Recaptcha;
-use Laranix\Support\Middleware;
+use Laranix\Support\Request\Middleware;
 
 class Verify extends Middleware
 {
