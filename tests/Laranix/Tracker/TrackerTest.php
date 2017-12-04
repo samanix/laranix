@@ -35,7 +35,7 @@ class TrackerTest extends LaranixTestCase
      */
     public function testGetUserFromRelationship()
     {
-        $this->assertSame(1, Tracker::find(3)->user->user_id);
+        $this->assertSame(1, Tracker::find(3)->user->id);
         $this->assertSame(4, Tracker::find(4)->user->getKey());
     }
 
@@ -50,23 +50,14 @@ class TrackerTest extends LaranixTestCase
             'user_agent'        => 'Browser',
             'request_method'    => 'GET',
             'request_url'       => '/foo/bar',
-            'tracker_type_id'   => 1,
-            'tracker_type'      => 'track',
-            'flag_level'        => 100,
+            'type_id'           => 1,
+            'type'              => 'track',
+            'level'             => 100,
             'trackable_type'    => 1,
-            'tracker_data'      => 'foo',
+            'data'              => 'foo',
         ]);
 
         $this->assertNull(Tracker::find(6)->user);
-    }
-
-    /**
-     * Test get ID attribute
-     */
-    public function testGetIdAttribute()
-    {
-        $this->assertSame(1, Tracker::find(1)->id);
-        $this->assertSame(4, Tracker::find(4)->id);
     }
 
     /**
@@ -124,52 +115,6 @@ class TrackerTest extends LaranixTestCase
     }
 
     /**
-     * Test get type id attribute
-     */
-    public function testGetTypeIdAttribute()
-    {
-        $this->assertSame(4, Tracker::find(4)->typeId);
-        $this->assertNull(Tracker::find(5)->type_id);
-    }
-
-    /**
-     * Test get type attribute
-     */
-    public function testGetItemIdAttribute()
-    {
-        $this->assertSame(4, Tracker::find(3)->itemId);
-        $this->assertNull(Tracker::find(5)->item_id);
-    }
-
-    /**
-     * Test get level attribute
-     */
-    public function testGetLevelAttribute()
-    {
-        $this->assertSame(100, Tracker::find(3)->level);
-        $this->assertSame(20, Tracker::find(5)->level);
-    }
-
-    /**
-     * Test get level attribute
-     */
-    public function testGetTrackTypeAttribute()
-    {
-        $this->assertSame(2, Tracker::find(1)->trackType);
-        $this->assertSame(4, Tracker::find(3)->track_type);
-    }
-
-    /**
-     * Get tracker data attribute
-     */
-    public function testGetTrackerDataAttribute()
-    {
-        $this->assertSame('foo bar', Tracker::find(1)->data);
-        $this->assertSame('_hello world_', Tracker::find(3)->data);
-        $this->assertNull(Tracker::find(5)->data);
-    }
-
-    /**
      * Test get rendered tracker data attribute
      */
     public function testGetTrackerDataRenderedAttribute()
@@ -192,7 +137,7 @@ class TrackerTest extends LaranixTestCase
 
         $this->assertSame('<p><strong>foo</strong></p>', $tracker->renderedData);
 
-        $tracker->setAttribute('tracker_data', '_bar_');
+        $tracker->setAttribute('data', '_bar_');
 
         $tracker->saveRenderedData();
 

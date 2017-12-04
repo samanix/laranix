@@ -59,23 +59,23 @@ class CreatesUserCageTest extends LaranixTestCase
 
 
         $this->assertDatabaseHas(config('laranixauth.cage.table'), [
-            'cage_level'            => 100,
-            'cage_area'             => 'login',
-            'cage_time'             => 30,
-            'cage_reason'           => '**foo**',
-            'cage_reason_rendered'  => '<p><strong>foo</strong></p>',
-            'issuer_id'             => 1,
-            'user_id'               => 3,
+            'level'             => 100,
+            'area'              => 'login',
+            'length'            => 30,
+            'reason'            => '**foo**',
+            'reason_rendered'   => '<p><strong>foo</strong></p>',
+            'issuer_id'         => 1,
+            'user_id'           => 3,
         ]);
 
         $this->assertDatabaseHas(config('laranixauth.cage.table'), [
-            'cage_level'            => 200,
-            'cage_area'             => 'logout',
-            'cage_time'             => 60,
-            'cage_reason'           => '_bar_',
-            'cage_reason_rendered'  => '<p><em>bar</em></p>',
-            'issuer_id'             => 2,
-            'user_id'               => 4,
+            'level'             => 200,
+            'area'              => 'logout',
+            'length'            => 60,
+            'reason'            => '_bar_',
+            'reason_rendered'   => '<p><em>bar</em></p>',
+            'issuer_id'         => 2,
+            'user_id'           => 4,
         ]);
     }
 
@@ -87,7 +87,7 @@ class CreatesUserCageTest extends LaranixTestCase
         return new Settings([
             'level'     => 100,
             'area'      => 'login',
-            'time'      => 30,
+            'length'    => 30,
             'reason'    => '**foo**',
             'issuer'    => 1,
             'user'      => 3,
@@ -102,7 +102,7 @@ class CreatesUserCageTest extends LaranixTestCase
         return [
             'level'     => 200,
             'area'      => 'logout',
-            'time'      => 60,
+            'length'    => 60,
             'reason'    => '_bar_',
             'issuer'    => 2,
             'user'      => 4,

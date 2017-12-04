@@ -21,8 +21,8 @@ trait AddsUserToGroup
         return UserGroup::createNew([
             'user_id'       => $values->user,
             'group_id'      => $values->group,
-            'is_primary'    => (int) $values->primary,
-            'is_hidden'     => (int) $values->hidden,
+            'primary'    => (int) $values->primary,
+            'hidden'     => (int) $values->hidden,
         ]);
     }
 }

@@ -86,7 +86,7 @@ class ManagerTest extends LaranixTestCase
         $this->manager->createToken($this->getUserMock());
 
         Event::assertDispatched(Created::class, function ($event) {
-            return $event->user->user_id === 1 && $event->token->email === 'foo@bar.com';
+            return $event->user->id === 1 && $event->token->email === 'foo@bar.com';
         });
 
         $this->assertDatabaseHas(config('laranixauth.verification.table'), [
@@ -189,11 +189,11 @@ class ManagerTest extends LaranixTestCase
         $this->assertSame(Token::TOKEN_VALID, $this->manager->processToken($this->hashToken('foo123'), 'bar2@baz.com'));
 
         Event::assertDispatched(Updated::class, function ($event) {
-            return $event->user->user_id === 2 && $event->user->email === 'bar2@baz.com';
+            return $event->user->id === 2 && $event->user->email === 'bar2@baz.com';
         });
 
         Event::assertDispatched(Verified::class, function ($event) {
-            return $event->user->user_id === 2 && $event->user->email === 'bar2@baz.com';
+            return $event->user->id === 2 && $event->user->email === 'bar2@baz.com';
         });
     }
 
@@ -218,7 +218,7 @@ class ManagerTest extends LaranixTestCase
         $this->assertSame(Token::TOKEN_EXPIRED, $this->manager->processToken($this->hashToken('abcfoo'), 'baz2@bar.com', 'secret2'));
 
         Event::assertDispatched(Failed::class, function ($event) {
-             return $event->user->user_id === 4 && $event->token->status === Token::TOKEN_EXPIRED && $event->email === 'baz2@bar.com';
+             return $event->user->id === 4 && $event->token->status === Token::TOKEN_EXPIRED && $event->email === 'baz2@bar.com';
         });
     }
 
@@ -230,7 +230,7 @@ class ManagerTest extends LaranixTestCase
         $this->assertNotSame($this->hashToken('abc123'), $this->manager->renewToken(Verification::find(1))->token);
 
         Event::assertDispatched(UpdatedEvent::class, function ($event) {
-            return $event->user->user_id === 1 && $event->token->email === 'foo2@bar.com';
+            return $event->user->id === 1 && $event->token->email === 'foo2@bar.com';
         });
     }
 
@@ -308,7 +308,6 @@ class ManagerTest extends LaranixTestCase
 
         $user->shouldReceive('getAuthIdentifier')->andReturn(1);
         $user->id = 1;
-        $user->user_id = 1;
         $user->email = 'foo@bar.com';
         $user->username = 'foo';
         $user->first_name = 'foo';

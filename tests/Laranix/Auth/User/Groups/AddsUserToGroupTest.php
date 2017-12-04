@@ -52,17 +52,17 @@ class AddsUserToGroupTest extends LaranixTestCase
         });
 
         $this->assertDatabaseHas(config('laranixauth.usergroups.table'), [
-            'user_id'       => 1,
-            'group_id'      => 2,
-            'is_primary'    => 1,
-            'is_hidden'     => 0,
+            'user_id'   => 1,
+            'group_id'  => 2,
+            'primary'   => 1,
+            'hidden'    => 0,
         ]);
 
         $this->assertDatabaseHas(config('laranixauth.usergroups.table'), [
-            'user_id'       => 2,
-            'group_id'      => 1,
-            'is_primary'    => 0,
-            'is_hidden'     => 1,
+            'user_id'   => 2,
+            'group_id'  => 1,
+            'primary'   => 0,
+            'hidden'    => 1,
         ]);
     }
 

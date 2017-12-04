@@ -57,7 +57,7 @@ class CageRepository implements Repository
      */
     public function getByArea(string $area, int $scopes = self::DEFAULT, int $limit = 15): LengthAwarePaginator
     {
-        $query = $this->getModel()->newQuery()->where('cage_area', $area);
+        $query = $this->getModel()->newQuery()->where('area', $area);
 
         return $this->getScopes($query, $scopes)->paginate($limit);
     }

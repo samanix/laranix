@@ -54,7 +54,7 @@ class LoginTest extends LaranixTestCase
         ]);
 
         Event::assertDispatched(Restricted::class, function ($event) {
-            return $event->user->user_id === 3;
+            return $event->user->id === 3;
         });
     }
 

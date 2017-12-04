@@ -161,7 +161,7 @@ class Handler implements SessionHandlerInterface
     {
         return [
             'id'            => $session_id,
-            'user_id'       => $this->request->user()->user_id ?? null,
+            'user_id'       => $this->request->user()->id ?? null,
             'ipv4'          => $this->getLongIp(),
             'user_agent'    => $this->request->server('HTTP_USER_AGENT'),
             'data'          => base64_encode(is_array($data) ? serialize($data) : $data),

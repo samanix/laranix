@@ -22,7 +22,7 @@ class UserGroup extends Model
      *
      * @var array
      */
-    protected $fillable = ['user_id', 'group_id', 'is_primary', 'is_hidden'];
+    protected $fillable = ['user_id', 'group_id', 'primary', 'hidden'];
 
     /**
      * Indicates if the IDs are auto-incrementing.
@@ -37,8 +37,8 @@ class UserGroup extends Model
      * @var array
      */
     protected $casts = [
-        'is_primary'    => 'boolean',
-        'is_hidden'     => 'boolean',
+        'primary'    => 'boolean',
+        'hidden'     => 'boolean',
     ];
 
     /**
@@ -68,7 +68,7 @@ class UserGroup extends Model
      */
     public function group()
     {
-        return $this->hasOne(Group::class, 'group_id', 'group_id');
+        return $this->hasOne(Group::class, 'id', 'group_id');
     }
 
     /**
@@ -88,7 +88,7 @@ class UserGroup extends Model
      */
     public function getPrimaryAttribute() : bool
     {
-        return (bool) $this->getAttributeFromArray('is_primary');
+        return (bool) $this->getAttributeFromArray('primary');
     }
 
     /**
@@ -98,7 +98,7 @@ class UserGroup extends Model
      */
     public function getHiddenAttribute() : bool
     {
-        return (bool) $this->getAttributeFromArray('is_hidden');
+        return (bool) $this->getAttributeFromArray('hidden');
     }
 
     // TODO Join option?

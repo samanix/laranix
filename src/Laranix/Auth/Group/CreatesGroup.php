@@ -18,12 +18,12 @@ trait CreatesGroup
         $values->hasRequiredSettings();
 
         return Group::createNew([
-            'group_name'    => $values->name,
-            'group_color'   => $values->color,
-            'group_icon'    => $values->icon,
-            'group_level'   => $values->level,
-            'group_flags'   => json_encode($values->flags),
-            'is_hidden'     => $values->hidden,
+            'name'    => $values->name,
+            'color'   => $values->color,
+            'icon'    => $values->icon,
+            'level'   => $values->level,
+            'flags'   => json_encode($values->flags),
+            'hidden'  => $values->hidden,
         ]);
     }
 }

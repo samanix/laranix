@@ -12,31 +12,30 @@ class CreateTrackerTable extends Migration
     public function up()
     {
         Schema::create(config('tracker.table', 'tracker'), function (Blueprint $table) {
-            $table->increments('tracker_id');
+            $table->increments('id');
             $table->unsignedInteger('user_id')->nullable();
             $table->unsignedInteger('ipv4');
             $table->string('user_agent')->nullable();
             $table->string('request_method', 20)->nullable();
             $table->string('request_url', 600)->nullable();
 
-            $table->string('tracker_type');
-            $table->unsignedInteger('tracker_type_id')->nullable();
-            $table->unsignedInteger('tracker_item_id')->nullable();
-            $table->unsignedTinyInteger('flag_level')->default(0);
+            $table->string('type');
+            $table->unsignedInteger('type_id')->nullable();
+            $table->unsignedInteger('item_id')->nullable();
+            $table->unsignedTinyInteger('level')->default(0);
             $table->unsignedTinyInteger('trackable_type');
 
-            $table->text('tracker_data')->nullable();
-            $table->text('tracker_data_rendered')->nullable();
+            $table->text('data')->nullable();
+            $table->text('data_rendered')->nullable();
 
             $table->timestamps();
 
-            $table->index('user_id');
             $table->index('ipv4');
-            $table->index(['tracker_type', 'tracker_type_id'], 'tracker_type_key');
-            $table->index('tracker_item_id');
+            $table->index(['type', 'type_id'], 'tracker_type_key');
+            $table->index('item_id');
 
             $table->foreign('user_id')
-                  ->references('user_id')
+                  ->references('id')
                   ->on(config('laranixauth.users.table', 'users'))
                   ->onUpdate('cascade')
                   ->onDelete('set null');

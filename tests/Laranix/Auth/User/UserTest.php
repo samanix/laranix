@@ -40,7 +40,7 @@ class UserTest extends LaranixTestCase
      */
     public function testGetAuthIdentifierName()
     {
-        $this->assertSame('user_id', (new User())->getAuthIdentifierName());
+        $this->assertSame('id', (new User())->getAuthIdentifierName());
     }
 
     /**
@@ -83,8 +83,8 @@ class UserTest extends LaranixTestCase
      */
     public function testGetPrimaryGroup()
     {
-        $this->assertSame(3, User::find(4)->primaryGroup()->group_id);
-        $this->assertSame(1, User::find(5)->primaryGroup()->group_id);
+        $this->assertSame(3, User::find(4)->primaryGroup()->id);
+        $this->assertSame(1, User::find(5)->primaryGroup()->id);
     }
 
     /**
@@ -144,13 +144,13 @@ class UserTest extends LaranixTestCase
         $user = User::with('usergroups')->find(1);
 
         $grp1 = new Group();
-        $grp1->group_id = 1;
+        $grp1->id = 1;
 
         $grp2 = new Group();
-        $grp2->group_id = 3;
+        $grp2->id = 3;
 
         $grp3 = new Group();
-        $grp3->group_id = 100;
+        $grp3->id = 100;
 
         $this->assertTrue($user->hasGroup($grp1));
         $this->assertTrue($user->hasGroup($grp2));
@@ -176,23 +176,14 @@ class UserTest extends LaranixTestCase
     {
         $user = User::find([3, 4]);
 
-        $this->assertSame(2, $user[0]->hasCage('foo')->cage_id);
-        $this->assertSame(3, $user[1]->hasCage('bar', 0, false)->cage_id);
+        $this->assertSame(2, $user[0]->hasCage('foo')->id);
+        $this->assertSame(3, $user[1]->hasCage('bar', 0, false)->id);
 
         // Exists but not active
         $this->assertNull($user[1]->hasCage('bar'));
 
         $this->assertNull($user[0]->hasCage('foo', 100));
         $this->assertNull($user[0]->hasCage('nothing'));
-    }
-
-    /**
-     * Test get id attribute
-     */
-    public function testGetIdAttribute()
-    {
-        $this->assertSame(1, User::find(1)->id);
-        $this->assertSame(5, User::find(5)->id);
     }
 
     /**

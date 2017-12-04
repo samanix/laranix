@@ -23,10 +23,8 @@ class CreateSessionsTable extends Migration
 
             $table->primary(['id', 'ipv4']);
 
-            $table->index('user_id');
-
             $table->foreign('user_id')
-                ->references('user_id')
+                ->references('id')
                 ->on(config('laranixauth.users.table', 'users'))
                 ->onUpdate('set null')
                 ->onDelete('set null');

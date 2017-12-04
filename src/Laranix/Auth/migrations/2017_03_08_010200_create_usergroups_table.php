@@ -14,21 +14,21 @@ class CreateUserGroupsTable extends Migration
         Schema::create(config('laranixauth.usergroups.table', 'usergroups'), function (Blueprint $table) {
             $table->unsignedInteger('user_id');
             $table->unsignedSmallInteger('group_id');
-            $table->unsignedTinyInteger('is_primary')->default(0);
-            $table->unsignedTinyInteger('is_hidden')->default(0);
+            $table->unsignedTinyInteger('primary')->default(0);
+            $table->unsignedTinyInteger('hidden')->default(0);
 
             $table->timestamps();
 
             $table->primary(['user_id', 'group_id']);
 
             $table->foreign('user_id')
-                ->references('user_id')
+                ->references('id')
                 ->on(config('laranixauth.users.table', 'users'))
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
 
             $table->foreign('group_id')
-                ->references('group_id')
+                ->references('id')
                 ->on(config('laranixauth.groups.table', 'groups'))
                 ->onUpdate('cascade')
                 ->onDelete('restrict');

@@ -13,7 +13,7 @@ class Settings extends BaseSettings
     protected $required = [
         'level'     => 'int',
         'area'      => 'string',
-        'time'      => 'int',
+        'length'    => 'int',
         'reason'    => 'string',
         'issuer'    => 'int',
         'user'      => 'int',
@@ -41,7 +41,7 @@ class Settings extends BaseSettings
      *
      * @var int
      */
-    public $time = 30;
+    public $length = 30;
 
     /**
      * Reason for cage.

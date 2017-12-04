@@ -16,7 +16,7 @@ $factory->define(\Laranix\Auth\User\User::class, function (Faker\Generator $fake
     $data   = $users[$id];
 
     return [
-        'user_id'           => $data['id'],
+        'id'                => $data['id'],
         'email'             => $data['email'],
         'username'          => $data['username'],
         'avatar'            => str_random(10),

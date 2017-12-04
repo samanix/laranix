@@ -43,15 +43,17 @@ class WriterTest extends LaranixTestCase
         ]);
 
         Event::assertDispatched(Created::class, function ($event) {
-            return $event->track->type === 'foo' && $event->track->typeId === 100 && $event->track->trackType === Tracker::TRACKER_TRAIL;
+            return $event->track->type === 'foo'
+                && $event->track->type_id === 100
+                && $event->track->trackable_type === Tracker::TRACKER_TRAIL;
         });
 
         $this->assertDatabaseHas(config('tracker.table', 'tracker'), [
-            'tracker_type_id'       => 100,
-            'tracker_type'          => 'foo',
-            'trackable_type'        => 2,
-            'tracker_data'          => 'test track',
-            'tracker_data_rendered' => null,
+            'type_id'           => 100,
+            'type'              => 'foo',
+            'trackable_type'    => 2,
+            'data'              => 'test track',
+            'data_rendered'     => null,
         ]);
     }
 
@@ -73,10 +75,10 @@ class WriterTest extends LaranixTestCase
         Event::assertNotDispatched(BatchCreated::class);
 
         $this->assertDatabaseMissing(config('tracker.table', 'tracker'), [
-            'tracker_type_id'   => 100,
-            'tracker_type'      => 'foo',
+            'type_id'           => 100,
+            'type'              => 'foo',
             'trackable_type'    => 2,
-            'tracker_data'      => 'test track',
+            'data'              => 'test track',
         ]);
 
         $writer->register([
@@ -102,10 +104,10 @@ class WriterTest extends LaranixTestCase
         ]);
 
         $this->assertDatabaseMissing(config('tracker.table', 'tracker'), [
-            'tracker_type_id'   => 300,
-            'tracker_type'      => 'baz',
+            'type_id'           => 300,
+            'type'              => 'baz',
             'trackable_type'    => 2,
-            'tracker_data'      => 'test track 3',
+            'data'              => 'test track 3',
         ]);
     }
 
@@ -144,11 +146,11 @@ class WriterTest extends LaranixTestCase
         Event::assertNotDispatched(BatchCreated::class);
 
         $this->assertDatabaseMissing(config('tracker.table', 'tracker'), [
-            'tracker_type_id'   => 100,
-            'tracker_type'      => 'foo',
-            'tracker_item_id'   => 10,
+            'type_id'           => 100,
+            'type'              => 'foo',
+            'item_id'           => 10,
             'trackable_type'    => 2,
-            'tracker_data'      => null,
+            'data'              => null,
         ]);
 
         $writer->flush();
@@ -158,13 +160,13 @@ class WriterTest extends LaranixTestCase
         });
 
         $this->assertDatabaseHas(config('tracker.table', 'tracker'), [
-            'request_method'        => 'GET',
-            'request_url'           => urlTo('/foo/bar'),
-            'tracker_type_id'       => 400,
-            'tracker_type'          => 'foobar',
-            'tracker_item_id'       => null,
-            'trackable_type'        => 2,
-            'tracker_data_rendered' => '<p><strong>test track 4</strong></p>',
+            'request_method'    => 'GET',
+            'request_url'       => urlTo('/foo/bar'),
+            'type_id'           => 400,
+            'type'              => 'foobar',
+            'item_id'           => null,
+            'trackable_type'    => 2,
+            'data_rendered'     => '<p><strong>test track 4</strong></p>',
         ]);
 
         $this->assertSame(4, Tracker::count());

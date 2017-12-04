@@ -39,7 +39,7 @@ class ResetTest extends LaranixTestCase
      */
     public function testGetUserFromRelationship()
     {
-        $this->assertSame(3, Reset::find(3)->user->user_id);
+        $this->assertSame(3, Reset::find(3)->user->id);
         $this->assertSame(4, Reset::find(4)->user->getKey());
     }
 

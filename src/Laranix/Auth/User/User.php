@@ -37,11 +37,6 @@ class User extends Model implements
     const USER_BANNED = 3;
 
     /**
-     * @var string
-     */
-    protected $primaryKey = 'user_id';
-
-    /**
      * The attributes that are mass assignable.
      *
      * @var array
@@ -105,16 +100,6 @@ class User extends Model implements
     }
 
     /**
-     * Auth identifier name
-     *
-     * @return string
-     */
-    public function getAuthIdentifierName()
-    {
-        return 'user_id';
-    }
-
-    /**
      * User groups
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -123,6 +108,19 @@ class User extends Model implements
     {
         return $this->hasMany(UserGroup::class, 'user_id');
     }
+
+//    /**
+//     * Get user groups
+//     *
+//     * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
+//     */
+//    public function groups()
+//    {
+//        return $this->hasManyThrough(
+//            Group::class,
+//            UserGroup::class
+//        );
+//    }
 
     /**
      * All user cages
@@ -158,7 +156,7 @@ class User extends Model implements
         $usergroups = $this->usergroups;
 
         foreach ($usergroups as $id => $usergroup) {
-            if ($usergroup->is_primary) {
+            if ($usergroup->primary) {
                 return $this->userPrimaryGroup = $usergroup->group;
             }
         }
@@ -264,7 +262,7 @@ class User extends Model implements
      */
     public function hasGroup(Group $group) : bool
     {
-        return $this->hasGroupId($group->group_id);
+        return $this->hasGroupId($group->id);
     }
 
     /**
@@ -299,22 +297,12 @@ class User extends Model implements
         $cages = $activeOnly ? $this->getActiveCages() : $this->allCages;
 
         foreach ($cages as $index => $cage) {
-            if ($cage->cage_area === $area && $cage->cage_level >= $level) {
+            if ($cage->area === $area && $cage->level >= $level) {
                 return $cage;
             }
         }
 
         return null;
-    }
-
-    /**
-     * Get user Id
-     *
-     * @return int
-     */
-    public function getIdAttribute() : int
-    {
-        return $this->getAttributeFromArray('user_id');
     }
 
     /**
@@ -326,11 +314,4 @@ class User extends Model implements
     {
         return $this->getAttributeFromArray('first_name') . ' ' . $this->getAttributeFromArray('last_name');
     }
-
-//    // TODO Join option
-//    // For now use eager loading
-//    public function groups()
-//    {
-//        return $this->hasManyThrough(Group::class, UserGroup::class, 'group_id', 'group_id', 'user_id');
-//    }
 }

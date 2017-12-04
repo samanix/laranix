@@ -23,31 +23,31 @@ class CreatesGroupTest extends LaranixTestCase
 
         $create->createGroup($this->createSettings());
         Event::assertDispatched(Created::class, function ($event) {
-            return $event->group->group_name === 'foo';
+            return $event->group->name === 'foo';
         });
 
 
         $create->createGroup($this->createSettingsFromArray());
         Event::assertDispatched(Created::class, function ($event) {
-            return $event->group->group_name === 'bar';
+            return $event->group->name === 'bar';
         });
 
         $this->assertDatabaseHas(config('laranixauth.groups.table'), [
-            'group_name'    => 'foo',
-            'group_color'   => 'red',
-            'group_icon'    => 'foo.png',
-            'group_level'   => 100,
-            'group_flags'   => json_encode(['a', 'b', 'c']),
-            'is_hidden'     => 0,
+            'name'    => 'foo',
+            'color'   => 'red',
+            'icon'    => 'foo.png',
+            'level'   => 100,
+            'flags'   => json_encode(['a', 'b', 'c']),
+            'hidden' => 0,
         ]);
 
         $this->assertDatabaseHas(config('laranixauth.groups.table'), [
-            'group_name'    => 'bar',
-            'group_color'   => 'blue',
-            'group_icon'    => 'bar.png',
-            'group_level'   => 50,
-            'group_flags'   => json_encode(['d', 'e', 'f']),
-            'is_hidden'     => 1,
+            'name'    => 'bar',
+            'color'   => 'blue',
+            'icon'    => 'bar.png',
+            'level'   => 50,
+            'flags'   => json_encode(['d', 'e', 'f']),
+            'hidden'  => 1,
         ]);
     }
 

@@ -108,8 +108,8 @@ class TrackerRepository implements Repository
     {
         $query = $this->getModel()
                       ->newQuery()
-                      ->where('tracker_type', $this->getAlias($typeName))
-                      ->where('tracker_type_id', $typeId);
+                      ->where('type', $this->getAlias($typeName))
+                      ->where('type_id', $typeId);
 
         if ($timeLimit !== null) {
             $query->whereRaw("(TIMESTAMPDIFF(MINUTE, created_at, NOW()) <= ?)", $timeLimit);
@@ -132,7 +132,7 @@ class TrackerRepository implements Repository
     {
         $query = $this->getModel()
                       ->newQuery()
-                      ->where('tracker_type', $this->getAlias($typeName));
+                      ->where('type', $this->getAlias($typeName));
 
         if ($timeLimit !== null) {
             $query->whereRaw("(TIMESTAMPDIFF(MINUTE, created_at, NOW()) <= ?)", $timeLimit);
@@ -154,7 +154,7 @@ class TrackerRepository implements Repository
     {
         return $this->getModel()
                     ->newQuery()
-                    ->where('flag_level', $level)
+                    ->where('level', $level)
                     ->where($this->typeClosure($trackableType))
                     ->paginate($perPage);
     }
@@ -173,9 +173,9 @@ class TrackerRepository implements Repository
         $query = $this->getModel()->newQuery();
 
         if ($max === Settings::FLAG_MAX) {
-            $query->where('flag_level', '>=', $min);
+            $query->where('level', '>=', $min);
         } else {
-            $query->whereBetween('flag_level', [$min, $max]);
+            $query->whereBetween('level', [$min, $max]);
         }
 
         $query->where($this->typeClosure($trackableType));
@@ -196,10 +196,10 @@ class TrackerRepository implements Repository
     {
         $query = $this->getModel()
             ->newQuery()
-            ->where('tracker_type', $this->getAlias($typeName));
+            ->where('type', $this->getAlias($typeName));
 
         if ($typeId !== -1) {
-            $query->where('tracker_type_id', $typeId);
+            $query->where('type_id', $typeId);
         }
 
         if ($expiryTime !== null && $expiryTime > 0) {

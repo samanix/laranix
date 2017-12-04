@@ -18,13 +18,13 @@ $factory->define(\Laranix\Auth\Group\Group::class, function (Faker\Generator $fa
     $data   = $groups[$id];
 
     return [
-        'group_id'      => $data['id'],
-        'group_name'    => $data['name'],
-        'group_color'   => $data['color'],
-        'group_icon'    => $data['icon'],
-        'group_level'   => $data['level'],
-        'group_flags'   => json_encode($data['flags']),
-        'is_hidden'     => $data['hidden'],
+        'id'            => $data['id'],
+        'name'          => $data['name'],
+        'color'         => $data['color'],
+        'icon'          => $data['icon'],
+        'level'         => $data['level'],
+        'flags'         => json_encode($data['flags']),
+        'hidden'        => $data['hidden'],
         'created_at'    => $data['created'],
         'updated_at'    => $data['updated'],
     ];

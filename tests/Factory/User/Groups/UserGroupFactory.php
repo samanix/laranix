@@ -21,9 +21,9 @@ $factory->define(\Laranix\Auth\User\Groups\UserGroup::class, function (Faker\Gen
     $data   = $groups[$id];
 
     return [
-        'user_id'       => $data['id'],
-        'group_id'      => $data['group'],
-        'is_primary'    => $data['primary'],
-        'is_hidden'     => $data['hidden'],
+        'user_id'   => $data['id'],
+        'group_id'  => $data['group'],
+        'primary'   => $data['primary'],
+        'hidden'    => $data['hidden'],
     ];
 });

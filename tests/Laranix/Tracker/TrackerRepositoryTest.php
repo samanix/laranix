@@ -45,7 +45,7 @@ class TrackerRepositoryTest extends LaranixTestCase
      */
     public function testGetTrackById()
     {
-        $this->assertSame(1, $this->repository->getById(1)->tracker_id);
+        $this->assertSame(1, $this->repository->getById(1)->id);
         $this->assertSame(5, $this->repository->getById(5)->getKey());
     }
 
@@ -64,7 +64,7 @@ class TrackerRepositoryTest extends LaranixTestCase
      */
     public function testGetTrackByIpv4()
     {
-        $this->assertSame(1, $this->repository->getByIpv4('1.1.1.1')->items()[0]->tracker_id);
+        $this->assertSame(1, $this->repository->getByIpv4('1.1.1.1')->items()[0]->id);
         $this->assertSame(5, $this->repository->getByIpv4(16843013)->items()[0]->getKey());
     }
 
@@ -175,11 +175,11 @@ class TrackerRepositoryTest extends LaranixTestCase
         $this->assertSame(1, $this->repository->deleteTracks('login', null, 200, Tracker::TRACKER_TRAIL));
 
         $this->assertDatabaseHas($table, [
-           'tracker_id' =>  1,
+           'id' =>  1,
         ]);
 
         $this->assertDatabaseMissing($table, [
-           'tracker_id' =>  5,
+           'id' =>  5,
         ]);
 
         $this->assertSame(2, $this->repository->deleteTracks('login', -1, 0, 1));

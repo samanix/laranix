@@ -12,23 +12,22 @@ class Tracker extends Model
     const TRACKER_LIVE = 4;
 
     /**
-     * @var string
-     */
-    protected $primaryKey = 'tracker_id';
-
-    /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = ['user_id', 'ipv4', 'user_agent', 'tracker_type_id', 'tracker_type', 'flag_level', 'trackable_type', 'tracker_data'];
+    protected $fillable = [
+        'user_id', 'ipv4', 'user_agent', 'type_id', 'type', 'level', 'trackable_type', 'data'
+    ];
 
     /**
      * Hidden attributes
      *
      * @var array
      */
-    protected $hidden = ['tracker_data_rendered'];
+    protected $hidden = [
+        'data_rendered'
+    ];
 
     /**
      * @var array
@@ -64,17 +63,7 @@ class Tracker extends Model
      */
     public function user()
     {
-        return $this->hasOne(User::class, 'user_id', 'user_id');
-    }
-
-    /**
-     * Get Tracker ID
-     *
-     * @return int
-     */
-    public function getIdAttribute() : int
-    {
-        return $this->getAttributeFromArray('tracker_id');
+        return $this->hasOne(User::class, 'id', 'user_id');
     }
 
     /**
@@ -128,46 +117,6 @@ class Tracker extends Model
     }
 
     /**
-     * Get type of track
-     *
-     * @return string
-     */
-    public function getTypeAttribute() : string
-    {
-        return $this->getAttributeFromArray('tracker_type');
-    }
-
-    /**
-     * Get tracker type Id
-     *
-     * @return int|null
-     */
-    public function getTypeIdAttribute() : ?int
-    {
-        return $this->getAttributeFromArray('tracker_type_id');
-    }
-
-    /**
-     * Get item Id of track
-     *
-     * @return int|null
-     */
-    public function getItemIdAttribute() : ?int
-    {
-        return $this->getAttributeFromArray('tracker_item_id');
-    }
-
-    /**
-     * Get tracker level attribute
-     *
-     * @return int
-     */
-    public function getLevelAttribute() : int
-    {
-        return $this->getAttributeFromArray('flag_level');
-    }
-
-    /**
      * Get track type
      *
      * @return int
@@ -175,16 +124,6 @@ class Tracker extends Model
     public function getTrackTypeAttribute() : int
     {
         return $this->getAttributeFromArray('trackable_type');
-    }
-
-    /**
-     * Get tracker data
-     *
-     * @return string|null
-     */
-    public function getDataAttribute() : ?string
-    {
-        return $this->getAttributeFromArray('tracker_data');
     }
 
     /**
@@ -199,11 +138,11 @@ class Tracker extends Model
         }
 
         if ($this->config->get('tracker.save_rendered', true) &&
-            ($rendered = $this->getAttributeFromArray('tracker_data_rendered')) !== null) {
+            ($rendered = $this->getAttributeFromArray('data_rendered')) !== null) {
             return $this->renderedData = $rendered;
         }
 
-        if (($raw = $this->getAttributeFromArray('tracker_data')) !== null) {
+        if (($raw = $this->getAttributeFromArray('data')) !== null) {
             return $this->renderedData = markdown($raw);
         }
 
@@ -218,17 +157,17 @@ class Tracker extends Model
      */
     public function saveRenderedData(bool $save = true)
     {
-        $raw = $this->getAttributeFromArray('tracker_data');
+        $raw = $this->getAttributeFromArray('data');
 
         if ($raw === null) {
             return null;
         }
 
-        if (($rendered = markdown($raw)) === $this->getAttributeFromArray('tracker_data_rendered')) {
+        if (($rendered = markdown($raw)) === $this->getAttributeFromArray('data_rendered')) {
             return null;
         }
 
-        $this->setAttribute('tracker_data_rendered', $rendered);
+        $this->setAttribute('data_rendered', $rendered);
 
         if ($save) {
             $this->save();

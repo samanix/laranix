@@ -22,7 +22,7 @@ class GroupRepository implements Repository
     {
         return $this->getModel()
                     ->newQuery()
-                    ->where('group_name', $name)
+                    ->where('name', $name)
                     ->first();
     }
 

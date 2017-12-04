@@ -44,7 +44,7 @@ class CageRepositoryTest extends LaranixTestCase
      */
     public function testGetCageById()
     {
-        $this->assertSame(2, $this->repository->getById(2)->cage_id);
+        $this->assertSame(2, $this->repository->getById(2)->id);
         $this->assertSame(5, $this->repository->getById(5)->id);
     }
 
@@ -95,19 +95,19 @@ class CageRepositoryTest extends LaranixTestCase
     public function testGetByAttributes()
     {
         $this->assertCount(1,
-                           $this->repository->getByAttributes(['cage_level' => 10, 'user_id' => 3],
+                           $this->repository->getByAttributes(['level' => 10, 'user_id' => 3],
                                                               Repository::DEFAULT));
 
         $this->assertCount(2,
-                           $this->repository->getByAttributes(['cage_level' => 10, 'user_id' => 3],
+                           $this->repository->getByAttributes(['level' => 10, 'user_id' => 3],
                                                               Repository::WITH_DELETED));
 
         $this->assertCount(1,
-                           $this->repository->getByAttributes(['cage_level' => 10, 'user_id' => 3],
+                           $this->repository->getByAttributes(['level' => 10, 'user_id' => 3],
                                                               Repository::DELETED_ONLY));
 
         $this->assertSame(20,
-                          $this->repository->getByAttributes(['cage_level' => 10, 'user_id' => 3],
+                          $this->repository->getByAttributes(['level' => 10, 'user_id' => 3],
                                                              Repository::DEFAULT, 20)->perPage());
     }
 

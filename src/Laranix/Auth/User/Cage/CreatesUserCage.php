@@ -24,14 +24,14 @@ trait CreatesUserCage
         }
 
         return Cage::createNew([
-            'cage_level'            => $values->level,
-            'cage_area'             => $values->area,
-            'cage_time'             => $values->time,
-            'cage_reason'           => $values->reason,
-            'cage_reason_rendered'  => $rendered ?? null,
-            'issuer_id'             => $values->issuer,
-            'user_id'               => $values->user,
-            'user_ipv4'             => $values->ipv4 ?? null,
+            'level'             => $values->level,
+            'area'              => $values->area,
+            'length'            => $values->length,
+            'reason'            => $values->reason,
+            'reason_rendered'   => $rendered ?? null,
+            'issuer_id'         => $values->issuer,
+            'user_id'           => $values->user,
+            'user_ipv4'         => $values->ipv4 ?? null,
         ]);
     }
 }

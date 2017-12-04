@@ -52,24 +52,6 @@ class GroupTest extends LaranixTestCase
     }
 
     /**
-     * Test get group id attribute
-     */
-    public function testGetGroupIdAttribute()
-    {
-        $this->assertSame(1, Group::find(1)->id);
-        $this->assertSame(5, Group::find(5)->id);
-    }
-
-    /**
-     * Test get group name attribute
-     */
-    public function testGetGroupNameAttribute()
-    {
-        $this->assertSame('Mod', Group::find(2)->name);
-        $this->assertSame('User', Group::find(3)->name);
-    }
-
-    /**
      * Test get hidden attribute
      */
     public function testGetHiddenAttribute()

@@ -8,16 +8,11 @@ use Laranix\Auth\User\Groups\UserGroup;
 class Group extends Model
 {
     /**
-     * @var string
-     */
-    protected $primaryKey = 'group_id';
-
-    /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = ['group_name', 'group_color', 'group_icon', 'group_level', 'group_flags', 'is_hidden'];
+    protected $fillable = ['name', 'color', 'icon', 'level', 'flags', 'hidden'];
 
     /**
      * The attributes that should be cast to native types.
@@ -25,7 +20,7 @@ class Group extends Model
      * @var array
      */
     protected $casts = [
-        'is_hidden'     => 'boolean',
+        'hidden'     => 'boolean',
     ];
 
     /**
@@ -63,7 +58,7 @@ class Group extends Model
             return $this->flagsArray;
         }
 
-        return $this->flagsArray = json_decode($this->getAttributeFromArray('group_flags'), true);
+        return $this->flagsArray = json_decode($this->getAttributeFromArray('flags'), true);
     }
 
     /**
@@ -73,27 +68,7 @@ class Group extends Model
      */
     public function usergroups()
     {
-        return $this->hasMany(UserGroup::class, 'group_id');
-    }
-
-    /**
-     * Get group Id
-     *
-     * @return int
-     */
-    public function getIdAttribute() : int
-    {
-        return $this->getAttributeFromArray('group_id');
-    }
-
-    /**
-     * Get group name
-     *
-     * @return string
-     */
-    public function getNameAttribute() : string
-    {
-        return $this->getAttributeFromArray('group_name');
+        return $this->hasMany(UserGroup::class);
     }
 
     /**
@@ -103,8 +78,9 @@ class Group extends Model
      */
     public function getHiddenAttribute() : bool
     {
-        return (bool) $this->getAttributeFromArray('is_hidden');
+        return (bool) $this->getAttributeFromArray('hidden');
     }
 
     // TODO Join option?
+    // TODO Has many through
 }

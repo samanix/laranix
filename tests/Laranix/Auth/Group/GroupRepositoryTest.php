@@ -49,7 +49,7 @@ class GroupRepositoryTest extends LaranixTestCase
      */
     public function testGetGroupById()
     {
-        $this->assertSame(1, $this->repository->getById(1)->group_id);
+        $this->assertSame(1, $this->repository->getById(1)->id);
         $this->assertSame(5, $this->repository->getById(5)->getKey());
     }
 
@@ -58,8 +58,8 @@ class GroupRepositoryTest extends LaranixTestCase
      */
     public function testGetGroupByName()
     {
-        $this->assertSame(1, $this->repository->getByName('Admin')->group_id);
-        $this->assertSame(4, $this->repository->getByName('Subadmin')->group_id);
+        $this->assertSame(1, $this->repository->getByName('Admin')->id);
+        $this->assertSame(4, $this->repository->getByName('Subadmin')->id);
     }
 
     /**
@@ -75,9 +75,9 @@ class GroupRepositoryTest extends LaranixTestCase
      */
     public function testGetGroupByAttributes()
     {
-        $this->assertSame(1, $this->repository->getByAttributes(['group_flags' => json_encode(['a', 'b', 'c'])])->getKey());
-        $this->assertSame(5, $this->repository->getByAttributes(['group_color' => 'purple', 'group_icon' => 'manager.jpg'])->getKey());
-        $this->assertSame(3, $this->repository->getByAttributes(['group_color' => 'orange', 'group_level' => '10'])->getKey());
+        $this->assertSame(1, $this->repository->getByAttributes(['flags' => json_encode(['a', 'b', 'c'])])->getKey());
+        $this->assertSame(5, $this->repository->getByAttributes(['color' => 'purple', 'icon' => 'manager.jpg'])->getKey());
+        $this->assertSame(3, $this->repository->getByAttributes(['color' => 'orange', 'level' => '10'])->getKey());
     }
 
     /**
@@ -85,9 +85,9 @@ class GroupRepositoryTest extends LaranixTestCase
      */
     public function testGetGroupByNoMatchingAttributes()
     {
-        $this->assertNull($this->repository->getByAttributes(['group_flags' => 'a,b,c,d']));
-        $this->assertNull($this->repository->getByAttributes(['group_color' => 'red', 'group_icon' => 'manager.jpg']));
-        $this->assertNull($this->repository->getByAttributes(['group_color' => 'orange', 'group_level' => '50']));
+        $this->assertNull($this->repository->getByAttributes(['flags' => 'a,b,c,d']));
+        $this->assertNull($this->repository->getByAttributes(['color' => 'red', 'icon' => 'manager.jpg']));
+        $this->assertNull($this->repository->getByAttributes(['color' => 'orange', 'level' => '50']));
     }
 
     /**

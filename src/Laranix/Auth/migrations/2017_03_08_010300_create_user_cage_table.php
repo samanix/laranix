@@ -12,13 +12,13 @@ class CreateUserCageTable extends Migration
     public function up()
     {
         Schema::create(config('laranixauth.cage.table', 'user_cage'), function (Blueprint $table) {
-            $table->increments('cage_id');
-            $table->unsignedTinyInteger('cage_level')->default(25);
-            $table->string('cage_area')->nullable();
-            $table->unsignedInteger('cage_time')->default(0);
+            $table->increments('id');
+            $table->unsignedTinyInteger('level')->default(25);
+            $table->string('area')->nullable();
+            $table->unsignedInteger('length')->default(0);
 
-            $table->text('cage_reason');
-            $table->text('cage_reason_rendered')->nullable();
+            $table->text('reason');
+            $table->text('reason_rendered')->nullable();
 
             $table->unsignedInteger('issuer_id')->nullable();
             $table->unsignedInteger('user_id')->nullable();
@@ -27,18 +27,18 @@ class CreateUserCageTable extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-            $table->index('cage_area');
+            $table->index('area');
 
             $userTable = config('laranixauth.users.table', 'users');
 
             $table->foreign('user_id')
-                ->references('user_id')
+                ->references('id')
                 ->on($userTable)
                 ->onUpdate('cascade')
                 ->onDelete('set null');
 
             $table->foreign('issuer_id')
-                  ->references('user_id')
+                  ->references('id')
                   ->on($userTable)
                   ->onUpdate('cascade')
                   ->onDelete('set null');

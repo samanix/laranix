@@ -134,20 +134,20 @@ class Writer implements TrackWriter
         }
 
         return [
-            'user_id'               => $settings->user,
-            'ipv4'                  => $settings->ipv4(),
-            'user_agent'            => $settings->userAgent(),
-            'request_method'        => $settings->requestMethod(),
-            'request_url'           => $settings->requestUrl(),
-            'tracker_type'          => strtolower($settings->type),
-            'tracker_type_id'       => $settings->typeId,
-            'tracker_item_id'       => $settings->itemId,
-            'flag_level'            => (int) $settings->flagLevel,
-            'trackable_type'        => $settings->trackType !== Tracker::TRACKER_ANY ? $settings->trackType : Tracker::TRACKER_TRAIL,
-            'tracker_data'          => $settings->data,
-            'tracker_data_rendered' => $rendered ?? null,
-            'created_at'            => $now,
-            'updated_at'            => $now,
+            'user_id'           => $settings->user,
+            'ipv4'              => $settings->ipv4(),
+            'user_agent'        => $settings->userAgent(),
+            'request_method'    => $settings->requestMethod(),
+            'request_url'       => $settings->requestUrl(),
+            'type'              => strtolower($settings->type),
+            'type_id'           => $settings->typeId,
+            'item_id'           => $settings->itemId,
+            'level'             => (int) $settings->flagLevel,
+            'trackable_type'    => $settings->trackType !== Tracker::TRACKER_ANY ? $settings->trackType : Tracker::TRACKER_TRAIL,
+            'data'              => $settings->data,
+            'data_rendered'     => $rendered ?? null,
+            'created_at'        => $now,
+            'updated_at'        => $now,
         ];
     }
 

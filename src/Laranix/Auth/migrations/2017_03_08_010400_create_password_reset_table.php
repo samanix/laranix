@@ -21,7 +21,7 @@ class CreatePasswordResetTable extends Migration
             $table->unique('email');
 
             $table->foreign('user_id')
-                ->references('user_id')
+                ->references('id')
                 ->on(config('laranixauth.users.table', 'users'))
                 ->onUpdate('cascade')
                 ->onDelete('cascade');

@@ -24,12 +24,12 @@ class DefaultGroups extends Seeder
 
             if ($settings->hasRequiredSettings()) {
                 $insertGroups[] = [
-                    'group_name'  => $settings->name,
-                    'group_color' => $settings->color,
-                    'group_icon'  => $settings->icon,
-                    'group_level' => $settings->level,
-                    'group_flags' => $settings->flags !== null ? implode(',', $settings->flags) : null,
-                    'is_hidden'   => $settings->hidden,
+                    'name'      => $settings->name,
+                    'color'     => $settings->color,
+                    'icon'      => $settings->icon,
+                    'level'     => $settings->level,
+                    'flags'     => $settings->flags !== null ? implode(',', $settings->flags) : null,
+                    'hidden'    => $settings->hidden,
                 ];
             }
         }

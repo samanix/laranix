@@ -12,7 +12,7 @@ class CreateUserTable extends Migration
     public function up()
     {
         Schema::create(config('laranixauth.users.table', 'users'), function (Blueprint $table) {
-            $table->increments('user_id');
+            $table->increments('id');
             $table->string('email')->unique();
             $table->string('username', 64)->unique();
             $table->string('avatar')->nullable();

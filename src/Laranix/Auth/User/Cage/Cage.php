@@ -13,23 +13,18 @@ class Cage extends Model
     use SoftDeletes;
 
     /**
-     * @var string
-     */
-    protected $primaryKey = 'cage_id';
-
-    /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = ['cage_level', 'cage_area', 'cage_time', 'cage_reason', 'cage_issuer', 'user_id'];
+    protected $fillable = ['level', 'area', 'length', 'reason', 'issuer', 'user_id'];
 
     /**
      * Hidden attributes
      *
      * @var array
      */
-    protected $hidden = ['cage_reason_rendered'];
+    protected $hidden = ['reason_rendered'];
 
     /**
      * @var array
@@ -82,16 +77,6 @@ class Cage extends Model
     }
 
     /**
-     * Get cage id attribute
-     *
-     * @return int
-     */
-    public function getIdAttribute() : int
-    {
-        return $this->getAttributeFromArray('cage_id');
-    }
-
-    /**
      * Get cage expiry time.
      *
      * @return \Carbon\Carbon
@@ -102,47 +87,7 @@ class Cage extends Model
             return $this->cageExpires;
         }
 
-        return $this->cageExpires = $this->created_at->addMinutes($this->getAttributeFromArray('cage_time'));
-    }
-
-    /**
-     * Get cage level
-     *
-     * @return int
-     */
-    public function getLevelAttribute() : int
-    {
-        return $this->getAttributeFromArray('cage_level');
-    }
-
-    /**
-     * Get cage area
-     *
-     * @return string
-     */
-    public function getAreaAttribute() : string
-    {
-        return $this->getAttributeFromArray('cage_area');
-    }
-
-    /**
-     * Get cage level
-     *
-     * @return int
-     */
-    public function getTimeAttribute() : int
-    {
-        return $this->getAttributeFromArray('cage_time');
-    }
-
-    /**
-     * Get cage reason
-     *
-     * @return string|null
-     */
-    public function getReasonAttribute() : ?string
-    {
-        return $this->getAttributeFromArray('cage_reason');
+        return $this->cageExpires = $this->created_at->addMinutes($this->getAttributeFromArray('length'));
     }
 
     /**
@@ -157,11 +102,11 @@ class Cage extends Model
         }
 
         if ($this->config->get('laranixauth.cage.save_rendered', true) &&
-            ($rendered = $this->getAttributeFromArray('cage_reason_rendered')) !== null) {
+            ($rendered = $this->getAttributeFromArray('reason_rendered')) !== null) {
             return $this->renderedReason = $rendered;
         }
 
-        if (($raw = $this->getAttributeFromArray('cage_reason')) !== null) {
+        if (($raw = $this->getAttributeFromArray('reason')) !== null) {
             return $this->renderedReason = markdown($raw);
         }
 
@@ -176,13 +121,13 @@ class Cage extends Model
      */
     public function saveRenderedReason(bool $save = true)
     {
-        $raw = $this->getAttributeFromArray('cage_reason');
+        $raw = $this->getAttributeFromArray('reason');
 
-        if (($rendered = markdown($raw)) === $this->getAttributeFromArray('cage_reason_rendered')) {
+        if (($rendered = markdown($raw)) === $this->getAttributeFromArray('reason_rendered')) {
             return null;
         }
 
-        $this->setAttribute('cage_reason_rendered', $rendered);
+        $this->setAttribute('reason_rendered', $rendered);
 
         if ($save) {
             $this->save();
@@ -204,8 +149,8 @@ class Cage extends Model
         $table = $this->config->get('laranixauth.cage.table', 'user_cage');
 
         return $query->whereRaw(
-            "(`{$table}`.`cage_time` = 0 OR 
-            (TIMESTAMPDIFF(MINUTE, `{$table}`.`created_at`, NOW()) <= `{$table}`.`cage_time`))"
+            "(`{$table}`.`length` = 0 OR 
+            (TIMESTAMPDIFF(MINUTE, `{$table}`.`created_at`, NOW()) <= `{$table}`.`length`))"
         );
     }
 
@@ -216,7 +161,7 @@ class Cage extends Model
      */
     public function issuer()
     {
-        return $this->hasOne(User::class, 'user_id', 'issuer_id');
+        return $this->hasOne(User::class, 'id', 'issuer_id');
     }
 
     /**
@@ -226,7 +171,7 @@ class Cage extends Model
      */
     public function user()
     {
-        return $this->hasOne(User::class, 'user_id', 'user_id');
+        return $this->hasOne(User::class, 'id', 'user_id');
     }
 
     /**
@@ -259,7 +204,7 @@ class Cage extends Model
     public function isExpired() : bool
     {
         return $this->getExpiryAttribute()->timestamp < Carbon::now()->timestamp
-            && $this->getTimeAttribute() !== 0
+            && $this->length !== 0
             && !$this->isRemoved();
     }
 

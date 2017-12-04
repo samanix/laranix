@@ -191,7 +191,7 @@ class VerificationTest extends LaranixTestCase
         $email = 'foo2@bar.com';
         $token = hash('sha256', 'abc123');
 
-        $response = $this->actingAs(new User(['user_id' => 1]))->get('email/verify?token=' . $token . '&email=' . rawurlencode($email));
+        $response = $this->actingAs(new User(['id' => 1]))->get('email/verify?token=' . $token . '&email=' . rawurlencode($email));
 
         $response->assertStatus(302);
 
