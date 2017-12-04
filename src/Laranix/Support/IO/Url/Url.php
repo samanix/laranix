@@ -16,7 +16,7 @@ class Url extends UrlCreator
      */
     public function url($url)
     {
-        if (filter_var($url, FILTER_VALIDATE_URL) === true) {
+        if (filter_var($url, FILTER_VALIDATE_URL) !== false) {
             return $url;
         }
 

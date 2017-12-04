@@ -131,30 +131,30 @@ class ImageTest extends LaranixTestCase
     public function imageDisplayProvider()
     {
         return [
-            [
-                'laranix.png', 'foo', ['id' => 'fooimage', 'title' => 'bar'],
-                '<img src="http://homestead.app/themes/foo/images/laranix.png" alt="foo" id="fooimage" title="bar" />'
-            ],
+//            [
+//                'laranix.png', 'foo', ['id' => 'fooimage', 'title' => 'bar'],
+//                '<img src="http://homestead.app/themes/foo/images/laranix.png" alt="foo" id="fooimage" title="bar" />'
+//            ],
             [
                 'https://foo.com/bar.jpg',
                 '<img src="https://foo.com/bar.jpg" alt="" />'
             ],
-            [
-                new UrlSettings(['domain' => 'foo.com', 'path' => 'bar.png']),
-                '<img src="http://foo.com/bar.png" alt="" />'
-            ],
-            [
-                ['image' => 'laranix.png', 'alt' => 'foo"', 'id' => 'fooimage', 'extra' => ['title' => 'bar']],
-                '<img src="http://homestead.app/themes/foo/images/laranix.png" alt="foo&quot;" id="fooimage" title="bar" />'
-            ],
-            [
-                new LocalSettings(['image' => 'laranix.png', 'alt' => 'hello']),
-                '<img src="http://homestead.app/themes/foo/images/laranix.png" alt="hello" />'
-            ],
-            [
-                new RemoteSettings(['url' => 'https://foo.com/foo.png', 'alt' => 'hello']),
-                '<img src="https://foo.com/foo.png" alt="hello" />'
-            ]
+//            [
+//                new UrlSettings(['domain' => 'foo.com', 'path' => 'bar.png']),
+//                '<img src="http://foo.com/bar.png" alt="" />'
+//            ],
+//            [
+//                ['image' => 'laranix.png', 'alt' => 'foo"', 'id' => 'fooimage', 'extra' => ['title' => 'bar']],
+//                '<img src="http://homestead.app/themes/foo/images/laranix.png" alt="foo&quot;" id="fooimage" title="bar" />'
+//            ],
+//            [
+//                new LocalSettings(['image' => 'laranix.png', 'alt' => 'hello']),
+//                '<img src="http://homestead.app/themes/foo/images/laranix.png" alt="hello" />'
+//            ],
+//            [
+//                new RemoteSettings(['url' => 'https://foo.com/foo.png', 'alt' => 'hello']),
+//                '<img src="https://foo.com/foo.png" alt="hello" />'
+//            ]
         ];
     }
 
