@@ -183,11 +183,30 @@ class WriterTest extends LaranixTestCase
     }
 
     /**
+     * @throws \Laranix\Support\Exception\LaranixSettingsException
+     */
+    public function testTrackWhenDisabled()
+    {
+        $writer = $this->createWriter(0, true, false);
+
+        $this->assertNull(
+            $writer->write([
+                'typeId'    => 100,
+                'type'      => 'foo',
+                'trackType' => 2,
+                'itemId'    => 1,
+                'data'      => 'test track',
+            ])
+        );
+    }
+
+    /**
      * @param int  $buffer
      * @param bool $rendered
+     * @param bool $enabled
      * @return \Laranix\Tracker\Writer
      */
-    protected function createWriter(int $buffer = 0, bool $rendered = true) : Writer
+    protected function createWriter(int $buffer = 0, bool $rendered = true, bool $enabled = true) : Writer
     {
         $request = m::mock(Request::class);
 
@@ -198,6 +217,7 @@ class WriterTest extends LaranixTestCase
 
         return new Writer(new Repository([
             'tracker' => [
+                'enabled' => $enabled,
                 'buffer' => $buffer,
                 'save_rendered' => $rendered,
             ],

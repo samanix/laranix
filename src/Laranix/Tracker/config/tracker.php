@@ -1,6 +1,9 @@
 <?php
 
 return [
+    // Enable/disable tracker
+    'enabled' => true,
+
     'table'   => 'tracker',
 
     // Buffer size

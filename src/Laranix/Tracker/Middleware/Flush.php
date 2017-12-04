@@ -12,6 +12,10 @@ class Flush extends Middleware
      */
     public function after($request, $response)
     {
+        if ($this->app->make('config')->get('tracker.enabled') !== true) {
+            return;
+        }
+
         $tracker = $this->app->make(Writer::class);
 
         $tracker->flush();

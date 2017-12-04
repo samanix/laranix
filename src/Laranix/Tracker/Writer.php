@@ -20,6 +20,11 @@ class Writer implements TrackWriter
     protected $request;
 
     /**
+     * @var bool
+     */
+    protected $enabled;
+
+    /**
      * @var int
      */
     protected $buffersize;
@@ -45,6 +50,7 @@ class Writer implements TrackWriter
         $this->config = $config;
         $this->request = $request;
 
+        $this->enabled = (bool) $this->config->get('tracker.enabled', true);
         $this->buffersize = (int) $this->config->get('tracker.buffer', 0);
     }
 
@@ -52,9 +58,14 @@ class Writer implements TrackWriter
      * Registers a new track
      *
      * @param \Laranix\Tracker\Settings|array $settings
+     * @throws \Laranix\Support\Exception\LaranixSettingsException
      */
     public function register($settings)
     {
+        if (!$this->enabled) {
+            return;
+        }
+
         if ($this->buffersize === 0 || $this->buffersize === 1) {
             $this->write($settings);
 
@@ -79,6 +90,7 @@ class Writer implements TrackWriter
      *
      * @param \Laranix\Tracker\Settings|array $settings
      * @return $this
+     * @throws \Laranix\Support\Exception\LaranixSettingsException
      */
     public function add($settings)
     {
@@ -91,10 +103,15 @@ class Writer implements TrackWriter
      * Writes registered tracks
      *
      * @param \Laranix\Tracker\Settings|array $settings
-     * @return \Laranix\Support\Database\Model|\Laranix\Tracker\Tracker
+     * @return \Laranix\Support\Database\Model|\Laranix\Tracker\Tracker|null
+     * @throws \Laranix\Support\Exception\LaranixSettingsException
      */
-    public function write($settings) : Model
+    public function write($settings) : ?Model
     {
+        if (!$this->enabled) {
+            return null;
+        }
+
         $settings = $this->parseSettings($settings);
 
         return Tracker::createNew($this->getPayload($settings));
@@ -122,6 +139,7 @@ class Writer implements TrackWriter
      *
      * @param \Laranix\Tracker\Settings $settings
      * @return array
+     * @throws \Laranix\Support\Exception\LaranixSettingsException
      */
     protected function getPayload(Settings $settings) : array
     {
@@ -156,7 +174,7 @@ class Writer implements TrackWriter
      */
     public function flush()
     {
-        if ($this->buffercount === 0) {
+        if ($this->buffercount === 0 || $this->enabled === false) {
             return;
         }
 
