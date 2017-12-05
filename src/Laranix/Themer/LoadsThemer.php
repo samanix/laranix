@@ -62,10 +62,11 @@ trait LoadsThemer
     protected function loadThemerDefaultFormFiles(Repository $config, ?Recaptcha $recaptcha, ...$scripts)
     {
         $this->loadStylesheets(...$config->get('themerdefaultfiles.styles.form'));
-        $this->loadScripts(...array_merge($config->get('themerdefaultfiles.scripts.form'), $scripts));
+
+        $this->loadScripts(...array_merge($config->get('themerdefaultfiles.scripts.form'), ...$scripts));
 
         if ($recaptcha !== null && $recaptcha->enabled()) {
-            $this->loadScript(...$config->get('themerdefaultfiles.scripts.recaptcha'));
+            $this->loadScript($config->get('themerdefaultfiles.scripts.recaptcha'));
         }
     }
 
