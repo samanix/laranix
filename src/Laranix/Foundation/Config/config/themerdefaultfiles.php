@@ -19,7 +19,7 @@ return [
             ],
             [
                 'key'       => 'app-css',
-                'filename'  => 'app.min.css',
+                'filename'  => 'app.css',
                 'order'     => 2,
             ],
         ],
@@ -28,7 +28,7 @@ return [
         'form' => [
             [
                 'key'       => 'form-css',
-                'filename'  => 'form.min.css',
+                'filename'  => 'form.css',
                 'order'     => 3,
             ],
         ],
