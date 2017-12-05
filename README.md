@@ -121,9 +121,9 @@ manually afterwards.**
 The basic theme for Laranix is copied to the `resources/themes` directory, you can either setup your compilers and/or
 copy the files to the `public\themes` directory, or you can use the command to symlink.
 
-    php artisan laranix:themer:link {images|styles|scripts}
+    php artisan laranix:themer:link {theme} {images|styles|scripts}
 
-Where each argument corresponds to the folder required.
+Where the first argument is the theme key, and the 2nd corresponds to the folder required.
 
 ### Controller
 Laranix runs its own base controller, you can extend this class in your own controllers, or roll your own entirely, if
