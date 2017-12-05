@@ -93,7 +93,7 @@ class InstallLaranixCommand extends Command
         $parts = [
             'Controllers'   => [app_path('Http'), true, false, $replaceAppFiles],
             'Requests'      => [app_path('Http'), true, false, $replaceAppFiles],
-            'themes'        => [public_path(), false, true, []],
+            'themes'        => [resource_path(), false, true, []],
             'views'         => [resource_path(), false, true, ['.view', '.blade.php']],
             'seeds'         => [database_path(), true, false, $replaceAppFiles],
         ];

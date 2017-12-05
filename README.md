@@ -117,6 +117,14 @@ If you skip these commands, you can run the artisan ones at a later time.
 **The command also attempts to run `composer dump-autoload`, if you get an error about this, please ensure you run
 manually afterwards.**
 
+#### Theme Commands
+The basic theme for Laranix is copied to the `resources/themes` directory, you can either setup your compilers and/or
+copy the files to the `public\themes` directory, or you can use the command to symlink.
+
+    php artisan laranix:themer:link {images|styles|scripts}
+
+Where each argument corresponds to the folder required.
+
 ### Controller
 Laranix runs its own base controller, you can extend this class in your own controllers, or roll your own entirely, if
 you do either of these, remember to update the controllers installed by Laranix.
