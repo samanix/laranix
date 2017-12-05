@@ -47,8 +47,8 @@ trait LoadsThemer
      */
     protected function loadThemerDefaultFiles(Repository $config)
     {
-        $this->loadStylesheets($config->get('themerdefaultfiles.styles.global'));
-        $this->loadScripts($config->get('themerdefaultfiles.scripts.global'));
+        $this->loadStylesheets(...$config->get('themerdefaultfiles.styles.global'));
+        $this->loadScripts(...$config->get('themerdefaultfiles.scripts.global'));
     }
 
     /**
@@ -61,11 +61,11 @@ trait LoadsThemer
      */
     protected function loadThemerDefaultFormFiles(Repository $config, ?Recaptcha $recaptcha, ...$scripts)
     {
-        $this->loadStylesheets($config->get('themerdefaultfiles.styles.form'));
-        $this->loadScripts(array_merge($config->get('themerdefaultfiles.scripts.form'), $scripts));
+        $this->loadStylesheets(...$config->get('themerdefaultfiles.styles.form'));
+        $this->loadScripts(...array_merge($config->get('themerdefaultfiles.scripts.form'), $scripts));
 
         if ($recaptcha !== null && $recaptcha->enabled()) {
-            $this->loadScript($config->get('themerdefaultfiles.scripts.recaptcha'));
+            $this->loadScript(...$config->get('themerdefaultfiles.scripts.recaptcha'));
         }
     }
 
@@ -78,7 +78,7 @@ trait LoadsThemer
      */
     protected function loadStylesheet($settings)
     {
-        if ($this->preparedForResponse) {
+        if ($this->styles !== null) {
             $this->styles->add($settings);
         }
 
@@ -113,7 +113,7 @@ trait LoadsThemer
      */
     protected function loadScript($settings)
     {
-        if ($this->preparedForResponse) {
+        if ($this->scripts !== null) {
             $this->scripts->add($settings);
         }
 
