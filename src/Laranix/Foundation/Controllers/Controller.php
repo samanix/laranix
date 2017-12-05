@@ -180,7 +180,7 @@ class Controller extends BaseController
      * @param array      $rules
      * @param array|null $data
      */
-    protected function validate(array $rules, array $data = null)
+    protected function validateRequest(array $rules, array $data = null)
     {
         $data = $data ?? $this->getPostData()->all();
 
