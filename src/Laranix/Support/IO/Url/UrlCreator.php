@@ -30,7 +30,7 @@ abstract class UrlCreator
     /**
      * Url constructor.
      *
-     * @param $appUrl
+     * @param null|string              $appUrl
      */
     public function __construct(?string $appUrl)
     {

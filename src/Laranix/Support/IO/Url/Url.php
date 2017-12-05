@@ -93,7 +93,6 @@ class Url extends UrlCreator
         return $this->parseStringUrl($_SERVER['REQUEST_URI'] ?? null);
     }
 
-
     /**
      * Parse url when given as string
      *
