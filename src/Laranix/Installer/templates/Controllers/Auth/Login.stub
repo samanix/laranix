@@ -1,6 +1,7 @@
 <?php
 namespace __UserAppNamespace__Http\Controllers\Auth;
 
+use __UserAppNamespace__Http\Requests\Auth\PostLogin;
 use Laranix\Auth\Events\Login\Restricted;
 use Laranix\Foundation\Controllers\Controller;
 use Illuminate\Contracts\Auth\Authenticatable;
@@ -40,9 +41,10 @@ class Login extends Controller
     /**
      * Login to app
      *
+     * @param \__UserAppNamespace__Http\Requests\Auth\PostLogin $postLogin
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\Response
      */
-    public function postLogin()
+    public function postLogin(PostLogin $postLogin)
     {
         return $this->login($this->request);
     }
@@ -156,16 +158,13 @@ class Login extends Controller
 
 
     /**
-     * Validate the user login request.
+     * Override
      *
      * @param  \Illuminate\Http\Request  $request
      * @return void
      */
     protected function validateLogin(Request $request)
     {
-        $this->validate([
-            $this->username()   => 'required|email|max:255',
-            'password'          => 'required|min:6',
-        ]);
+        //
     }
 }

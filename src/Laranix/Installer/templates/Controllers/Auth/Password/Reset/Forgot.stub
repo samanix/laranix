@@ -1,6 +1,7 @@
 <?php
 namespace __UserAppNamespace__Http\Controllers\Auth\Password\Reset;
 
+use __UserAppNamespace__Http\Requests\Auth\Password\Reset\PostForgot;
 use Laranix\Auth\Password\Reset\Events\ForgotAttempt;
 use Laranix\Foundation\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
@@ -26,29 +27,30 @@ class Forgot extends Controller
             'filename'  => 'forms/passforgot.js',
         ]));
 
-        return $this->view->make($this->config->get('laranixauth.password.views.request_form', 'auth.password.forgot'))
-            ->with([
-                'forgot_password_message' => $this->getSessionData()->get('forgot_password_message')
-            ]);
+        return $this->view->make(
+            $this->config->get('laranixauth.password.views.request_form', 'auth.password.forgot')
+        )->with([
+            'forgot_password_message' => $this->getSessionData()->get('forgot_password_message')
+        ]);
     }
 
     /**
      * Send a reset link to email
      *
-     * @param \Laranix\Auth\Password\Reset\Manager    $resetManager
-     * @param \Laranix\Auth\User\Repository     $userRepository
+     * @param \__UserAppNamespace__Http\Requests\Auth\Password\Reset\PostForgot $postForgot
+     * @param \Laranix\Auth\Password\Reset\Manager                              $resetManager
+     * @param \Laranix\Auth\User\Repository                                     $userRepository
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Laranix\Auth\Password\Reset\PasswordResetException
      */
-    public function postPasswordForgotForm(Manager $resetManager, UserRepository $userRepository) : RedirectResponse
-    {
+    public function postPasswordForgotForm(
+        PostForgot $postForgot,
+        Manager $resetManager,
+        UserRepository $userRepository
+    ): RedirectResponse {
         $email = $this->getPostData('email');
 
         event(new ForgotAttempt($email));
-
-        $this->validate([
-            'email' => 'required|email|max:255',
-        ]);
 
         try {
             $user = $userRepository->getByEmail($email);

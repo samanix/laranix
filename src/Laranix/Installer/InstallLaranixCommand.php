@@ -21,6 +21,7 @@ class InstallLaranixCommand extends Command
                             {--C|configs : Publish Laranix configs}
                             {--K|packageconf : Publish other configs from packages}
                             {--T|controllers : Install controllers}
+                            {--E|formrequests : Install form requests}
                             {--R|routes : Copy routes}
                             {--H|themes : Copy themes}
                             {--W|views : Copy views}
@@ -82,8 +83,16 @@ class InstallLaranixCommand extends Command
     {
         $replaceAppFiles    = ['.stub', '.php'];
 
+        /**
+         * $type =>
+         *      destination, (destination install)
+         *      compile, (replace __UserAppNamespace__ with app namespace)
+         *      force lower case, (lower case the type)
+         *      file ext replacement (replace file extensions)
+         */
         $parts = [
             'Controllers'   => [app_path('Http'), true, false, $replaceAppFiles],
+            'Requests'      => [app_path('Http'), true, false, $replaceAppFiles],
             'themes'        => [public_path(), false, true, []],
             'views'         => [resource_path(), false, true, ['.view', '.blade.php']],
             'seeds'         => [database_path(), true, false, $replaceAppFiles],
