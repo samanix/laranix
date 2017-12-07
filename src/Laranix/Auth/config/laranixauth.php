@@ -30,7 +30,7 @@ return [
         // this option will allow you to store the rendered HTML.
         //
         // Storing like this can speed up loading and displaying of data
-        'save_rendered'   => true,
+        'save_rendered'   => false,
 
         // Set aliases for areas
         // TODO
