@@ -18,7 +18,7 @@ return [
     // this option will allow you to store the rendered HTML.
     //
     // Storing like this can speed up loading and displaying of data
-    'save_rendered'   => false,
+    'save_rendered'   => true,
 
     // Set aliases for tracker types
     'aliases'   => [
