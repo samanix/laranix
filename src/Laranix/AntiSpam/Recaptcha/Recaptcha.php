@@ -84,6 +84,6 @@ class Recaptcha extends AntiSpam
             'remoteip'  => $this->request->getClientIp(),
         ]);
 
-        return json_decode($response->getBody());
+        return json_decode($response->getBody()->getContents());
     }
 }
