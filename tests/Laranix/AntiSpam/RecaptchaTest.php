@@ -123,7 +123,8 @@ class RecaptchaTest extends LaranixTestCase
         $request->shouldReceive('getClientIp')->andReturn('127.0.0.1');
 
         $guzzle->shouldReceive('request')->withAnyArgs()->andReturnSelf();
-        $guzzle->shouldReceive('getBody')->andReturn(json_encode($success));
+        $guzzle->shouldReceive('getBody')->andReturnSelf();
+        $guzzle->shouldReceive('getContents')->andReturn(json_encode($success));
 
         $this->assertTrue((new Recaptcha($config, $request, $view, $guzzle))->verify());
     }
@@ -155,7 +156,8 @@ class RecaptchaTest extends LaranixTestCase
         $request->shouldReceive('getClientIp')->andReturn('127.0.0.1');
 
         $guzzle->shouldReceive('request')->withAnyArgs()->andReturnSelf();
-        $guzzle->shouldReceive('getBody')->andReturn(json_encode($success));
+        $guzzle->shouldReceive('getBody')->andReturnSelf();
+        $guzzle->shouldReceive('getContents')->andReturn(json_encode($success));
 
         $this->assertFalse((new Recaptcha($config, $request, $view, $guzzle))->verify());
     }
