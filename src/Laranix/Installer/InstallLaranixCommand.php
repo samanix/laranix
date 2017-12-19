@@ -21,7 +21,7 @@ class InstallLaranixCommand extends Command
                             {--C|configs : Publish Laranix configs}
                             {--K|packageconf : Publish other configs from packages}
                             {--T|controllers : Install controllers}
-                            {--E|formrequests : Install form requests}
+                            {--E|requests : Install form requests}
                             {--R|routes : Copy routes}
                             {--H|themes : Copy themes}
                             {--W|views : Copy views}
