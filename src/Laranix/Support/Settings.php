@@ -5,7 +5,7 @@ use Laranix\Support\Exception\LaranixSettingsException;
 
 abstract class Settings
 {
-    use ValidatesPropertyTypes;
+    use ValidatesRequiredProperties;
 
     /**
      * Required properties
@@ -76,6 +76,7 @@ abstract class Settings
      * @param   bool $refresh
      * @return  bool
      * @throws \Laranix\Support\Exception\LaranixSettingsException
+     * @throws \Laranix\Support\Exception\InvalidTypeException
      */
     public function hasRequiredSettings(bool $refresh = false)
     {
@@ -86,45 +87,10 @@ abstract class Settings
         }
 
         foreach ($required as $property => $allowed) {
-            $this->validateProperty($property, $allowed);
+            $this->validateProperty($property, $allowed, LaranixSettingsException::class);
         }
 
         return true;
-    }
-
-    /**
-     * Validate the property against its allowed types
-     *
-     * @param string $property
-     * @param array  $allowed
-     * @throws \Laranix\Support\Exception\LaranixSettingsException
-     */
-    protected function validateProperty(string $property, array $allowed)
-    {
-        $types = array_flip($allowed);
-
-        $optional = false;
-        $valid = false;
-
-        if (isset($types['optional'])) {
-            if ($this->{$property} === null) {
-                return;
-            }
-
-            unset($types['optional']);
-
-            $optional = true;
-        }
-
-        foreach ($allowed as $index => $type) {
-            if ($valid = $this->validatePropertyType($property, $type)) {
-                break;
-            }
-        }
-
-        if (!$valid) {
-            $this->throwInvalidTypeException($property, $types, $optional, LaranixSettingsException::class);
-        }
     }
 
     /**

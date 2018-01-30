@@ -4,8 +4,49 @@ namespace Laranix\Support;
 use Laranix\Support\Exception\InvalidTypeException;
 use Laranix\Support\IO\Str\Str;
 
-trait ValidatesPropertyTypes
+trait ValidatesRequiredProperties
 {
+    /**
+     * Validate the property against its allowed types
+     *
+     * @param string        $property
+     * @param string|array  $allowed
+     * @param string        $exception
+     * @throws \Laranix\Support\Exception\InvalidTypeException
+     */
+    protected function validateProperty(
+        string $property, $allowed, string $exception = InvalidTypeException::class
+    ) {
+        if (is_string($allowed)) {
+            $allowed = explode('|', $allowed);
+        }
+
+        $types = array_flip($allowed);
+
+        $optional = false;
+        $valid = false;
+
+        if (isset($types['optional'])) {
+            if ($this->{$property} === null) {
+                return;
+            }
+
+            unset($types['optional']);
+
+            $optional = true;
+        }
+
+        foreach ($allowed as $index => $type) {
+            if ($valid = $this->validatePropertyType($property, $type)) {
+                break;
+            }
+        }
+
+        if (!$valid) {
+            $this->throwInvalidTypeException($property, $types, $optional, $exception);
+        }
+    }
+
     /**
      * Check property is valid against type
      *
