@@ -1,6 +1,6 @@
 <?php
 namespace Laranix\Support\Exception;
 
-class NotImplementedException extends \Exception
+class NotImplementedException extends \BadMethodCallException
 {
 }
