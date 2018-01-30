@@ -104,7 +104,7 @@ class ImageTest extends LaranixTestCase
      *
      * @dataProvider imageDisplayProvider
      * @param array $args
-     * @throws \Laranix\Support\Exception\LaranixSettingsException
+     * @throws \Laranix\Support\Exception\InvalidTypeException
      */
     public function testDisplayImage(...$args)
     {
@@ -118,7 +118,7 @@ class ImageTest extends LaranixTestCase
      *
      * @dataProvider imageStorageProvider
      * @param array $args
-     * @throws \Laranix\Support\Exception\LaranixSettingsException
+     * @throws \Laranix\Support\Exception\InvalidTypeException
      */
     public function testStorageImage(...$args)
     {
@@ -132,7 +132,7 @@ class ImageTest extends LaranixTestCase
      *
      * @dataProvider imageUrlProvider
      * @param array $args
-     * @throws \Laranix\Support\Exception\LaranixSettingsException
+     * @throws \Laranix\Support\Exception\InvalidTypeException
      */
     public function testGetImageUrl(...$args)
     {
@@ -146,7 +146,7 @@ class ImageTest extends LaranixTestCase
      *
      * @dataProvider imageStorageUrlProvider
      * @param array $args
-     * @throws \Laranix\Support\Exception\LaranixSettingsException
+     * @throws \Laranix\Support\Exception\InvalidTypeException
      */
     public function testStorageImageUrl(...$args)
     {

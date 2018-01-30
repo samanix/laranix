@@ -11,14 +11,16 @@ trait ValidatesRequiredProperties
      *
      * @param string        $property
      * @param string|array  $allowed
-     * @param string        $exception
      * @throws \Laranix\Support\Exception\InvalidTypeException
      */
-    protected function validateProperty(
-        string $property, $allowed, string $exception = InvalidTypeException::class
-    ) {
+    protected function validateProperty(string $property, $allowed)
+    {
         if (is_string($allowed)) {
             $allowed = explode('|', $allowed);
+        }
+
+        if (!is_array($allowed)) {
+            throw new InvalidTypeException('$allowed must be a string or array');
         }
 
         $types = array_flip($allowed);
@@ -43,7 +45,7 @@ trait ValidatesRequiredProperties
         }
 
         if (!$valid) {
-            $this->throwInvalidTypeException($property, $types, $optional, $exception);
+            $this->throwInvalidTypeException($property, $types, $optional);
         }
     }
 
@@ -90,15 +92,13 @@ trait ValidatesRequiredProperties
      * @param string $property
      * @param array  $types
      * @param bool   $optional
-     * @param string $exception
      * @throws \Laranix\Support\Exception\InvalidTypeException
      */
-    protected function throwInvalidTypeException(
-        string $property, array $types, bool $optional = false, string $exception = InvalidTypeException::class
-    ) {
+    protected function throwInvalidTypeException(string $property, array $types, bool $optional = false)
+    {
         $str = "Expected '{{types}}' for {{optional}} property '{{property}}' in {{class}}, got '{{actualtype}}'";
 
-        throw new $exception(Str::format($str, [
+        throw new InvalidTypeException(Str::format($str, [
             'types'     => implode('|', array_keys($types)),
             'optional'  => $optional ? 'optional' : null,
             'property'  => $property,

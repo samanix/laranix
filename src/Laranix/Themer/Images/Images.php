@@ -30,7 +30,7 @@ class Images extends ThemerResource
      * @param bool                       $default
      * @return null|string
      * @internal param array $params
-     * @throws \Laranix\Support\Exception\LaranixSettingsException
+     * @throws \Laranix\Support\Exception\InvalidTypeException
      */
     public function display($image, ?string $alt = null, array $extra = [], bool $default = false): ?string
     {
@@ -45,7 +45,7 @@ class Images extends ThemerResource
      * @param array       $extra
      * @param bool        $default
      * @return null|string
-     * @throws \Laranix\Support\Exception\LaranixSettingsException
+     * @throws \Laranix\Support\Exception\InvalidTypeException
      */
     public function show($image, ?string $alt = null, array $extra = [], bool $default = false) : ?string
     {
@@ -59,7 +59,7 @@ class Images extends ThemerResource
      * @param null|string $alt
      * @param array       $extra
      * @return null|string
-     * @throws \Laranix\Support\Exception\LaranixSettingsException
+     * @throws \Laranix\Support\Exception\InvalidTypeException
      */
     public function storage($image, ?string $alt = null, array $extra = []): ?string
     {
@@ -74,7 +74,7 @@ class Images extends ThemerResource
      * @param $extra
      * @param $default
      * @return null|string
-     * @throws \Laranix\Support\Exception\LaranixSettingsException
+     * @throws \Laranix\Support\Exception\InvalidTypeException
      */
     public function url($image, ?string $alt = null, array $extra = [], bool $default = false): ?string
     {
@@ -88,7 +88,7 @@ class Images extends ThemerResource
      * @param null|string $alt
      * @param array       $extra
      * @return null|string
-     * @throws \Laranix\Support\Exception\LaranixSettingsException
+     * @throws \Laranix\Support\Exception\InvalidTypeException
      */
     public function storageUrl($image, ?string $alt = null, array $extra = []): ?string
     {
@@ -104,7 +104,7 @@ class Images extends ThemerResource
      * @param bool        $default
      * @param bool        $storage
      * @return \Laranix\Themer\ResourceSettings|\Laranix\Themer\Images\LocalSettings
-     * @throws \Laranix\Support\Exception\LaranixSettingsException
+     * @throws \Laranix\Support\Exception\InvalidTypeException
      */
     protected function generateImagePayload(
         $image, ?string $alt, array $extra, bool $default, bool $storage = false

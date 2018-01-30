@@ -1,7 +1,7 @@
 <?php
 namespace Laranix\Tests\Laranix\Support;
 
-use Laranix\Support\Exception\LaranixSettingsException;
+use Laranix\Support\Exception\InvalidTypeException;
 use Laranix\Tests\LaranixTestCase;
 use Laranix\Tests\Laranix\Support\Stubs\Settings;
 
@@ -67,7 +67,7 @@ class SettingsTest extends LaranixTestCase
      */
     public function testThrowsExceptionWhenRequiredValueHasBadType()
     {
-        $this->expectException(LaranixSettingsException::class);
+        $this->expectException(InvalidTypeException::class);
 
         $settings = $this->getSettings();
 
@@ -172,7 +172,7 @@ class SettingsTest extends LaranixTestCase
      */
     public function testPropertyDoesNotHaveValidType()
     {
-        $this->expectException(LaranixSettingsException::class);
+        $this->expectException(InvalidTypeException::class);
         $this->expectExceptionMessage("Expected 'bool' for property 'string' in Laranix\Tests\Laranix\Support\Stubs\Settings, got 'string'");
 
         $settings = $this->getSettings();
@@ -209,7 +209,7 @@ class SettingsTest extends LaranixTestCase
      */
     public function testValueAllowedMultipleTypesWithInvalidType()
     {
-        $this->expectException(LaranixSettingsException::class);
+        $this->expectException(InvalidTypeException::class);
         $this->expectExceptionMessage("Expected 'string|bool|int' for property 'string' in Laranix\Tests\Laranix\Support\Stubs\Settings, got 'array'");
 
         $settings = $this->getSettings([
@@ -258,7 +258,7 @@ class SettingsTest extends LaranixTestCase
      */
     public function testOptionalSettingBadType()
     {
-        $this->expectException(LaranixSettingsException::class);
+        $this->expectException(InvalidTypeException::class);
         $this->expectExceptionMessage("Expected 'array' for optional property 'optional' in Laranix\Tests\Laranix\Support\Stubs\Settings, got 'string'");
 
         $settings = $this->getSettings([

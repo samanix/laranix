@@ -183,7 +183,7 @@ class WriterTest extends LaranixTestCase
     }
 
     /**
-     * @throws \Laranix\Support\Exception\LaranixSettingsException
+     * @throws \Laranix\Support\Exception\InvalidTypeException
      */
     public function testTrackWhenDisabled()
     {

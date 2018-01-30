@@ -58,7 +58,7 @@ class Writer implements TrackWriter
      * Registers a new track
      *
      * @param \Laranix\Tracker\Settings|array $settings
-     * @throws \Laranix\Support\Exception\LaranixSettingsException
+     * @throws \Laranix\Support\Exception\InvalidTypeException
      */
     public function register($settings)
     {
@@ -90,7 +90,7 @@ class Writer implements TrackWriter
      *
      * @param \Laranix\Tracker\Settings|array $settings
      * @return $this
-     * @throws \Laranix\Support\Exception\LaranixSettingsException
+     * @throws \Laranix\Support\Exception\InvalidTypeException
      */
     public function add($settings)
     {
@@ -104,7 +104,7 @@ class Writer implements TrackWriter
      *
      * @param \Laranix\Tracker\Settings|array $settings
      * @return \Laranix\Support\Database\Model|\Laranix\Tracker\Tracker|null
-     * @throws \Laranix\Support\Exception\LaranixSettingsException
+     * @throws \Laranix\Support\Exception\InvalidTypeException
      */
     public function write($settings) : ?Model
     {
@@ -139,7 +139,7 @@ class Writer implements TrackWriter
      *
      * @param \Laranix\Tracker\Settings $settings
      * @return array
-     * @throws \Laranix\Support\Exception\LaranixSettingsException
+     * @throws \Laranix\Support\Exception\InvalidTypeException
      */
     protected function getPayload(Settings $settings) : array
     {

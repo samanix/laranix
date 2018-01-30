@@ -1,7 +1,7 @@
 <?php
 namespace Laranix\Support;
 
-use Laranix\Support\Exception\LaranixSettingsException;
+use Laranix\Support\Exception\InvalidTypeException;
 
 abstract class Settings
 {
@@ -75,7 +75,6 @@ abstract class Settings
      *
      * @param   bool $refresh
      * @return  bool
-     * @throws \Laranix\Support\Exception\LaranixSettingsException
      * @throws \Laranix\Support\Exception\InvalidTypeException
      */
     public function hasRequiredSettings(bool $refresh = false)
@@ -87,7 +86,7 @@ abstract class Settings
         }
 
         foreach ($required as $property => $allowed) {
-            $this->validateProperty($property, $allowed, LaranixSettingsException::class);
+            $this->validateProperty($property, $allowed);
         }
 
         return true;

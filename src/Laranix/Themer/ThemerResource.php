@@ -181,7 +181,7 @@ abstract class ThemerResource
      *
      * @param \Laranix\Themer\ResourceSettings|array $settings
      * @throws \Laranix\Support\Exception\InvalidInstanceException
-     * @throws \Laranix\Support\Exception\LaranixSettingsException
+     * @throws \Laranix\Support\Exception\InvalidTypeException
      */
     public function add($settings)
     {
