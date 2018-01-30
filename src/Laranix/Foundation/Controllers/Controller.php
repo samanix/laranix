@@ -169,17 +169,4 @@ class Controller extends BaseController
 
         $this->loadThemerDefaultFormFiles($this->config, $recaptcha ?? null, ...$scripts);
     }
-
-    /**
-     * Validate a request
-     *
-     * @param array      $rules
-     * @param array|null $data
-     */
-    protected function validateRequest(array $rules, array $data = null)
-    {
-        $data = $data ?? $this->getPostData()->all();
-
-        $this->app->make('validator')->make($data, $rules)->validate();
-    }
 }
