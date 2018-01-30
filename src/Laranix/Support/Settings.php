@@ -2,10 +2,11 @@
 namespace Laranix\Support;
 
 use Laranix\Support\Exception\LaranixSettingsException;
-use Laranix\Support\IO\Str\Str;
 
 abstract class Settings
 {
+    use ValidatesPropertyTypes;
+
     /**
      * Required properties
      *
@@ -116,72 +117,14 @@ abstract class Settings
         }
 
         foreach ($allowed as $index => $type) {
-            if ($valid = $this->isValid($property, $type)) {
+            if ($valid = $this->validatePropertyType($property, $type)) {
                 break;
             }
         }
 
         if (!$valid) {
-            $this->throwInvalidException($property, $types, $optional);
+            $this->throwInvalidTypeException($property, $types, $optional, LaranixSettingsException::class);
         }
-    }
-
-    /**
-     * Check property is valid against type
-     *
-     * @param string $property
-     * @param string $type
-     * @return bool
-     */
-    protected function isValid(string $property, string $type) : bool
-    {
-        switch ($type) {
-            case 'any':
-            case 'notnull':
-            case 'isset':
-            case 'set':
-                return true;
-            case 'string':
-                return is_string($this->{$property});
-            case 'email':
-                return filter_var($this->{$property}, FILTER_VALIDATE_EMAIL) !== false;
-            case 'url':
-                return filter_var($this->{$property}, FILTER_VALIDATE_URL) !== false;
-            case 'int':
-                return is_int($this->{$property});
-            case 'bool':
-            case 'boolean':
-                return is_bool($this->{$property});
-            case 'array':
-                return is_array($this->{$property});
-            case 'null':
-                return $this->{$property} === null;
-            case 'is':
-            case 'instanceof':
-            default:
-                return $this->{$property} instanceof $type;
-        }
-    }
-
-    /**
-     * Throw exception when invalid type detected
-     *
-     * @param string $property
-     * @param array  $types
-     * @param bool   $optional
-     * @throws \Laranix\Support\Exception\LaranixSettingsException
-     */
-    protected function throwInvalidException(string $property, array $types, bool $optional = false)
-    {
-        $str = "Expected '{{types}}' for {{optional}} property '{{property}}' in {{class}}, got '{{actualtype}}'";
-
-        throw new LaranixSettingsException(Str::format($str, [
-            'types'     => implode('|', array_keys($types)),
-            'optional'  => $optional ? 'optional' : null,
-            'property'  => $property,
-            'class'     => get_class($this),
-            'actualtype'=> gettype($this->{$property}),
-        ]));
     }
 
     /**
