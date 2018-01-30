@@ -4,12 +4,23 @@ namespace Laranix\Themer\Images;
 use Laranix\Support\Exception\NotImplementedException;
 use Laranix\Support\IO\Str\Str;
 use Laranix\Support\IO\Url\UrlSettings;
+use Laranix\Support\Settings;
 use Laranix\Themer\ResourceSettings;
 use Laranix\Themer\Theme;
 use Laranix\Themer\ThemerResource;
 
 class Images extends ThemerResource
 {
+    /**
+     * @inheritDoc
+     */
+    protected $directory = 'images';
+
+    /**
+     * @inheritDoc
+     */
+    protected $settings = LocalSettings::class;
+
     /**
      * Display an image
      *
@@ -19,6 +30,7 @@ class Images extends ThemerResource
      * @param bool                       $default
      * @return null|string
      * @internal param array $params
+     * @throws \Laranix\Support\Exception\LaranixSettingsException
      */
     public function display($image, ?string $alt = null, array $extra = [], bool $default = false): ?string
     {
@@ -33,10 +45,25 @@ class Images extends ThemerResource
      * @param array       $extra
      * @param bool        $default
      * @return null|string
+     * @throws \Laranix\Support\Exception\LaranixSettingsException
      */
     public function show($image, ?string $alt = null, array $extra = [], bool $default = false) : ?string
     {
         return $this->display($image, $alt, $extra, $default);
+    }
+
+    /**
+     * Get uploaded image from local storage
+     *
+     * @param             $image
+     * @param null|string $alt
+     * @param array       $extra
+     * @return null|string
+     * @throws \Laranix\Support\Exception\LaranixSettingsException
+     */
+    public function storage($image, ?string $alt = null, array $extra = []): ?string
+    {
+        return $this->generateImagePayload($image, $alt, $extra, true, true)->htmlstring ?? null;
     }
 
     /**
@@ -47,6 +74,7 @@ class Images extends ThemerResource
      * @param $extra
      * @param $default
      * @return null|string
+     * @throws \Laranix\Support\Exception\LaranixSettingsException
      */
     public function url($image, ?string $alt = null, array $extra = [], bool $default = false): ?string
     {
@@ -54,17 +82,34 @@ class Images extends ThemerResource
     }
 
     /**
+     * Get url for local storage image
+     *
+     * @param             $image
+     * @param null|string $alt
+     * @param array       $extra
+     * @return null|string
+     * @throws \Laranix\Support\Exception\LaranixSettingsException
+     */
+    public function storageUrl($image, ?string $alt = null, array $extra = []): ?string
+    {
+        return $this->generateImagePayload($image, $alt, $extra, true, true)->url ?? null;
+    }
+
+    /**
      * Create the image payload
      *
-     * @param $image
-     * @param $alt
-     * @param $extra
-     * @param $default
+     * @param             $image
+     * @param null|string $alt
+     * @param array       $extra
+     * @param bool        $default
+     * @param bool        $storage
      * @return \Laranix\Themer\ResourceSettings|\Laranix\Themer\Images\LocalSettings
+     * @throws \Laranix\Support\Exception\LaranixSettingsException
      */
-    protected function generateImagePayload($image, ?string $alt, array $extra, bool $default): ?ResourceSettings
-    {
-        $image = $this->createImageSettings($image, $alt, $extra, $default);
+    protected function generateImagePayload(
+        $image, ?string $alt, array $extra, bool $default, bool $storage = false
+    ): ?ResourceSettings  {
+        $image = $this->createImageSettings($image, $alt, $extra, $default, $storage);
 
         if ($this->hasCachedImage($image)) {
             return $this->getCachedImage($image);
@@ -72,7 +117,7 @@ class Images extends ThemerResource
 
         $image->hasRequiredSettings();
 
-        if (!$image instanceof RemoteSettings && !$this->exists($image->image, $image->theme)) {
+        if (!$storage && !$image instanceof RemoteSettings && !$this->exists($image->image, $image->theme)) {
             if (!$default && $this->themeIsDefault($image->theme)) {
                 return $this->generateImagePayload($image, $alt, $extra, true);
             }
@@ -137,17 +182,19 @@ class Images extends ThemerResource
      * @param null|string $alt
      * @param array       $extra
      * @param bool        $default
+     * @param bool        $storage
      * @return \Laranix\Themer\ResourceSettings|\Laranix\Themer\Images\LocalSettings|\Laranix\Themer\Images\RemoteSettings
      */
-    protected function createImageSettings($image, ?string $alt, array $extra, bool $default): ResourceSettings
-    {
+    protected function createImageSettings(
+        $image, ?string $alt, array $extra, bool $default, bool $storage
+    ): ResourceSettings {
         // Remote image
         if (filter_var($image, FILTER_VALIDATE_URL) !== false ||
             $image instanceof UrlSettings ||
             $image instanceof RemoteSettings) {
             $settings = $this->getRemoteImageSettings($image, $alt, $extra, $default);
         } else {
-            $settings = $this->getLocalImageSettings($image, $alt, $extra, $default);
+            $settings = $this->getLocalImageSettings($image, $alt, $extra, $default, $storage);
         }
 
         $settings->htmlstring   = $this->generateHtmlOutput($settings);
@@ -209,10 +256,12 @@ IMAGESTR;
      * @param null|string $alt
      * @param array       $extra
      * @param bool        $default
+     * @param bool        $storage
      * @return \Laranix\Themer\ResourceSettings|\Laranix\Themer\Images\LocalSettings
      */
-    protected function getLocalImageSettings($image, ?string $alt, array $extra, bool $default): ResourceSettings
-    {
+    protected function getLocalImageSettings(
+        $image, ?string $alt, array $extra, bool $default, bool $storage = false
+    ): ResourceSettings {
         if ($image instanceof LocalSettings) {
             $settings = $image;
         } elseif (is_array($image)) {
@@ -229,9 +278,11 @@ IMAGESTR;
             ]);
         }
 
-        $settings->theme        = $default ? $this->getDefaultTheme() : $this->getTheme();
-        $settings->default      = $default;
-        $settings->url          = $this->getThemeResourceUrl($settings->image, $settings->theme);
+        $settings->theme        = $storage ? null : ($default ? $this->getDefaultTheme() : $this->getTheme());
+        $settings->default      = $storage ? false : $default;
+        $settings->url          = $storage ?
+            $this->getStorageUrl($settings->image) :
+            $this->getThemeResourceUrl($settings->image, $settings->theme);
 
         return $settings;
     }
@@ -256,6 +307,23 @@ IMAGESTR;
             'alt'     => $alt ?? '',
             'extra'   => $extra,
         ]);
+    }
+
+    /**
+     * Get storage url
+     *
+     * @param $image
+     * @return string
+     */
+    protected function getStorageUrl($image): string
+    {
+        if (is_array($image)) {
+            array_unshift($image, 'storage');
+        } else {
+            $image = 'storage/' . ltrim($image);
+        }
+
+        return $this->url->to($image);
     }
 
     /**
@@ -354,25 +422,5 @@ IMAGESTR;
     protected function createLocalResourceFileSettings(Theme $theme, string $type, string $filename): ResourceSettings
     {
         throw new NotImplementedException('Method not required for ' . get_class($this));
-    }
-
-    /**
-     * Set the subdirectory in the theme for the resource type
-     *
-     * @return string
-     */
-    protected function getDirectory(): string
-    {
-        return 'images';
-    }
-
-    /**
-     * Set settings class name
-     *
-     * @return string|null
-     */
-    protected function getSettingsClass(): ?string
-    {
-        return null;
     }
 }

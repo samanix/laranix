@@ -35,6 +35,8 @@ class ImageTest extends LaranixTestCase
 
     /**
      * Set up
+     *
+     * @throws \Laranix\Support\Exception\InvalidTypeException
      */
     public function setUp()
     {
@@ -102,6 +104,7 @@ class ImageTest extends LaranixTestCase
      *
      * @dataProvider imageDisplayProvider
      * @param array $args
+     * @throws \Laranix\Support\Exception\LaranixSettingsException
      */
     public function testDisplayImage(...$args)
     {
@@ -111,16 +114,45 @@ class ImageTest extends LaranixTestCase
     }
 
     /**
+     * Test image display
+     *
+     * @dataProvider imageStorageProvider
+     * @param array $args
+     * @throws \Laranix\Support\Exception\LaranixSettingsException
+     */
+    public function testStorageImage(...$args)
+    {
+        $expected = array_pop($args);
+
+        $this->assertSame($expected, $this->image->storage(...$args));
+    }
+
+    /**
      * Get image url
      *
      * @dataProvider imageUrlProvider
      * @param array $args
+     * @throws \Laranix\Support\Exception\LaranixSettingsException
      */
     public function testGetImageUrl(...$args)
     {
         $expected = array_pop($args);
 
         $this->assertSame($expected, $this->image->url(...$args));
+    }
+
+    /**
+     * Test image display
+     *
+     * @dataProvider imageStorageUrlProvider
+     * @param array $args
+     * @throws \Laranix\Support\Exception\LaranixSettingsException
+     */
+    public function testStorageImageUrl(...$args)
+    {
+        $expected = array_pop($args);
+
+        $this->assertSame($expected, $this->image->storageUrl(...$args));
     }
 
     /**
@@ -131,30 +163,30 @@ class ImageTest extends LaranixTestCase
     public function imageDisplayProvider()
     {
         return [
-//            [
-//                'laranix.png', 'foo', ['id' => 'fooimage', 'title' => 'bar'],
-//                '<img src="http://homestead.app/themes/foo/images/laranix.png" alt="foo" id="fooimage" title="bar" />'
-//            ],
+            [
+                'laranix.png', 'foo', ['id' => 'fooimage', 'title' => 'bar'],
+                '<img src="http://homestead.app/themes/foo/images/laranix.png" alt="foo" id="fooimage" title="bar" />'
+            ],
             [
                 'https://foo.com/bar.jpg',
                 '<img src="https://foo.com/bar.jpg" alt="" />'
             ],
-//            [
-//                new UrlSettings(['domain' => 'foo.com', 'path' => 'bar.png']),
-//                '<img src="http://foo.com/bar.png" alt="" />'
-//            ],
-//            [
-//                ['image' => 'laranix.png', 'alt' => 'foo"', 'id' => 'fooimage', 'extra' => ['title' => 'bar']],
-//                '<img src="http://homestead.app/themes/foo/images/laranix.png" alt="foo&quot;" id="fooimage" title="bar" />'
-//            ],
-//            [
-//                new LocalSettings(['image' => 'laranix.png', 'alt' => 'hello']),
-//                '<img src="http://homestead.app/themes/foo/images/laranix.png" alt="hello" />'
-//            ],
-//            [
-//                new RemoteSettings(['url' => 'https://foo.com/foo.png', 'alt' => 'hello']),
-//                '<img src="https://foo.com/foo.png" alt="hello" />'
-//            ]
+            [
+                new UrlSettings(['domain' => 'foo.com', 'path' => 'bar.png']),
+                '<img src="http://foo.com/bar.png" alt="" />'
+            ],
+            [
+                ['image' => 'laranix.png', 'alt' => 'foo"', 'id' => 'fooimage', 'extra' => ['title' => 'bar']],
+                '<img src="http://homestead.app/themes/foo/images/laranix.png" alt="foo&quot;" id="fooimage" title="bar" />'
+            ],
+            [
+                new LocalSettings(['image' => 'laranix.png', 'alt' => 'hello']),
+                '<img src="http://homestead.app/themes/foo/images/laranix.png" alt="hello" />'
+            ],
+            [
+                new RemoteSettings(['url' => 'https://foo.com/foo.png', 'alt' => 'hello']),
+                '<img src="https://foo.com/foo.png" alt="hello" />'
+            ]
         ];
     }
 
@@ -189,6 +221,44 @@ class ImageTest extends LaranixTestCase
             [
                 new RemoteSettings(['url' => 'https://foo.com/foo.png', 'alt' => 'hello']),
                 'https://foo.com/foo.png'
+            ]
+        ];
+    }
+
+    /**
+     * Display provider
+     *
+     * @return array
+     */
+    public function imageStorageProvider()
+    {
+        return [
+            [
+                'foo/laranix.png', 'foo', ['id' => 'fooimage', 'title' => 'bar'],
+                '<img src="http://homestead.app/storage/foo/laranix.png" alt="foo" id="fooimage" title="bar" />'
+            ],
+            [
+                new LocalSettings(['image' => 'laranix.png', 'alt' => 'hello']),
+                '<img src="http://homestead.app/storage/laranix.png" alt="hello" />'
+            ]
+        ];
+    }
+
+    /**
+     * Display provider
+     *
+     * @return array
+     */
+    public function imageStorageUrlProvider()
+    {
+        return [
+            [
+                'foo/laranix.png', 'foo', ['id' => 'fooimage', 'title' => 'bar'],
+                'http://homestead.app/storage/foo/laranix.png'
+            ],
+            [
+                new LocalSettings(['image' => 'laranix.png', 'alt' => 'hello']),
+                'http://homestead.app/storage/laranix.png'
             ]
         ];
     }
