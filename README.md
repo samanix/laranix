@@ -133,6 +133,20 @@ The Laranix base controller resides in `\Laranix\Foundation\Controllers\Controll
 
 The base controller contains methods and traits that can be called that will scaffold certain scenarios.
 
+#### Error Controller
+Laranix provides a special error controller in `App\Http\Controllers\Errors`. This overrides certain parts of the
+foundation controller that allows the `Themer` to load, and display custom error pages using your global styles and
+scripts (as certain parts such as `Themer` are only autoloaded on get requests).
+
+In order to use this, open `app/Exceptions/Handler.php` and add the following to the `render` method, above the current
+render statement:
+
+    $response = $this->container->make(App::class)->renderClientError($exception);
+
+    if ($response !== null) {
+        return new Response($response, $exception->getStatusCode(), $exception->getHeaders());
+    }
+
 ### Routes
 There are some routes provided for authentication as well as an entry page, you are free to change these.
 
