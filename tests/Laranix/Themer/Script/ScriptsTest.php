@@ -153,7 +153,14 @@ class ScriptsTest extends LaranixTestCase
 
         $script = $this->createScript(FileNotFoundException::class);
 
-        $script->add($this->getSettings(['key' => 'foo',   'filename' => 'fooscript.js',  'themeName' => 'bar',  'defaultFallback' => false]));
+        $script->add(
+            $this->getSettings([
+                'key' => 'foo',
+                'filename' => 'fooscript.js',
+                'themeName' => 'bar',
+                'defaultFallback' => false
+            ])
+        );
     }
 
     /**
@@ -189,6 +196,29 @@ class ScriptsTest extends LaranixTestCase
 
         $this->assertCount(5, $script->resources->get('scripts.remote.head'));
         $this->assertCount(1, $script->resources->get('scripts.remote.body'));
+
+        $this->assertNotNull($script->resources->get('scripts.remote.head.1')->url);
+    }
+
+    /**
+     * Disabled compiles
+     */
+    public function testAddResourceWithCompileDisabled()
+    {
+        $script = $this->createScript();
+
+        $local = [
+            'foo'       => $this->getSettings(['key' => 'foo', 'filename' => 'script.js',  'order' => 1, 'compile' => false]),
+            'bar'       => $this->getSettings(['key' => 'bar', 'filename' => 'script.js',  'order' => 1, 'compile' => false]),
+            'baz'       => $this->getSettings(['key' => 'baz', 'filename' => 'script2.js', 'order' => 2, 'compile' => false]),
+        ];
+
+        foreach ($local as $key => $setting) {
+            $script->add($setting);
+        }
+
+        $this->assertNull($script->resources->get('scripts.local'));
+        $this->assertCount(3, $script->resources->get('scripts.remote.head'));
 
         $this->assertNotNull($script->resources->get('scripts.remote.head.1')->url);
     }
@@ -311,8 +341,8 @@ EXPECTED;
             'bar'       => $this->getSettings(['key' => 'bar',      'filename' => 'script.js',  'order' => 1]),
             'baz'       => $this->getSettings(['key' => 'baz',      'filename' => 'script2.js', 'order' => 2, 'themeName' => 'bar']),
             'foobar'    => $this->getSettings(['key' => 'foobar',   'filename' => 'script.js', 'automin' => true, 'defer' => false]),
-            'barbaz'    => $this->getSettings(['key' => 'barbaz',   'filename' => 'script.js',  'defer' => false, 'async' => true,            'head' => false]),
-            'foobaz'    => $this->getSettings(['key' => 'foobaz',   'filename' => 'fooscript.js',  'themeName' => 'bar',  'order' => 10,  'automin' => true]),
+            'barbaz'    => $this->getSettings(['key' => 'barbaz',   'filename' => 'script.js',  'defer' => false, 'async' => true, 'head' => false]),
+            'foobaz'    => $this->getSettings(['key' => 'foobaz',   'filename' => 'fooscript.js',  'themeName' => 'bar',  'order' => 10, 'automin' => true]),
         ];
 
         foreach ($local as $key => $setting) {

@@ -77,14 +77,12 @@ abstract class ResourceSettings extends SettingsBase
      */
     public $integrity;
 
-//    /**
-//     * TODO Can be worked around by using remote script instead (manually set url)
-//     * If true, will merge with other files of same type
-//     *
-//     * @var bool
-//     *
-//     */
-//    public $merge = true;
+    /**
+     * If true, will merge with other files of same type
+     *
+     * @var bool
+     */
+    public $compile = true;
 
     // Values below are auto set
 

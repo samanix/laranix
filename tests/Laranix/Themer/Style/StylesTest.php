@@ -216,9 +216,29 @@ class StylesTest extends LaranixTestCase
         $this->loadLocalStyle($style);
 
         $this->assertNull($style->resources->get('styles.local'));
-
         $this->assertCount(6, $style->resources->get('styles.remote'));
+        $this->assertNotNull($style->resources->get('styles.remote.1')->url);
+    }
 
+        /**
+     * Disabled compiles
+     */
+    public function testAddResourceWithCompileDisabled()
+    {
+        $style = $this->createStyle();
+
+        $local = [
+            'foo'       => $this->getSettings(['key' => 'foo', 'filename' => 'style.css',  'order' => 1, 'compile' => false]),
+            'bar'       => $this->getSettings(['key' => 'bar', 'filename' => 'style2.css',  'order' => 1, 'compile' => false]),
+            'baz'       => $this->getSettings(['key' => 'baz', 'filename' => 'style.css', 'order' => 2, 'compile' => false]),
+        ];
+
+        foreach ($local as $key => $setting) {
+            $style->add($setting);
+        }
+
+        $this->assertNull($style->resources->get('styles.local'));
+        $this->assertCount(3, $style->resources->get('styles.remote'));
         $this->assertNotNull($style->resources->get('styles.remote.1')->url);
     }
 

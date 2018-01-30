@@ -225,7 +225,7 @@ abstract class ThemerResource
             return false;
         }
 
-        return $settings->url === null && $this->mergeResources
+        return $settings->url === null && $this->mergeResources && $settings->compile
             ? $this->addLocalResource($settings)
             : $this->addRemoteResource($settings);
     }
@@ -286,7 +286,7 @@ abstract class ThemerResource
             return $this->addRemoteResource($settings);
         }
 
-        if ($settings->url === null && !$this->mergeResources) {
+        if ($settings->url === null && (!$this->mergeResources || !$settings->compile)) {
             $settings->url = $this->getThemeBaseUrl($settings->theme);
         }
 
