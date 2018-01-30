@@ -23,7 +23,7 @@
     "illuminate/mail": "5.5.*",
     "illuminate/queue": "5.5.*",
     "illuminate/support": "5.5.*",
-    "laranix/tracker": "~2.0"
+    "laranix/tracker": "~4.0"
   },
   "autoload": {
     "psr-4": {
