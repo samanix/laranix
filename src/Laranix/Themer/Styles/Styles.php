@@ -9,6 +9,16 @@ use Laranix\Themer\ThemerResource;
 class Styles extends ThemerResource
 {
     /**
+     * @inheritDoc
+     */
+    protected $directory = 'styles';
+
+    /**
+     * @inheritDoc
+     */
+    protected $settings = Settings::class;
+
+    /**
      * Get repository key for remote resources
      *
      * @param \Laranix\Themer\ResourceSettings|Settings $settings
@@ -152,25 +162,5 @@ STYLESTR;
             'order'     => ++$this->order,
             'media'     => $this->getCrcValue($type),
         ]);
-    }
-
-    /**
-     * Set the subdirectory in the theme for the resource type
-     *
-     * @return string
-     */
-    protected function getDirectory(): string
-    {
-        return 'styles';
-    }
-
-    /**
-     * Set settings class name
-     *
-     * @return string|null
-     */
-    protected function getSettingsClass(): ?string
-    {
-        return Settings::class;
     }
 }

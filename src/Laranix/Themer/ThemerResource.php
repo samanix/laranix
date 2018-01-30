@@ -4,10 +4,12 @@ namespace Laranix\Themer;
 use Illuminate\Contracts\Logging\Log as Logger;
 use Illuminate\Contracts\Config\Repository as Config;
 use Laranix\Support\Exception\InvalidInstanceException;
+use Laranix\Support\Exception\InvalidTypeException;
 use Laranix\Support\IO\Path;
 use Laranix\Support\IO\Url\Url;
 use Laranix\Support\IO\Url\UrlSettings;
 use Laranix\Support\IO\Repository;
+use Laranix\Support\Settings;
 
 abstract class ThemerResource
 {
@@ -74,20 +76,6 @@ abstract class ThemerResource
     ): ResourceSettings;
 
     /**
-     * Set the subdirectory in the theme for the resource type
-     *
-     * @return string
-     */
-    abstract protected function getDirectory() : string;
-
-    /**
-     * Set settings class name
-     *
-     * @return string|null
-     */
-    abstract protected function getSettingsClass() : ?string;
-
-    /**
      * @var \Laranix\Themer\Themer
      */
     protected $themer;
@@ -134,7 +122,7 @@ abstract class ThemerResource
      *
      * @var string
      */
-    protected $settingsClass;
+    protected $settings;
 
     /**
      * Resource load order
@@ -164,6 +152,7 @@ abstract class ThemerResource
      * @param \Illuminate\Contracts\Config\Repository $config
      * @param \Illuminate\Contracts\Logging\Log       $logger
      * @param \Laranix\Support\IO\Url\Url             $url
+     * @throws \Laranix\Support\Exception\InvalidTypeException
      */
     public function __construct(Themer $themer, Config $config, Logger $logger, Url $url)
     {
@@ -178,8 +167,13 @@ abstract class ThemerResource
             (array) $this->config->get('themer.ignored')
         );
 
-        $this->directory        = $this->getDirectory();
-        $this->settingsClass    = $this->getSettingsClass();
+        if (!is_a($this->settings, ResourceSettings::class, true)) {
+            throw new InvalidTypeException('Settings property must be instance of ' . Settings::class);
+        }
+
+        if (!is_string($this->directory)) {
+            throw new InvalidTypeException('Directory property must be a string');
+        }
     }
 
     /**
@@ -187,11 +181,12 @@ abstract class ThemerResource
      *
      * @param \Laranix\Themer\ResourceSettings|array $settings
      * @throws \Laranix\Support\Exception\InvalidInstanceException
+     * @throws \Laranix\Support\Exception\LaranixSettingsException
      */
     public function add($settings)
     {
         if (is_array($settings)) {
-            $settings = new $this->settingsClass($settings);
+            $settings = new $this->settings($settings);
         }
 
         if (!$settings instanceof ResourceSettings) {

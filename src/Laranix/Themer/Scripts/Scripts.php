@@ -9,6 +9,16 @@ use Laranix\Themer\ThemerResource;
 class Scripts extends ThemerResource
 {
     /**
+     * @inheritDoc
+     */
+    protected $directory = 'scripts';
+
+    /**
+     * @inheritDoc
+     */
+    protected $settings = Settings::class;
+
+    /**
      * Processed scripts, stored so as not to double compile in head/body
      *
      * @var array
@@ -175,26 +185,6 @@ SCRIPTSTR;
             'defer'     => strpos($type, 'defer') !== false,
             'order'     => ++$this->order,
         ]);
-    }
-
-    /**
-     * Set the subdirectory in the theme for the resource type
-     *
-     * @return string
-     */
-    protected function getDirectory(): string
-    {
-        return 'scripts';
-    }
-
-    /**
-     * Set settings class name
-     *
-     * @return string|null
-     */
-    protected function getSettingsClass(): ?string
-    {
-        return Settings::class;
     }
 
     /**
