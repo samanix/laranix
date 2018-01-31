@@ -2,6 +2,7 @@
 namespace __UserAppNamespace__Http\Controllers\Auth;
 
 use __UserAppNamespace__Http\Requests\Auth\PostRegister;
+use Illuminate\Http\Request;
 use Laranix\Foundation\Controllers\Controller;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Contracts\View\View;
@@ -22,6 +23,7 @@ class Register extends Controller implements UserCreator, UserGroupAdder
      *
      * @return \Illuminate\Contracts\View\View
      * @throws \Laranix\Support\Exception\InvalidInstanceException
+     * @throws \Laranix\Support\Exception\InvalidTypeException
      */
     public function getRegister(): View
     {
@@ -38,7 +40,7 @@ class Register extends Controller implements UserCreator, UserGroupAdder
     /**
      * Register a user
      *
-     * @param \__UserAppNamespace__Http\Requests\Auth\PostRegister $postRegister
+     * @param \__UserAppNamespace__Http\Requests\Auth\PostRegister $request
      * @param \Laranix\Auth\Email\Verification\Manager             $verificationManager
      * @param \Laranix\Auth\Group\Repository                       $group
      * @param \Illuminate\Database\DatabaseManager                 $db
@@ -46,16 +48,15 @@ class Register extends Controller implements UserCreator, UserGroupAdder
      * @throws \Exception
      */
     public function postRegister(
-        PostRegister $postRegister,
+        PostRegister $request,
         VerificationManager $verificationManager,
         GroupRepository $group,
         DatabaseManager $db
     ): RedirectResponse {
-
         $db->connection()->beginTransaction();
 
         try {
-            $user = $this->createUser($this->getPostData()->all());
+            $user = $this->createUser($request->post());
 
             /** @var \Laranix\Auth\User\Token\MailSettings $token */
             $token = $verificationManager->sendMail($user, $verificationManager->createToken($user));
@@ -94,12 +95,12 @@ class Register extends Controller implements UserCreator, UserGroupAdder
     /**
      * Show registration success
      *
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Contracts\View\View
      */
-    public function getRegisterSuccess()
+    public function getRegisterSuccess(Request $request)
     {
-        $session                = $this->getSessionData();
-
+        $session                = $request->session();
         $registered_username    = $session->get('registered_username');
         $registered_email       = $session->get('registered_email');
         $token_expiry           = $session->get('token_expiry');

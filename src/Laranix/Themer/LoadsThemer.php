@@ -22,11 +22,11 @@ trait LoadsThemer
 
     /**
      * Initialise and load themer components
-     *
-     * @param \Illuminate\Contracts\Foundation\Application $app
      */
-    protected function loadThemer(Application $app)
+    protected function loadThemer()
     {
+        $app = app();
+
         $this->styles     = $app->make(Styles::class);
         $this->scripts    = $app->make(Scripts::class);
 
@@ -44,20 +44,26 @@ trait LoadsThemer
      *
      * @param \Illuminate\Contracts\Config\Repository $config
      * @throws \Laranix\Support\Exception\InvalidInstanceException
+     * @throws \Laranix\Support\Exception\InvalidTypeException
      */
     protected function loadThemerDefaultFiles(Repository $config)
     {
         $this->loadStylesheets(...$config->get('themerdefaultfiles.styles.global', []));
         $this->loadScripts(...$config->get('themerdefaultfiles.scripts.global', []));
+
+        if (method_exists($this, 'loadExtraThemerFiles')) {
+            $this->loadExtraThemerFiles();
+        }
     }
 
     /**
      * Load the default themer files
      *
-     * @param \Illuminate\Contracts\Config\Repository       $config
-     * @param \Laranix\AntiSpam\Recaptcha\Recaptcha|null    $recaptcha
-     * @param array                                         $scripts
+     * @param \Illuminate\Contracts\Config\Repository    $config
+     * @param \Laranix\AntiSpam\Recaptcha\Recaptcha|null $recaptcha
+     * @param array                                      $scripts
      * @throws \Laranix\Support\Exception\InvalidInstanceException
+     * @throws \Laranix\Support\Exception\InvalidTypeException
      */
     protected function loadThemerDefaultFormFiles(Repository $config, ?Recaptcha $recaptcha, ...$scripts)
     {
@@ -76,6 +82,7 @@ trait LoadsThemer
      * @param \Laranix\Themer\Styles\Settings|array|null $settings
      * @return $this
      * @throws \Laranix\Support\Exception\InvalidInstanceException
+     * @throws \Laranix\Support\Exception\InvalidTypeException
      */
     protected function loadStylesheet($settings)
     {
@@ -91,6 +98,7 @@ trait LoadsThemer
      *
      * @param mixed ...$styles
      * @throws \Laranix\Support\Exception\InvalidInstanceException
+     * @throws \Laranix\Support\Exception\InvalidTypeException
      */
     protected function loadStylesheets(...$styles)
     {
@@ -111,6 +119,7 @@ trait LoadsThemer
      * @param \Laranix\Themer\ResourceSettings|array|null $settings
      * @return $this
      * @throws \Laranix\Support\Exception\InvalidInstanceException
+     * @throws \Laranix\Support\Exception\InvalidTypeException
      */
     protected function loadScript($settings)
     {
@@ -126,6 +135,7 @@ trait LoadsThemer
      *
      * @param array $scripts
      * @throws \Laranix\Support\Exception\InvalidInstanceException
+     * @throws \Laranix\Support\Exception\InvalidTypeException
      */
     protected function loadScripts(...$scripts)
     {

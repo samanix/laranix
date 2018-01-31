@@ -2,6 +2,7 @@
 namespace __UserAppNamespace__Http\Controllers\Auth\Password\Reset;
 
 use __UserAppNamespace__Http\Requests\Auth\Password\Reset\PostReset;
+use Illuminate\Http\Request;
 use Laranix\Auth\Password\Reset\Events\VerifyAttempt;
 use Laranix\Foundation\Controllers\Controller;
 use Illuminate\Contracts\View\View;
@@ -20,37 +21,42 @@ class Reset extends Controller implements PasswordHasher
      *
      * If no token supplied, redirect to the request form
      *
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Contracts\View\View
      * @throws \Laranix\Support\Exception\InvalidInstanceException
+     * @throws \Laranix\Support\Exception\InvalidTypeException
      */
-    public function getPasswordResetForm() : View
+    public function getPasswordResetForm(Request $request) : View
     {
         $this->prepareForFormResponse(true, new ScriptSettings([
             'key'       => 'pass-reset-form',
             'filename'  => 'forms/passreset.js',
         ]));
 
-        return $this->view->make($this->config->get('laranixauth.password.views.reset_form', 'auth.password.reset'))
-            ->with([
-                'token' => old('token', $this->getQueryData('token')),
-                'email' => old('email', $this->getQueryData('email')),
-            ]);
+        return $this->view->make(
+            $this->config->get('laranixauth.password.views.reset_form', 'auth.password.reset')
+        )->with([
+            'token' => old('token', $request->query('token')),
+            'email' => old('email', $request->query('email')),
+        ]);
     }
 
     /**
      * Reset a users password
      *
-     * @param \__UserAppNamespace__Http\Requests\Auth\Password\Reset\PostReset $postReset
+     * @param \__UserAppNamespace__Http\Requests\Auth\Password\Reset\PostReset $request
      * @param \Laranix\Auth\Password\Reset\Manager                             $resetManager
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postPasswordResetForm(PostReset $postReset, PasswordResetManager $resetManager): RedirectResponse
+    public function postPasswordResetForm(PostReset $request, PasswordResetManager $resetManager): RedirectResponse
     {
-        $email = $this->getPostData('email');
+        $email = $request->post('email');
 
         event(new VerifyAttempt($email));
 
-        return $this->reset($resetManager, $this->getPostData('token'), $email, $this->getPostData('password'));
+        return $this->reset(
+            $resetManager, $request->post('token'), $email, $request->post('password')
+        );
     }
 
     /**
@@ -83,11 +89,12 @@ class Reset extends Controller implements PasswordHasher
     /**
      * Show error message on failed reset
      *
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Contracts\View\View
      */
-    public function getPasswordResetError() : View
+    public function getPasswordResetError(Request $request) : View
     {
-        $session = $this->getSessionData();
+        $session = $request->session();
         $message = $session->get('password_reset_error_message');
 
         if ($message === null) {

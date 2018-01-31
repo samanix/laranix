@@ -1,7 +1,7 @@
 <?php
 namespace Laranix\Foundation\Controllers;
 
-use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\Config\Repository;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -23,16 +23,6 @@ class Controller extends BaseController
     protected $preparedForResponse = false;
 
     /**
-     * @var \Illuminate\Contracts\Foundation\Application
-     */
-    protected $app;
-
-    /**
-     * @var \Illuminate\Http\Request
-     */
-    protected $request;
-
-    /**
      * @var \Illuminate\Contracts\Config\Repository
      */
     protected $config;
@@ -52,69 +42,19 @@ class Controller extends BaseController
     /**
      * LaranixBaseController constructor.
      *
-     * @param \Illuminate\Contracts\Foundation\Application $application
+     * @param \Illuminate\Contracts\Config\Repository $config
+     * @param \Laranix\Support\IO\Url\Url             $url
      * @throws \Laranix\Support\Exception\InvalidInstanceException
+     * @throws \Laranix\Support\Exception\InvalidTypeException
      */
-    public function __construct(Application $application)
+    public function __construct(Repository $config, Url $url)
     {
-        $this->app      = $application;
-        $this->request  = $this->app->make('request');
-        $this->config   = $this->app->make('config');
-        $this->url      = $this->app->make(Url::class);
+        $this->config   = $config;
+        $this->url      = $url;
 
         if ($this->shouldAutoPrepareForResponse()) {
             $this->prepareForResponse();
         }
-    }
-
-    /**
-     * POST data
-     *
-     * @param string|null   $key
-     * @param mixed         $default
-     * @return mixed
-     */
-    protected function getPostData(string $key = null, $default = null)
-    {
-        if ($key === null) {
-            return $this->request->request;
-        }
-
-        return $this->request->request->get($key, $default);
-    }
-
-    /**
-     * GET data
-     *
-     * @param string|null   $key
-     * @param mixed         $default
-     * @return mixed
-     */
-    protected function getQueryData(string $key = null, $default = null)
-    {
-        if ($key === null) {
-            return $this->request->query;
-        }
-
-        return $this->request->query->get($key, $default);
-    }
-
-    /**
-     * Get the session
-     *
-     * @param string|null   $key
-     * @param mixed         $default
-     * @return mixed
-     */
-    protected function getSessionData(string $key = null, $default = null)
-    {
-        $session = $this->request->session();
-
-        if ($key === null) {
-            return $session;
-        }
-
-        return $session->get($key, $default);
     }
 
     /**
@@ -124,14 +64,17 @@ class Controller extends BaseController
      */
     protected function shouldAutoPrepareForResponse(): bool
     {
-        return $this->request->isMethod('get') &&
-            !in_array($this->request->path(), $this->autoPrepareResponseExcept);
+        $request = request();
+
+        return $request->isMethod('get') &&
+            !in_array($request->path() ?? '', $this->autoPrepareResponseExcept);
     }
 
     /**
      * Prepare for a request response
      *
      * @throws \Laranix\Support\Exception\InvalidInstanceException
+     * @throws \Laranix\Support\Exception\InvalidTypeException
      */
     protected function prepareForResponse()
     {
@@ -139,12 +82,10 @@ class Controller extends BaseController
             return;
         }
 
-        $this->loadView($this->app);
-
-        $this->loadThemer($this->app);
+        $this->loadView();
+        $this->loadThemer();
         $this->loadThemerDefaultFiles($this->config);
-
-        $this->loadGlobalViewVariables($this->app, $this->config);
+        $this->loadGlobalViewVariables($this->config);
 
         $this->preparedForResponse = true;
     }
@@ -155,15 +96,16 @@ class Controller extends BaseController
      * @param bool                          $withRecaptcha
      * @param array|ThemerFileSettings|null $scripts
      * @throws \Laranix\Support\Exception\InvalidInstanceException
+     * @throws \Laranix\Support\Exception\InvalidTypeException
      */
     protected function prepareForFormResponse(bool $withRecaptcha = true, ...$scripts)
     {
         if ($withRecaptcha) {
-            $recaptcha = $this->app->make(Recaptcha::class);
+            $recaptcha = app()->make(Recaptcha::class);
         }
 
         $this->share([
-            'sequence'  => $this->app->make(Sequence::class),
+            'sequence'  => app()->make(Sequence::class),
             'recaptcha' => $recaptcha ?? null,
         ]);
 

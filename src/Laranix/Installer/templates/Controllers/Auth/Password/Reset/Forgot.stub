@@ -2,6 +2,7 @@
 namespace __UserAppNamespace__Http\Controllers\Auth\Password\Reset;
 
 use __UserAppNamespace__Http\Requests\Auth\Password\Reset\PostForgot;
+use Illuminate\Http\Request;
 use Laranix\Auth\Password\Reset\Events\ForgotAttempt;
 use Laranix\Foundation\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
@@ -17,10 +18,12 @@ class Forgot extends Controller
     /**
      * Show forgot password form
      *
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Contracts\View\View
      * @throws \Laranix\Support\Exception\InvalidInstanceException
+     * @throws \Laranix\Support\Exception\InvalidTypeException
      */
-    public function getPasswordForgotForm(): View
+    public function getPasswordForgotForm(Request $request): View
     {
         $this->prepareForFormResponse(true, new ScriptSettings([
             'key'       => 'pass-forgot-form',
@@ -30,25 +33,25 @@ class Forgot extends Controller
         return $this->view->make(
             $this->config->get('laranixauth.password.views.request_form', 'auth.password.forgot')
         )->with([
-            'forgot_password_message' => $this->getSessionData()->get('forgot_password_message')
+            'forgot_password_message' => $request->session()->get('forgot_password_message')
         ]);
     }
 
     /**
      * Send a reset link to email
      *
-     * @param \__UserAppNamespace__Http\Requests\Auth\Password\Reset\PostForgot $postForgot
+     * @param \__UserAppNamespace__Http\Requests\Auth\Password\Reset\PostForgot $request
      * @param \Laranix\Auth\Password\Reset\Manager                              $resetManager
      * @param \Laranix\Auth\User\Repository                                     $userRepository
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Laranix\Auth\Password\Reset\PasswordResetException
      */
     public function postPasswordForgotForm(
-        PostForgot $postForgot,
+        PostForgot $request,
         Manager $resetManager,
         UserRepository $userRepository
     ): RedirectResponse {
-        $email = $this->getPostData('email');
+        $email = $request->post('email');
 
         event(new ForgotAttempt($email));
 
