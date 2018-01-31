@@ -101,11 +101,11 @@ class UserTest extends LaranixTestCase
      */
     public function testGetUserFlags()
     {
-        $this->assertSame(array_flip(['a', 'b', 'c', 'd', 'e', 'f']), User::with('usergroups.group')->find(1)->getUserFlags());
+        $this->assertSame(['a', 'b', 'c', 'd', 'e', 'f'], User::with('usergroups.group')->find(1)->getUserFlags());
 
         $this->assertEmpty(User::with('usergroups.group')->find(4)->getUserFlags());
 
-        $this->assertSame(array_flip(['a', 'b', 'c', 'post', 'delete']), User::with('usergroups.group')->find(5)->getUserFlags());
+        $this->assertSame(['a', 'b', 'c', 'post', 'delete'], User::with('usergroups.group')->find(5)->getUserFlags());
     }
 
     /**
@@ -130,9 +130,7 @@ class UserTest extends LaranixTestCase
 
         $this->assertTrue($user->hasFlags(['a', 'b', 'c']));
         $this->assertTrue($user->hasFlags(['post', 'a']));
-
         $this->assertTrue($user->hasFlags(['b', 'c', 'delete'], true));
-
         $this->assertFalse($user->hasFlags(['a', 'b', 'x'], true));
     }
 

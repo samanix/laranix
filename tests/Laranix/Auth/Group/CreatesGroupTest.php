@@ -32,16 +32,16 @@ class CreatesGroupTest extends LaranixTestCase
             return $event->group->name === 'bar';
         });
 
-        $this->assertDatabaseHas(config('laranixauth.groups.table'), [
+        $this->assertDatabaseHas(config('laranixauth.group.table'), [
             'name'    => 'foo',
             'color'   => 'red',
             'icon'    => 'foo.png',
             'level'   => 100,
             'flags'   => json_encode(['a', 'b', 'c']),
-            'hidden' => 0,
+            'hidden'  => 0,
         ]);
 
-        $this->assertDatabaseHas(config('laranixauth.groups.table'), [
+        $this->assertDatabaseHas(config('laranixauth.group.table'), [
             'name'    => 'bar',
             'color'   => 'blue',
             'icon'    => 'bar.png',

@@ -32,7 +32,7 @@ class CreatesUsersTest extends LaranixTestCase
             return $event->user->email === 'bar@baz.com' && $event->user->username === 'bar';
         });
 
-        $this->assertDatabaseHas(config('laranixauth.users.table'), [
+        $this->assertDatabaseHas(config('laranixauth.user.table'), [
             'email'             => 'foo@bar.com',
             'username'          => 'foo',
             'avatar'            => 'pic.png',
@@ -43,7 +43,7 @@ class CreatesUsersTest extends LaranixTestCase
             'account_status'    => User::USER_ACTIVE,
         ]);
 
-        $this->assertDatabaseHas(config('laranixauth.users.table'), [
+        $this->assertDatabaseHas(config('laranixauth.user.table'), [
             'email'             => 'bar@baz.com',
             'username'          => 'bar',
             'avatar'            => 'pic.jpg',

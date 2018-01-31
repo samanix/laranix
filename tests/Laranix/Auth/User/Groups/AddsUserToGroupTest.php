@@ -51,14 +51,14 @@ class AddsUserToGroupTest extends LaranixTestCase
             return $event->usergroup->user_id === 2 && $event->usergroup->group_id === 1;
         });
 
-        $this->assertDatabaseHas(config('laranixauth.usergroups.table'), [
+        $this->assertDatabaseHas(config('laranixauth.usergroup.table'), [
             'user_id'   => 1,
             'group_id'  => 2,
             'primary'   => 1,
             'hidden'    => 0,
         ]);
 
-        $this->assertDatabaseHas(config('laranixauth.usergroups.table'), [
+        $this->assertDatabaseHas(config('laranixauth.usergroup.table'), [
             'user_id'   => 2,
             'group_id'  => 1,
             'primary'   => 0,
