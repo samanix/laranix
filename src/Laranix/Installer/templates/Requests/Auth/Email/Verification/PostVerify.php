@@ -17,4 +17,16 @@ class PostVerify extends RequestValidator
             'email'     => 'required|email|max:255',
         ];
     }
+
+    /**
+     * Custom messages
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'token.regex'   => 'Invalid token',
+        ];
+    }
 }

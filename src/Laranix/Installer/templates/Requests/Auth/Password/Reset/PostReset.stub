@@ -18,4 +18,16 @@ class PostReset extends RequestValidator
             'password'  => 'required|confirmed|min:6'
         ];
     }
+
+    /**
+     * Custom messages
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'token.regex'   => 'Invalid token',
+        ];
+    }
 }
