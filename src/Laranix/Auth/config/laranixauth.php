@@ -10,8 +10,8 @@ return [
         ],
     ],
 
-    'groups' => [
-        'table'         => 'groups',
+    'group' => [
+        'table'         => 'group',
         'default_group' => 'User', // Make sure it exists in groups table
 
         // If true, will use the json column type for the group flags
@@ -19,8 +19,8 @@ return [
         'use_json_column'   => false,
     ],
 
-    'usergroups' => [
-        'table' => 'usergroups',
+    'usergroup' => [
+        'table' => 'usergroup',
     ],
 
     'cage' => [
