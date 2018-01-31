@@ -33,9 +33,6 @@ class Middleware
     public function __construct(Application $app)
     {
         $this->app = $app;
-
-        $this->beforeExcept = !empty($this->beforeExcept) ? array_flip($this->beforeExcept) : $this->beforeExcept;
-        $this->afterExcept = !empty($this->afterExcept) ? array_flip($this->afterExcept) : $this->afterExcept;
     }
 
     /**
@@ -47,7 +44,7 @@ class Middleware
      */
     public function handle($request, Closure $next)
     {
-        if ($this->shouldExecuteBefore($request)) {
+        if ($this->shouldExecute($request)) {
             return $this->before($request, $next);
         }
 
@@ -76,7 +73,7 @@ class Middleware
      */
     public function terminate($request, $response)
     {
-        if ($this->shouldExecuteAfter($request)) {
+        if ($this->shouldExecute($request, false)) {
             $this->after($request, $response);
         }
 
@@ -95,34 +92,14 @@ class Middleware
     }
 
     /**
-     * Determine if request has a URI that should fire the before middleware
-     *
-     * @param \Illuminate\Http\Request $request
-     *
-     * @return bool
-     */
-    protected function shouldExecuteBefore($request) : bool
-    {
-        if (empty($this->beforeExcept)) {
-            return true;
-        }
-
-        return !isset($this->beforeExcept[$request->path()]);
-    }
-
-    /**
      * Determine if request has a URI that should fire the after middleware
      *
      * @param \Illuminate\Http\Request $request
-     *
+     * @param bool                     $before
      * @return bool
      */
-    protected function shouldExecuteAfter($request) : bool
+    protected function shouldExecute($request, bool $before = true): bool
     {
-        if (empty($this->afterExcept)) {
-            return true;
-        }
-
-        return !isset($this->afterExcept[$request->path()]);
+        return !in_array($request->path(), $before ? $this->beforeExcept : $this->afterExcept);
     }
 }
