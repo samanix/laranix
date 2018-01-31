@@ -170,10 +170,15 @@ class ManagerTest extends LaranixTestCase
 
     /**
      * Test verify valid token
+     *
+     * TODO Test listener for deleting session
      */
     public function testVerifyTokenWithValidToken()
     {
-        $this->assertSame(Token::TOKEN_VALID, $this->manager->processToken($this->hashToken('foo123'), 'bar@bar.com', 'secret2'));
+        $this->assertSame(
+            Token::TOKEN_VALID,
+            $this->manager->processToken($this->hashToken('foo123'), 'bar@bar.com', 'secret2')
+        );
 
         Event::assertDispatched(Updated::class, function ($event) {
             return $event->user->id === 2 && password_verify('secret2', $event->user->password);
