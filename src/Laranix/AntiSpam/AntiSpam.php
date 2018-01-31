@@ -141,7 +141,7 @@ abstract class AntiSpam
 
         $disabledEnv = (array) $this->config->get("antispam.{$this->instanceType}.disabled_env", []);
 
-        if (isset(array_flip($disabledEnv)[$this->config->get('app.env', 'production')])) {
+        if (in_array($this->config->get('app.env', 'production'), $disabledEnv)) {
             return $this->isEnabled = false;
         }
 

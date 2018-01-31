@@ -133,10 +133,8 @@ if (!function_exists('modelDiff')) {
     ) {
         $diff = [];
 
-        $ignore = array_flip($ignore);
-
         foreach ($new as $key => $value) {
-            if (isset($ignore[$key])) {
+            if (in_array($key, $ignore)) {
                 continue;
             }
 

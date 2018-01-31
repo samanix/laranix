@@ -210,7 +210,7 @@ class User extends Model implements
             }
         }
 
-        return $this->flags = empty($this->flags) ? [] : array_flip($this->flags);
+        return $this->flags;
     }
 
     /**
@@ -226,7 +226,7 @@ class User extends Model implements
             return $this->hasFlags($flag);
         }
 
-        return isset($this->getUserFlags()[$flag]);
+        return in_array($flag, $this->getUserFlags());
     }
 
     /**
@@ -238,19 +238,27 @@ class User extends Model implements
      */
     public function hasFlags(array $flags, bool $matchAll = false) : bool
     {
+        $matched = false;
         $userFlags = $this->getUserFlags();
 
         foreach ($flags as $flag) {
-            if (!isset($userFlags[$flag]) && $matchAll) {
-                return false;
-            }
+            if (in_array($flag, $userFlags)) {
+                if ($matchAll) {
+                    $matched = true;
+                    continue;
+                }
 
-            if (isset($userFlags[$flag]) && !$matchAll) {
-                return true;
+                $matched = true;
+            } else {
+                if ($matchAll) {
+                    return false;
+                }
+
+                $matched = false;
             }
         }
 
-        return true;
+        return $matched;
     }
 
     /**

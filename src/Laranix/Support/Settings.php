@@ -104,13 +104,11 @@ abstract class Settings
             return $this->requiredParsed;
         }
 
-        $ignored = array_flip($this->getIgnoredProperties());
-
         foreach ($this->required as $index => $item) {
             $property = is_int($index) ? $item : $index;
             $type = 'any';
 
-            if (isset($ignored[$property])) {
+            if (in_array($property, $this->ignored)) {
                 continue;
             }
 
