@@ -33,7 +33,7 @@ class Register extends Controller implements UserCreator, UserGroupAdder
         ]));
 
         return $this->view->make(
-            $this->config->get('laranixauth.users.views.register_form', 'auth.register.form')
+            $this->config->get('laranixauth.user.views.register_form', 'auth.register.form')
         );
     }
 
@@ -61,7 +61,7 @@ class Register extends Controller implements UserCreator, UserGroupAdder
             /** @var \Laranix\Auth\User\Token\MailSettings $token */
             $token = $verificationManager->sendMail($user, $verificationManager->createToken($user));
 
-            $groupinfo = $group->getByName($this->config->get('laranixauth.groups.default_group', 'User'));
+            $groupinfo = $group->getByName($this->config->get('laranixauth.group.default_group', 'User'));
 
             if ($groupinfo !== null) {
                 $this->addUserToGroup([
@@ -116,7 +116,7 @@ class Register extends Controller implements UserCreator, UserGroupAdder
         $session->keep('registered_username', 'registered_email', 'verify_token_expiry', 'token_valid_for');
 
         return $this->view->make(
-            $this->config->get('laranixauth.users.views.register_success', 'auth.register.success'),
+            $this->config->get('laranixauth.user.views.register_success', 'auth.register.success'),
             $data
         );
     }

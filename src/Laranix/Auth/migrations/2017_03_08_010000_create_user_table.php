@@ -11,7 +11,7 @@ class CreateUserTable extends Migration
      */
     public function up()
     {
-        Schema::create(config('laranixauth.users.table', 'users'), function (Blueprint $table) {
+        Schema::create(config('laranixauth.user.table'), function (Blueprint $table) {
             $table->increments('id');
             $table->string('email')->unique();
             $table->string('username', 64)->unique();
@@ -34,6 +34,6 @@ class CreateUserTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists(config('laranixauth.users.table', 'users'));
+        Schema::dropIfExists(config('laranixauth.user.table'));
     }
 }

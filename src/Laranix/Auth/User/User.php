@@ -96,7 +96,7 @@ class User extends Model implements
     {
         parent::__construct($attributes);
 
-        $this->table = $this->config->get('laranixauth.users.table', 'users');
+        $this->table = $this->config->get('laranixauth.user.table');
     }
 
     /**

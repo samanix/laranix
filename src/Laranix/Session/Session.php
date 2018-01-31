@@ -44,7 +44,7 @@ class Session extends Model
     {
         parent::__construct($attributes);
 
-        $this->table = $this->config->get('session.table', 'sessions');
+        $this->table = $this->config->get('session.table');
     }
 
     /**

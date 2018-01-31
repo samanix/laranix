@@ -11,7 +11,7 @@ class CreateUserGroupsTable extends Migration
      */
     public function up()
     {
-        Schema::create(config('laranixauth.usergroups.table', 'usergroups'), function (Blueprint $table) {
+        Schema::create(config('laranixauth.usergroup.table'), function (Blueprint $table) {
             $table->unsignedInteger('user_id');
             $table->unsignedSmallInteger('group_id');
             $table->unsignedTinyInteger('primary')->default(0);
@@ -23,13 +23,13 @@ class CreateUserGroupsTable extends Migration
 
             $table->foreign('user_id')
                 ->references('id')
-                ->on(config('laranixauth.users.table', 'users'))
+                ->on(config('laranixauth.user.table'))
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
 
             $table->foreign('group_id')
                 ->references('id')
-                ->on(config('laranixauth.groups.table', 'groups'))
+                ->on(config('laranixauth.group.table'))
                 ->onUpdate('cascade')
                 ->onDelete('restrict');
         });
@@ -40,7 +40,7 @@ class CreateUserGroupsTable extends Migration
      */
     public function down()
     {
-        $table = config('laranixauth.usergroups.table', 'usergroups');
+        $table = config('laranixauth.usergroup.table');
 
         $userKey = "{$table}_user_id_foreign";
         $groupKey = "{$table}_group_id_foreign";

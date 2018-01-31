@@ -11,7 +11,7 @@ class CreateTrackerTable extends Migration
      */
     public function up()
     {
-        Schema::create(config('tracker.table', 'tracker'), function (Blueprint $table) {
+        Schema::create(config('tracker.table'), function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('user_id')->nullable();
             $table->unsignedInteger('ipv4');
@@ -36,7 +36,7 @@ class CreateTrackerTable extends Migration
 
             $table->foreign('user_id')
                   ->references('id')
-                  ->on(config('laranixauth.users.table', 'users'))
+                  ->on(config('laranixauth.user.table'))
                   ->onUpdate('cascade')
                   ->onDelete('set null');
         });
@@ -47,7 +47,7 @@ class CreateTrackerTable extends Migration
      */
     public function down()
     {
-        $table = config('tracker.table', 'tracker');
+        $table = config('tracker.table');
 
         $userKey = "{$table}_user_id_foreign";
 

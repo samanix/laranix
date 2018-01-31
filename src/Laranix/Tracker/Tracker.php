@@ -53,7 +53,7 @@ class Tracker extends Model
     {
         parent::__construct($attributes);
 
-        $this->table = $this->config->get('tracker.table', 'tracker');
+        $this->table = $this->config->get('tracker.table');
     }
 
     /**

@@ -12,7 +12,7 @@ class PostRegister extends RequestValidator
      */
     public function rules()
     {
-        $usertable = config('laranixauth.users.table', 'users');
+        $usertable = config('laranixauth.user.table');
 
         return [
             'first_name'    => 'required|max:64',

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSessionsTable extends Migration
+class CreateSessionTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateSessionsTable extends Migration
      */
     public function up()
     {
-        Schema::create(config('session.table', 'sessions'), function (Blueprint $table) {
+        Schema::create(config('session.table'), function (Blueprint $table) {
             $table->string('id');
             $table->unsignedInteger('user_id')->nullable();
             $table->unsignedInteger('ipv4')->nullable();
@@ -25,7 +25,7 @@ class CreateSessionsTable extends Migration
 
             $table->foreign('user_id')
                 ->references('id')
-                ->on(config('laranixauth.users.table', 'users'))
+                ->on(config('laranixauth.user.table'))
                 ->onUpdate('set null')
                 ->onDelete('set null');
         });
@@ -38,6 +38,6 @@ class CreateSessionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists(config('session.table', 'sessions'));
+        Schema::dropIfExists(config('session.table'));
     }
 }

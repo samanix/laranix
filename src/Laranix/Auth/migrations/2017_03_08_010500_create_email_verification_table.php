@@ -11,7 +11,7 @@ class CreateEmailVerificationTable extends Migration
      */
     public function up()
     {
-        Schema::create(config('laranixauth.verification.table', 'email_verification'), function (Blueprint $table) {
+        Schema::create(config('laranixauth.verification.table'), function (Blueprint $table) {
             $table->unsignedInteger('user_id')->unique();
             $table->string('email');
             $table->string('token');
@@ -22,7 +22,7 @@ class CreateEmailVerificationTable extends Migration
 
             $table->foreign('user_id')
                 ->references('id')
-                ->on(config('laranixauth.users.table', 'users'))
+                ->on(config('laranixauth.user.table'))
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
         });
@@ -33,7 +33,7 @@ class CreateEmailVerificationTable extends Migration
      */
     public function down()
     {
-        $table = config('laranixauth.verification.table', 'email_verification');
+        $table = config('laranixauth.verification.table');
 
         $userKey = "{$table}_user_id_foreign";
 

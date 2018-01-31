@@ -58,7 +58,7 @@ class UserGroup extends Model
     {
         parent::__construct($attributes);
 
-        $this->table = $this->config->get('laranixauth.usergroups.table', 'usergroups');
+        $this->table = $this->config->get('laranixauth.usergroup.table');
     }
 
     /**

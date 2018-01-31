@@ -14,6 +14,6 @@ class Verification extends Token
     {
         parent::__construct($attributes);
 
-        $this->table = $this->config->get('laranixauth.verification.table', 'email_verification');
+        $this->table = $this->config->get('laranixauth.verification.table');
     }
 }

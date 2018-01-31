@@ -11,14 +11,14 @@ class CreateGroupsTable extends Migration
      */
     public function up()
     {
-        Schema::create(config('laranixauth.groups.table', 'groups'), function (Blueprint $table) {
+        Schema::create(config('laranixauth.group.table'), function (Blueprint $table) {
             $table->smallIncrements('id');
             $table->string('name')->unique();
             $table->string('color')->nullable();
             $table->string('icon')->nullable();
             $table->unsignedTinyInteger('level')->default(0);
 
-            if (config('laranixauth.groups.use_json_column', true)) {
+            if (config('laranixauth.group.use_json_column', true)) {
                 $table->json('flags');
             } else {
                 $table->text('flags');
@@ -35,6 +35,6 @@ class CreateGroupsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists(config('laranixauth.groups.table', 'groups'));
+        Schema::dropIfExists(config('laranixauth.group.table'));
     }
 }

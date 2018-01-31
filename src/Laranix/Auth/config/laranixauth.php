@@ -1,8 +1,8 @@
 <?php
 
 return [
-    'users' => [
-        'table'             => 'users',
+    'user' => [
+        'table'             => 'user',
 
         'views'             => [
             'register_form'     => 'auth.register.form',

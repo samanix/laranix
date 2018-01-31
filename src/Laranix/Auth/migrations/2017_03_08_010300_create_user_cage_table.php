@@ -11,7 +11,7 @@ class CreateUserCageTable extends Migration
      */
     public function up()
     {
-        Schema::create(config('laranixauth.cage.table', 'user_cage'), function (Blueprint $table) {
+        Schema::create(config('laranixauth.cage.table'), function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedTinyInteger('level')->default(25);
             $table->string('area')->nullable();
@@ -29,7 +29,7 @@ class CreateUserCageTable extends Migration
 
             $table->index('area');
 
-            $userTable = config('laranixauth.users.table', 'users');
+            $userTable = config('laranixauth.user.table');
 
             $table->foreign('user_id')
                 ->references('id')
@@ -50,7 +50,7 @@ class CreateUserCageTable extends Migration
      */
     public function down()
     {
-        $table = config('laranixauth.cage.table', 'user_cage');
+        $table = config('laranixauth.cage.table');
 
         $userKey = "{$table}_user_id_foreign";
         $issuerKey = "{$table}_issuer_id_foreign";

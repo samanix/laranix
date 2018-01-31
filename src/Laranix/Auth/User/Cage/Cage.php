@@ -73,7 +73,7 @@ class Cage extends Model
     {
         parent::__construct($attributes);
 
-        $this->table = $this->config->get('laranixauth.cage.table', 'user_cage');
+        $this->table = $this->config->get('laranixauth.cage.table');
     }
 
     /**
@@ -146,7 +146,7 @@ class Cage extends Model
      */
     public function scopeActive($query)
     {
-        $table = $this->config->get('laranixauth.cage.table', 'user_cage');
+        $table = $this->config->get('laranixauth.cage.table');
 
         return $query->whereRaw(
             "(`{$table}`.`length` = 0 OR 

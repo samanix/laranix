@@ -34,6 +34,6 @@ class DefaultGroups extends Seeder
             }
         }
 
-        app('db')->table(config('laranixauth.groups.table', 'groups'))->insert($insertGroups);
+        app('db')->table(config('laranixauth.group.table'))->insert($insertGroups);
     }
 }

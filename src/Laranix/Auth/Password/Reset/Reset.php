@@ -14,6 +14,6 @@ class Reset extends Token
     {
         parent::__construct($attributes);
 
-        $this->table = $this->config->get('laranixauth.password.table', 'password_reset');
+        $this->table = $this->config->get('laranixauth.password.table');
     }
 }

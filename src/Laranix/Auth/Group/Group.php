@@ -44,7 +44,7 @@ class Group extends Model
     {
         parent::__construct($attributes);
 
-        $this->table = $this->config->get('laranixauth.groups.table', 'groups');
+        $this->table = $this->config->get('laranixauth.group.table');
     }
 
     /**
