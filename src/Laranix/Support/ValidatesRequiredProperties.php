@@ -23,29 +23,25 @@ trait ValidatesRequiredProperties
             throw new InvalidTypeException('$allowed must be a string or array');
         }
 
-        $types = array_flip($allowed);
-
-        $optional = false;
         $valid = false;
+        $optional = in_array('optional', $allowed);
 
-        if (isset($types['optional'])) {
-            if ($this->{$property} === null) {
-                return;
-            }
-
-            unset($types['optional']);
-
-            $optional = true;
+        if ($optional && $this->{$property} === null) {
+            return;
         }
 
         foreach ($allowed as $index => $type) {
+            if ($type === 'optional') {
+                continue;
+            }
+
             if ($valid = $this->validatePropertyType($property, $type)) {
                 break;
             }
         }
 
         if (!$valid) {
-            $this->throwInvalidTypeException($property, $types, $optional);
+            $this->throwInvalidTypeException($property, $allowed, $optional);
         }
     }
 
@@ -58,6 +54,8 @@ trait ValidatesRequiredProperties
      */
     protected function validatePropertyType(string $property, string $type) : bool
     {
+        list($type, $arg) = $this->parseType($type);
+
         switch ($type) {
             case 'any':
             case 'notnull':
@@ -79,11 +77,30 @@ trait ValidatesRequiredProperties
                 return is_array($this->{$property});
             case 'null':
                 return $this->{$property} === null;
+            case 'is_a':
+                return is_a($this->{$property}, $arg, true);
             case 'is':
+                return is_a($this->{$property}, $arg);
             case 'instanceof':
+                return $this->{$property} instanceof $arg;
             default:
-                return $this->{$property} instanceof $type;
+                throw new \InvalidArgumentException("{$type} is not a recognised type");
         }
+    }
+
+    /**
+     * @param string $type
+     * @return array
+     */
+    protected function parseType(string $type): array
+    {
+        $parsed = explode(':', $type);
+
+        if (!isset($parsed[1])) {
+            $parsed[1] = null;
+        }
+
+        return $parsed;
     }
 
     /**
@@ -99,7 +116,9 @@ trait ValidatesRequiredProperties
         $str = "Expected '{{types}}' for {{optional}} property '{{property}}' in {{class}}, got '{{actualtype}}'";
 
         throw new InvalidTypeException(Str::format($str, [
-            'types'     => implode('|', array_keys($types)),
+            'types'     => trim(
+                str_replace('optional', '', implode('|', array_values($types))), '|'
+            ),
             'optional'  => $optional ? 'optional' : null,
             'property'  => $property,
             'class'     => get_class($this),

@@ -1,6 +1,7 @@
 <?php
 namespace Laranix\Tests\Laranix\Support;
 
+use Hamcrest\Core\Set;
 use Laranix\Support\Exception\InvalidTypeException;
 use Laranix\Tests\LaranixTestCase;
 use Laranix\Tests\Laranix\Support\Stubs\Settings;
@@ -91,7 +92,7 @@ class SettingsTest extends LaranixTestCase
             'string'        => 'string',
             'email'         => 'email',
             'url'           => 'url',
-            'instanceof'    => Settings::class
+            'instanceof'    => 'instanceof:' . Settings::class
         ]);
 
         $this->assertTrue($settings->hasRequiredSettings());
@@ -104,12 +105,13 @@ class SettingsTest extends LaranixTestCase
     {
         $settings = $this->getSettings();
 
-        $settings->setRequiredProperties(['string', 'email', 'url']);
+        $settings->setRequiredProperties(['string', 'email', 'url', 'instanceof:' . Settings::class]);
 
         $settings->setRequiredTypes([
             'string'    => 'string',
             'email'     => 'email',
-            'url'       => 'url'
+            'url'       => 'url',
+            'instanceof'=> 'is_a:' . Settings::class
         ]);
 
         $this->assertTrue($settings->hasRequiredSettings());
@@ -128,7 +130,7 @@ class SettingsTest extends LaranixTestCase
             'int'           => 'int',
             'array'         => 'array',
             'null'          => 'null',
-            'instanceof'    => Settings::class,
+            'instanceof'    => 'is:' . Settings::class,
             'string'        => 'any',
         ]);
 
