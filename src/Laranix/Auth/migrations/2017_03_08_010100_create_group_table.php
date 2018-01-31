@@ -18,7 +18,7 @@ class CreateGroupTable extends Migration
             $table->string('icon')->nullable();
             $table->unsignedTinyInteger('level')->default(0);
 
-            if (config('laranixauth.group.use_json_column', true)) {
+            if (config('laranixauth.group.use_json_column', false)) {
                 $table->json('flags');
             } else {
                 $table->text('flags');
