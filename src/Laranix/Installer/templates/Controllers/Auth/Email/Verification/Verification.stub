@@ -31,6 +31,7 @@ class Verification extends Controller
      * @param \Laranix\Auth\Email\Verification\Manager $verificationManager
      * @return \Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse
      * @throws \Laranix\Support\Exception\InvalidInstanceException
+     * @throws \Laranix\Support\Exception\InvalidTypeException
      */
     public function getVerify(Request $request, VerificationManager $verificationManager)
     {
@@ -43,7 +44,7 @@ class Verification extends Controller
 
         event(new VerifyAttempt($email));
 
-        return $this->verify($verificationManager, $token, $email);
+        return $this->verify($request, $verificationManager, $token, $email);
     }
 
     /**
@@ -53,6 +54,7 @@ class Verification extends Controller
      * @param string|null $email
      * @return \Illuminate\Contracts\View\View
      * @throws \Laranix\Support\Exception\InvalidInstanceException
+     * @throws \Laranix\Support\Exception\InvalidTypeException
      */
     protected function getManualVerificationForm(string $token = null, string $email = null): View
     {
@@ -82,7 +84,7 @@ class Verification extends Controller
         event(new VerifyAttempt($email));
 
         return $this->verify(
-            $verificationManager, $request->post('token'), $email
+            $request, $verificationManager, $request->post('token'), $email
         );
     }
 
