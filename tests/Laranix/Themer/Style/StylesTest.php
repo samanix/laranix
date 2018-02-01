@@ -328,7 +328,7 @@ EXPECTED;
         $writer = m::mock(Writer::class);
         $writer->shouldReceive('warning')->andThrow($throw);
 
-        return new Styles($this->themer, $this->config, $writer, new Url('http://homestead.app'));
+        return new Styles($this->themer, $this->config, $writer, new Url('http://homestead.test'));
     }
 
     /**

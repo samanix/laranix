@@ -16,7 +16,7 @@ class HrefTest extends LaranixTestCase
     /**
      * @var string
      */
-    protected $baseurl = 'http://homestead.app';
+    protected $baseurl = 'http://homestead.test';
 
     /**
      * Set up

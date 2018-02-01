@@ -377,7 +377,9 @@ class VerificationTest extends LaranixTestCase
 
         $this->createFactories();
 
-        $response = $this->post('email/verify/refresh', ['email' => 'foo2@bar.com'], ['HTTP_REFERER' => urlTo('email/verify/refresh')]);
+        $response = $this->post(
+            'email/verify/refresh', ['email' => 'foo2@bar.com'], ['HTTP_REFERER' => urlTo('email/verify/refresh')]
+        );
 
         $response->assertStatus(302);
 

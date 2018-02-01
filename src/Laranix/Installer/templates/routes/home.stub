@@ -1,10 +1,10 @@
 <?php
 
-Route::get('/', 'Home@getHome')
+Route::get('/', 'Home@show')
      ->name('home');
 
-Route::get('/home', 'Home@getHome')
+Route::get('/home', 'Home@show')
      ->name('home.home');
 
-Route::get('/index', 'Home@getHome')
+Route::get('/index', 'Home@show')
      ->name('home.index');

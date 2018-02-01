@@ -49,7 +49,7 @@ class ImageTest extends LaranixTestCase
 
         $this->themer = new Themer($this->config, $request, new ThemeRepository($this->config));
 
-        $this->image = new Images($this->themer, $this->config, m::mock(Writer::class), new Url('http://homestead.app'));
+        $this->image = new Images($this->themer, $this->config, m::mock(Writer::class), new Url('http://homestead.test'));
     }
 
     /**
@@ -165,7 +165,7 @@ class ImageTest extends LaranixTestCase
         return [
             [
                 'laranix.png', 'foo', ['id' => 'fooimage', 'title' => 'bar'],
-                '<img src="http://homestead.app/themes/foo/images/laranix.png" alt="foo" id="fooimage" title="bar" />'
+                '<img src="http://homestead.test/themes/foo/images/laranix.png" alt="foo" id="fooimage" title="bar" />'
             ],
             [
                 'https://foo.com/bar.jpg',
@@ -177,11 +177,11 @@ class ImageTest extends LaranixTestCase
             ],
             [
                 ['image' => 'laranix.png', 'alt' => 'foo"', 'id' => 'fooimage', 'extra' => ['title' => 'bar']],
-                '<img src="http://homestead.app/themes/foo/images/laranix.png" alt="foo&quot;" id="fooimage" title="bar" />'
+                '<img src="http://homestead.test/themes/foo/images/laranix.png" alt="foo&quot;" id="fooimage" title="bar" />'
             ],
             [
                 new LocalSettings(['image' => 'laranix.png', 'alt' => 'hello']),
-                '<img src="http://homestead.app/themes/foo/images/laranix.png" alt="hello" />'
+                '<img src="http://homestead.test/themes/foo/images/laranix.png" alt="hello" />'
             ],
             [
                 new RemoteSettings(['url' => 'https://foo.com/foo.png', 'alt' => 'hello']),
@@ -200,7 +200,7 @@ class ImageTest extends LaranixTestCase
         return [
             [
                 'laranix.png', 'foo', ['id' => 'fooimage', 'title' => 'bar'],
-                'http://homestead.app/themes/foo/images/laranix.png'
+                'http://homestead.test/themes/foo/images/laranix.png'
             ],
             [
                 'https://foo.com/bar.jpg',
@@ -212,11 +212,11 @@ class ImageTest extends LaranixTestCase
             ],
             [
                 ['image' => 'laranix.png', 'alt' => 'foo', 'id' => 'fooimage', 'extra' => ['title' => 'bar']],
-                'http://homestead.app/themes/foo/images/laranix.png'
+                'http://homestead.test/themes/foo/images/laranix.png'
             ],
             [
                 new LocalSettings(['image' => 'laranix.png', 'alt' => 'hello']),
-                'http://homestead.app/themes/foo/images/laranix.png'
+                'http://homestead.test/themes/foo/images/laranix.png'
             ],
             [
                 new RemoteSettings(['url' => 'https://foo.com/foo.png', 'alt' => 'hello']),
@@ -235,11 +235,11 @@ class ImageTest extends LaranixTestCase
         return [
             [
                 'foo/laranix.png', 'foo', ['id' => 'fooimage', 'title' => 'bar'],
-                '<img src="http://homestead.app/storage/foo/laranix.png" alt="foo" id="fooimage" title="bar" />'
+                '<img src="http://homestead.test/storage/foo/laranix.png" alt="foo" id="fooimage" title="bar" />'
             ],
             [
                 new LocalSettings(['image' => 'laranix.png', 'alt' => 'hello']),
-                '<img src="http://homestead.app/storage/laranix.png" alt="hello" />'
+                '<img src="http://homestead.test/storage/laranix.png" alt="hello" />'
             ]
         ];
     }
@@ -254,11 +254,11 @@ class ImageTest extends LaranixTestCase
         return [
             [
                 'foo/laranix.png', 'foo', ['id' => 'fooimage', 'title' => 'bar'],
-                'http://homestead.app/storage/foo/laranix.png'
+                'http://homestead.test/storage/foo/laranix.png'
             ],
             [
                 new LocalSettings(['image' => 'laranix.png', 'alt' => 'hello']),
-                'http://homestead.app/storage/laranix.png'
+                'http://homestead.test/storage/laranix.png'
             ]
         ];
     }

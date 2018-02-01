@@ -14,7 +14,7 @@ class UrlTest extends LaranixTestCase
     /**
      * @var string
      */
-    protected $baseurl = 'http://homestead.app';
+    protected $baseurl = 'http://homestead.test';
 
     /**
      * Set up
@@ -100,7 +100,7 @@ class UrlTest extends LaranixTestCase
             ['http', 'https://bar.com', null, ['baz' => 'foo'], null, false, 'http://bar.com?baz=foo'],
             ['https', '//baz.com', 'foo/bar', ['foo' => 'bar'], null, true, 'https://baz.com/foo/bar/?foo=bar'],
             ['http:', 'url.com', '/baz/', ['foo' => 'bar', 'query' => 'value foo'], null, true, 'http://url.com/baz/?foo=bar&query=value%20foo'],
-            ['http://', null, '/foo', null, null, true, 'http://homestead.app/foo/'],
+            ['http://', null, '/foo', null, null, true, 'http://homestead.test/foo/'],
             ['http', 'foo.com', '/bar', ['foo' => 'bar'], '#baz', false, 'http://foo.com/bar?foo=bar#baz'],
             ['http', 'foo.com', '/bar/bar baz', null, null, false, 'http://foo.com/bar/bar%20baz'],
             [null, 'foo.com', '//bar//bar baz/file 1.txt', null, null, false, 'http://foo.com/bar/bar%20baz/file%201.txt'],

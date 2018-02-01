@@ -29,7 +29,7 @@ class Login extends Controller
      * @throws \Laranix\Support\Exception\InvalidInstanceException
      * @throws \Laranix\Support\Exception\InvalidTypeException
      */
-    public function getLogin(): View
+    public function show(): View
     {
         $this->prepareForFormResponse(true, new ScriptSettings([
             'key'       => 'login-form',
@@ -43,9 +43,9 @@ class Login extends Controller
      * Login to app
      *
      * @param \__UserAppNamespace__Http\Requests\Auth\PostLogin $request
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse|\Illuminate\Http\Response
      */
-    public function postLogin(PostLogin $request)
+    public function doLogin(PostLogin $request)
     {
         return $this->login($request);
     }
@@ -57,7 +57,7 @@ class Login extends Controller
      * @throws \Laranix\Support\Exception\NullValueException
      * @throws \Laranix\Support\Exception\ArgumentOutOfRangeException
      */
-    protected function authenticated(Request $request, $user) : RedirectResponse
+    protected function authenticated(Request $request, $user): RedirectResponse
     {
         if ($user->account_status !== User::USER_ACTIVE) {
             return $this->accountRestricted($request, $user);
@@ -82,7 +82,7 @@ class Login extends Controller
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Laranix\Support\Exception\ArgumentOutOfRangeException
      */
-    protected function accountRestricted(Request $request, Authenticatable $user) : RedirectResponse
+    protected function accountRestricted(Request $request, Authenticatable $user): RedirectResponse
     {
         $this->logoutUser($request,false);
 
@@ -104,7 +104,7 @@ class Login extends Controller
      * @return string
      * @throws \Laranix\Support\Exception\ArgumentOutOfRangeException
      */
-    protected function getAccountRestrictedMessage(int $accountStatus) : string
+    protected function getAccountRestrictedMessage(int $accountStatus): string
     {
         switch ($accountStatus) {
             case User::USER_UNVERIFIED:
@@ -124,7 +124,7 @@ class Login extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postLogout(Request $request) : RedirectResponse
+    public function doLogout(Request $request): RedirectResponse
     {
         return $this->logoutUser($request);
     }
@@ -136,7 +136,7 @@ class Login extends Controller
      * @param bool                     $redirect
      * @return \Illuminate\Http\RedirectResponse|null
      */
-    protected function logoutUser(Request $request, bool $redirect = true) : ?RedirectResponse
+    protected function logoutUser(Request $request, bool $redirect = true): ?RedirectResponse
     {
         $guard      = $this->guard();
         /** @var User $user */

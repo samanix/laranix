@@ -278,8 +278,8 @@ class ManagerTest extends LaranixTestCase
             'laranixauth' => [
                 'verification'  => [
                     'table'     => 'email_verification',
-                    'route'     => 'email.verify',    // Route name to verify token
-                    'expiry'    => 60,          // Time in minutes before token expires
+                    'route'     => 'email.verify.show',     // Route name to verify token
+                    'expiry'    => 60,                      // Time in minutes before token expires
 
                     'mail'      => [
                         'view'      => 'verification',

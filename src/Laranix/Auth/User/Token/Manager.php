@@ -8,7 +8,6 @@ use Laranix\Auth\User\User;
 use Laranix\Support\Database\Model;
 use Laranix\Support\Exception\InvalidPermissionException;
 use Laranix\Support\Exception\NullValueException;
-use Laranix\Support\Mail\Mail;
 use Laranix\Support\Mail\Mailer;
 use Laranix\Support\Mail\MailSettings;
 use Laranix\Support\ValidatesRequiredProperties;

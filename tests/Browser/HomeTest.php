@@ -57,7 +57,7 @@ class HomeTest extends BrowserTestCase
 
         $this->browse(function (Browser $browser, Browser $browser2) {
             $browser->visit('/')
-                    ->assertSourceHas('<a class="item active" href="http://homestead.app">Home</a>');
+                    ->assertSourceHas('<a class="item active" href="http://homestead.test">Home</a>');
 
             $browser2->loginAs(1)
                      ->visit('/')
