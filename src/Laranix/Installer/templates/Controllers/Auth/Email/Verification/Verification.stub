@@ -18,13 +18,6 @@ use Illuminate\Contracts\View\View;
 class Verification extends Controller
 {
     /**
-     * If the verifier is logged in
-     *
-     * @var bool
-     */
-    protected $is_guest = false;
-
-    /**
      * Verify the users email, or show the form if the token or email (in query string) is not provided
      *
      * @param \Illuminate\Http\Request                 $request
