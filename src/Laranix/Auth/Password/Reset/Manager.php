@@ -5,8 +5,6 @@ use Illuminate\Contracts\Auth\Authenticatable;
 use Laranix\Auth\Password\Hasher as PasswordHasher;
 use Laranix\Auth\Password\HashesPasswords;
 use Laranix\Auth\User\Token\Manager as BaseManager;
-use Laranix\Auth\User\Token\MailSettings;
-use Laranix\Auth\Password\Reset\Mail as PasswordMail;
 use Laranix\Auth\User\User;
 use Laranix\Auth\Password\Reset\Events\Created;
 use Laranix\Auth\Password\Reset\Events\Failed;
@@ -19,72 +17,34 @@ class Manager extends BaseManager implements PasswordHasher
     use HashesPasswords;
 
     /**
-     * Created event class name
-     *
-     * @var string
+     * @inheritDoc
+     */
+    protected $configKey = 'password';
+
+    /**
+     * @inheritDoc
+     */
+    protected $model = Reset::class;
+
+    /**
+     * @inheritDoc
      */
     protected $createdEvent = Created::class;
 
     /**
-     * Updated event class name
-     *
-     * @var string
+     * @inheritDoc
      */
     protected $updatedEvent = Updated::class;
 
     /**
-     * Failed event class name
-     *
-     * @var string
+     * @inheritDoc
      */
     protected $failedEvent = Failed::class;
 
     /**
-     * Completed event class name
-     *
-     * @var string
+     * @inheritDoc
      */
     protected $completedEvent = ResetEvent::class;
-
-    /**
-     * Get the class name for the model
-     *
-     * @return string
-     */
-    protected function getModelClass() : string
-    {
-        return Reset::class;
-    }
-
-    /**
-     * Get the config key for the config file
-     *
-     * @return string
-     */
-    protected function getConfigKey() : string
-    {
-        return 'password';
-    }
-
-    /**
-     * Mail settings class
-     *
-     * @return string
-     */
-    protected function getMailSettingsClass() : string
-    {
-        return MailSettings::class;
-    }
-
-    /**
-     * Mail class
-     *
-     * @return string
-     */
-    protected function getMailTemplateClass() : string
-    {
-        return PasswordMail::class;
-    }
 
     /**
      * Update user after token verified

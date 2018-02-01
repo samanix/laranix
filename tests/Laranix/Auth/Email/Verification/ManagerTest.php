@@ -3,7 +3,7 @@ namespace Laranix\Tests\Laranix\Auth\Email\Verification;
 
 use Illuminate\Config\Repository;
 use Illuminate\Contracts\Auth\Authenticatable;
-use Illuminate\Mail\Mailer;
+use Illuminate\Mail\Mailer as BaseMailer;
 use Laranix\Auth\Email\Events\Updated;
 use Laranix\Auth\Email\Verification\Events\Created;
 use Laranix\Auth\Email\Verification\Events\Failed;
@@ -18,6 +18,7 @@ use Laranix\Tests\LaranixTestCase;
 use Mockery as m;
 use Illuminate\Support\Facades\Event;
 use Laranix\Auth\Email\Verification\Events\Updated as UpdatedEvent;
+use Laranix\Auth\Email\Verification\Mailer;
 
 
 /**
@@ -152,8 +153,6 @@ class ManagerTest extends LaranixTestCase
     {
         list($config, $mailer) = $this->getMocks();
 
-        $mailer->shouldReceive('send')->andReturnSelf();
-
         $manager = new Manager($config, $mailer);
 
         $user = $this->getUserMock();
@@ -268,34 +267,42 @@ class ManagerTest extends LaranixTestCase
 
     /**
      * @return array
+     * @throws \Laranix\Support\Exception\InvalidTypeException
      */
     protected function getMocks()
     {
-        return [
-            new Repository([
-                'app' => [
-                    'key' => 'foo',
-                ],
-                'laranixauth' => [
-                    'verification'  => [
-                        'table'     => 'email_verification',
-                        'route'     => 'email.verify',    // Route name to verify token
-                        'expiry'    => 60,          // Time in minutes before token expires
+        $config = new Repository([
+            'app' => [
+                'key' => 'foo',
+            ],
+            'laranixauth' => [
+                'verification'  => [
+                    'table'     => 'email_verification',
+                    'route'     => 'email.verify',    // Route name to verify token
+                    'expiry'    => 60,          // Time in minutes before token expires
 
-                        'mail'      => [
-                            'view'      => 'verification',
-                            'subject'   => 'Laranix Email Verification',
-                            'markdown'  => true,
-                        ],
+                    'mail'      => [
+                        'view'      => 'verification',
+                        'subject'   => 'Laranix Email Verification',
+                        'markdown'  => true,
+                    ],
 
-                        'views'     => [
-                            'verify_form'       => 'auth.verify.verify',
-                            'verify_refresh'    => 'auth.verify.refresh',
-                        ],
+                    'views'     => [
+                        'verify_form'       => 'auth.verify.verify',
+                        'verify_refresh'    => 'auth.verify.refresh',
                     ],
                 ],
-            ]),
-            m::mock(Mailer::class),
+            ],
+        ]);
+
+        $basemailer = m::mock(BaseMailer::class);
+        $basemailer->shouldReceive('send')->andReturnSelf();
+
+        $mailer = new Mailer($basemailer, $config);
+
+        return [
+            $config,
+            $mailer
         ];
     }
 

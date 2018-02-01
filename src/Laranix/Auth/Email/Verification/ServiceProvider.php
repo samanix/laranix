@@ -18,7 +18,12 @@ class ServiceProvider extends BaseServiceProvider
     public function register()
     {
         $this->app->singleton(Manager::class, function ($app) {
-            return new Manager($app->make('config'), $app->make('mailer'));
+            $config = $app->make('config');
+
+            return new Manager(
+                $config,
+                new Mailer($app->make('mailer'), $config)
+            );
         });
     }
 

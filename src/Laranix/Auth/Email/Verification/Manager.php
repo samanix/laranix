@@ -3,86 +3,45 @@ namespace Laranix\Auth\Email\Verification;
 
 use Illuminate\Contracts\Auth\Authenticatable;
 use Laranix\Auth\User\Token\Manager as BaseManager;
-use Laranix\Auth\User\Token\MailSettings;
 use Laranix\Auth\Email\Events\Updated as EmailUpdated;
 use Laranix\Auth\Email\Verification\Events\Created;
 use Laranix\Auth\Email\Verification\Events\Failed;
 use Laranix\Auth\Email\Verification\Events\Updated;
 use Laranix\Auth\Email\Verification\Events\Verified as VerifiedEvent;
-use Laranix\Auth\Email\Verification\Mail as VerificationMail;
 use Laranix\Auth\User\User;
 use Laranix\Support\Exception\EmailExistsException;
 
 class Manager extends BaseManager
 {
     /**
-     * Created event class name
-     *
-     * @var string
+     * @inheritDoc
+     */
+    protected $configKey = 'verification';
+
+    /**
+     * @inheritDoc
+     */
+    protected $model = Verification::class;
+
+    /**
+     * @inheritDoc
      */
     protected $createdEvent = Created::class;
 
     /**
-     * Updated event class name
-     *
-     * @var string
+     * @inheritDoc
      */
     protected $updatedEvent = Updated::class;
 
     /**
-     * Failed event class name
-     *
-     * @var string
+     * @inheritDoc
      */
     protected $failedEvent = Failed::class;
 
     /**
-     * Completed event class name
-     *
-     * @var string
+     * @inheritDoc
      */
     protected $completedEvent = VerifiedEvent::class;
-
-    /**
-     * Get the class name for the model
-     *
-     * @return string
-     */
-    protected function getModelClass() : string
-    {
-        return Verification::class;
-    }
-
-    /**
-     * Get the config key for the config file
-     *
-     * @return string
-     */
-    protected function getConfigKey() : string
-    {
-        return 'verification';
-    }
-
-    /**
-     * Mail settings class
-     *
-     * @return string
-     */
-    protected function getMailSettingsClass() : string
-    {
-        return MailSettings::class;
-    }
-
-    /**
-     * Mail class
-     *
-     * @return string
-     */
-    protected function getMailTemplateClass() : string
-    {
-        return VerificationMail::class;
-    }
-
 
     /**
      * Update user after token verified

@@ -7,13 +7,30 @@ use Laranix\Support\IO\Str\Str;
 trait ValidatesRequiredProperties
 {
     /**
-     * Validate the property against its allowed types
+     * Validate an array of properties
      *
-     * @param string        $property
-     * @param string|array  $allowed
+     * @param array $properties
+     * @return bool
      * @throws \Laranix\Support\Exception\InvalidTypeException
      */
-    protected function validateProperty(string $property, $allowed)
+    protected function validateProperties(array $properties): bool
+    {
+        foreach ($properties as $property => $allowed) {
+            $this->validateProperty($property, $allowed);
+        }
+
+        return true;
+    }
+
+    /**
+     * Validate the property against its allowed types
+     *
+     * @param string       $property
+     * @param string|array $allowed
+     * @return bool
+     * @throws \Laranix\Support\Exception\InvalidTypeException
+     */
+    protected function validateProperty(string $property, $allowed): bool
     {
         if (is_string($allowed)) {
             $allowed = explode('|', $allowed);
@@ -27,7 +44,7 @@ trait ValidatesRequiredProperties
         $optional = in_array('optional', $allowed);
 
         if ($optional && $this->{$property} === null) {
-            return;
+            return true;
         }
 
         foreach ($allowed as $index => $type) {
@@ -43,6 +60,8 @@ trait ValidatesRequiredProperties
         if (!$valid) {
             $this->throwInvalidTypeException($property, $allowed, $optional);
         }
+
+        return true;
     }
 
     /**

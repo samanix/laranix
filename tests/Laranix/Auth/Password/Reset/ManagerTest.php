@@ -3,7 +3,7 @@ namespace Laranix\Tests\Laranix\Auth\Password\Reset;
 
 use Illuminate\Config\Repository;
 use Illuminate\Contracts\Auth\Authenticatable;
-use Illuminate\Mail\Mailer;
+use Illuminate\Mail\Mailer as BaseMailer;
 use Laranix\Auth\Password\Events\Updated;
 use Laranix\Auth\Password\Reset\Events\Created;
 use Laranix\Auth\Password\Reset\Events\Failed;
@@ -17,6 +17,7 @@ use Mockery as m;
 use Illuminate\Support\Facades\Event;
 use Laranix\Auth\Password\Reset\Events\Reset as ResetEvent;
 use Laranix\Auth\Password\Reset\Events\Updated as UpdatedEvent;
+use Laranix\Auth\Password\Reset\Mailer;
 
 
 /**
@@ -45,6 +46,8 @@ class ManagerTest extends LaranixTestCase
 
     /**
      * Set up
+     *
+     * @throws \Laranix\Support\Exception\InvalidTypeException
      */
     public function setUp()
     {
@@ -134,12 +137,13 @@ class ManagerTest extends LaranixTestCase
 
     /**
      * Test sending mail
+     *
+     * @throws \Laranix\Support\Exception\InvalidTypeException
+     * @throws \Laranix\Support\Exception\NullValueException
      */
     public function testSendMail()
     {
         list($config, $mailer) = $this->getMocks();
-
-        $mailer->shouldReceive('send')->andReturnSelf();
 
         $manager = new Manager($config, $mailer);
 
@@ -260,27 +264,35 @@ class ManagerTest extends LaranixTestCase
 
     /**
      * @return array
+     * @throws \Laranix\Support\Exception\InvalidTypeException
      */
     protected function getMocks()
     {
-        return [
-            new Repository([
-                'app' => [
-                    'key' => 'foo',
-                ],
-                'laranixauth' => [
-                    'password'  => [
-                        'table'     => 'password_reset',
-                        'route'     => 'password.reset',
-                        'mail'      => [
-                            'view'      => 'password_reset',
-                            'subject'   => 'Password Reset Mail',
-                            'markdown'  => false,
-                        ],
+        $config = new Repository([
+            'app' => [
+                'key' => 'foo',
+            ],
+            'laranixauth' => [
+                'password'  => [
+                    'table'     => 'password_reset',
+                    'route'     => 'password.reset',
+                    'mail'      => [
+                        'view'      => 'password_reset',
+                        'subject'   => 'Password Reset Mail',
+                        'markdown'  => false,
                     ],
                 ],
-            ]),
-            m::mock(Mailer::class),
+            ],
+        ]);
+
+        $basemailer = m::mock(BaseMailer::class);
+        $basemailer->shouldReceive('send')->andReturnSelf();
+
+        $mailer = new Mailer($basemailer, $config);
+
+        return [
+            $config,
+            $mailer
         ];
     }
 

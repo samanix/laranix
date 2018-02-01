@@ -4,96 +4,66 @@ namespace Laranix\Auth\User\Token;
 use Carbon\Carbon;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Config\Repository;
-use Illuminate\Contracts\Mail\Mailer;
 use Laranix\Auth\User\User;
 use Laranix\Support\Database\Model;
 use Laranix\Support\Exception\InvalidPermissionException;
 use Laranix\Support\Exception\NullValueException;
 use Laranix\Support\Mail\Mail;
+use Laranix\Support\Mail\Mailer;
 use Laranix\Support\Mail\MailSettings;
+use Laranix\Support\ValidatesRequiredProperties;
 
 abstract class Manager
 {
+    use ValidatesRequiredProperties;
+
     /**
      * @var \Illuminate\Contracts\Config\Repository
      */
     protected $config;
 
     /**
-     * @var \Illuminate\Mail\Mailer
+     * @var \Laranix\Support\Mail\Mailer
      */
     protected $mailer;
 
     /**
-     * Key to use inside the laranixauth config
-     *
      * @var string
      */
     protected $configKey;
 
     /**
-     * The mail options class to use in the mail
-     *
      * @var string
      */
-    protected $mailSettingsClass;
+    protected $model;
 
     /**
      * Created event class name
      *
      * @var string
      */
-    protected $createdEvent = null;
+    protected $createdEvent;
 
     /**
      * Updated event class name
      *
      * @var string
      */
-    protected $updatedEvent = null;
+    protected $updatedEvent;
 
     /**
      * Failed event class name
      *
      * @var string
      */
-    protected $failedEvent = null;
-
+    protected $failedEvent;
 
     /**
      * Completed event class name
      *
      * @var string
      */
-    protected $completedEvent = null;
-
-    /**
-     * Get the class name for the model
-     *
-     * @return string
-     */
-    abstract protected function getModelClass() : string;
-
-    /**
-     * Get the config key for the config file
-     *
-     * @return string
-     */
-    abstract protected function getConfigKey() : string;
-
-    /**
-     * Mail settings class
-     *
-     * @return string
-     */
-    abstract protected function getMailSettingsClass() : string;
-
-    /**
-     * Mail class
-     *
-     * @return string
-     */
-    abstract protected function getMailTemplateClass() : string;
+    protected $completedEvent;
 
     /**
      * Update user after token verified
@@ -116,27 +86,28 @@ abstract class Manager
      * Tokens constructor.
      *
      * @param \Illuminate\Contracts\Config\Repository $config
-     * @param \Illuminate\Contracts\Mail\Mailer       $mailer
+     * @param \Laranix\Support\Mail\Mailer            $mailer
+     * @throws \Laranix\Support\Exception\InvalidTypeException
      */
     public function __construct(Repository $config, Mailer $mailer)
     {
         $this->config   = $config;
         $this->mailer   = $mailer;
 
-        $this->configKey = $this->getConfigKey();
+        $this->validateProperties([
+            'model'         => 'is_a:' . Model::class,
+            'configKey'     => 'string',
+        ]);
     }
 
     /**
      * Get token model
      *
      * @return \Laranix\Auth\User\Token\Token
-     * @throws \Laranix\Support\Exception\NullValueException
      */
-    public function getModel() : Token
+    public function getModel(): Token
     {
-        $model = $this->getModelClass();
-
-        return new $model;
+        return new $this->model;
     }
 
     /**
@@ -216,7 +187,6 @@ abstract class Manager
 
         return $row;
     }
-
 
     /**
      * Fetch token from the database
@@ -356,26 +326,25 @@ abstract class Manager
     /**
      * Send mail
      *
-     * @param \Illuminate\Contracts\Auth\Authenticatable|User                 $user
+     * @param \Illuminate\Contracts\Auth\Authenticatable|User                $user
      * @param \Laranix\Auth\User\Token\Token|\Laranix\Support\Database\Model $token
      * @return \Laranix\Support\Mail\MailSettings
      * @throws \Laranix\Support\Exception\NullValueException
+     * @throws \Exception
      */
     public function sendMail(?Authenticatable $user, ?Token $token) : MailSettings
     {
         if ($user === null || $token === null) {
-            throw new NullValueException("User cannot be null");
+            throw new NullValueException('User cannot be null');
         }
 
         if (!isset($token->email) || filter_var($token->email, FILTER_VALIDATE_EMAIL) === false) {
-            throw new NullValueException("Valid email address must be provided");
+            throw new NullValueException('Valid email address must be provided');
         }
 
-        $options = $this->generateMailOptions($user, $token);
-
-        $this->mailer->send($this->createMail($options));
-
-        return $options;
+        return $this->mailer->send(
+            $this->createMailSettings($user, $token)
+        );
     }
 
     /**
@@ -383,29 +352,18 @@ abstract class Manager
      *
      * @param \Illuminate\Contracts\Auth\Authenticatable|User   $user
      * @param \Laranix\Auth\User\Token\Token|null               $token
-     * @return \Laranix\Support\Mail\MailSettings
-     * @throws \Laranix\Support\Exception\NullValueException
+     * @return array
      */
-    protected function generateMailOptions(?Authenticatable $user, ?Token $token) : MailSettings
+    protected function createMailSettings(Authenticatable $user, Token $token): array
     {
-        if ($user === null || $token === null) {
-            throw new NullValueException('Cannot generate options when null value supplied');
-        }
-
         Carbon::setLocale($this->config->get('app.locale', 'en'));
         $expiry = $this->getTokenExpiry();
 
         $route = $this->generateRoute($token);
 
-
-
-        /** @var MailSettings $options */
-        $options = $this->getMailSettingsClass();
-
-        return new $options([
+        return [
             'to'            => [['email' => $token->email, 'name' => $user->username ?? $token->email]],
 
-            // TODO Default values
             'view'          => $this->config->get("laranixauth.{$this->configKey}.mail.view"),
             'subject'       => $this->config->get("laranixauth.{$this->configKey}.mail.subject"),
             'markdown'      => $this->config->get("laranixauth.{$this->configKey}.mail.markdown", true),
@@ -421,22 +379,17 @@ abstract class Manager
             'humanExpiry'   => $expiry->diffForHumans(null, true),
             'url'           => $route,
             'baseurl'       => substr($route, 0, strpos($route, '?')),
-        ]);
+        ];
     }
 
     /**
      * Create route for mail
      *
-     * @param \Laranix\Auth\User\Token\Token|null             $token
+     * @param \Laranix\Auth\User\Token\Token             $token
      * @return string
-     * @throws \Laranix\Support\Exception\NullValueException
      */
-    protected function generateRoute(?Token $token) : string
+    protected function generateRoute(Token $token) : string
     {
-        if ($token === null) {
-            throw new NullValueException('Cannot generate route when null value supplied');
-        }
-
         $route = route($this->config->get("laranixauth.{$this->configKey}.route"), [], false);
 
         return urlTo($route, ['token' => $token->token, 'email' => $token->email]);
@@ -472,20 +425,6 @@ abstract class Manager
     protected function tokenExpired(Carbon $updated) : bool
     {
         return Carbon::now()->diffInMinutes($updated) > $this->getTokenLifetime();
-    }
-
-    /**
-     * Create the email class
-     *
-     * @param \Laranix\Support\Mail\MailSettings $options
-     * @return \Laranix\Support\Mail\Mail
-     * @throws \Laranix\Support\Exception\NullValueException
-     */
-    protected function createMail(MailSettings $options) : Mail
-    {
-        $mail = $this->getMailTemplateClass();
-
-        return new $mail($options);
     }
 
     /**

@@ -1,7 +1,6 @@
 <?php
 namespace Laranix\Tests\Laranix\Support;
 
-use Hamcrest\Core\Set;
 use Laranix\Support\Exception\InvalidTypeException;
 use Laranix\Tests\LaranixTestCase;
 use Laranix\Tests\Laranix\Support\Stubs\Settings;
