@@ -55,10 +55,12 @@ abstract class Mailer
      * @return \Laranix\Support\Mail\MailSettings
      * @throws \Exception
      */
-    public function send($data): ?MailSettings
+    public function send($data = null): ?MailSettings
     {
         try {
             $settings = $this->createSettings($data);
+
+            $settings->hasRequiredSettings();
 
             $this->mailer->send(
                 $this->createMailable($settings)
@@ -93,8 +95,12 @@ abstract class Mailer
      * @param mixed $data
      * @return \Laranix\Support\Mail\MailSettings
      */
-    protected function createSettings($data): MailSettings
+    protected function createSettings($data = null): MailSettings
     {
+        if ($data === null && method_exists($this, 'getPayload')) {
+            $data = $this->getPayload();
+        }
+
         if ($data instanceof MailSettings) {
             return $data;
         }
