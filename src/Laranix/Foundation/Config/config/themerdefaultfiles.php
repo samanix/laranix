@@ -68,7 +68,7 @@ return [
             ],
         ],
 
-        // Recaptcha script
+        // Recaptcha scripts
         'recaptcha' => [
             [
                 'key'       => 'recaptcha',
