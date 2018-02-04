@@ -87,6 +87,10 @@ class Controller extends BaseController
         $this->loadThemerDefaultFiles($this->config);
         $this->loadGlobalViewVariables($this->config);
 
+        if (method_exists($this, 'prepareExtraForResponse')) {
+            $this->prepareExtraForResponse();
+        }
+
         $this->preparedForResponse = true;
     }
 

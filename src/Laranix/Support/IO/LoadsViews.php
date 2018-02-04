@@ -34,6 +34,10 @@ trait LoadsViews
         }
 
         $this->share($share);
+
+        if (method_exists($this, 'loadExtraGlobalViewVariables')) {
+            $this->loadExtraGlobalViewVariables();
+        }
     }
 
     /**
