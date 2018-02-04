@@ -4,9 +4,10 @@ namespace Laranix\Support\Mail;
 use Illuminate\Contracts\Config\Repository;
 use Illuminate\Contracts\Mail\Mailer as MailerContract;
 use Illuminate\Support\Facades\Log;
+use Laranix\Support\PropertyValidator;
 use Laranix\Support\ValidatesRequiredProperties;
 
-abstract class Mailer
+abstract class Mailer implements PropertyValidator
 {
     use ValidatesRequiredProperties;
 

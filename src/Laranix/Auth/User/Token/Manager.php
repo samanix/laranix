@@ -10,9 +10,10 @@ use Laranix\Support\Exception\InvalidPermissionException;
 use Laranix\Support\Exception\NullValueException;
 use Laranix\Support\Mail\Mailer;
 use Laranix\Support\Mail\MailSettings;
+use Laranix\Support\PropertyValidator;
 use Laranix\Support\ValidatesRequiredProperties;
 
-abstract class Manager
+abstract class Manager implements PropertyValidator
 {
     use ValidatesRequiredProperties;
 

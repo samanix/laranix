@@ -1,7 +1,7 @@
 <?php
 namespace Laranix\Support;
 
-abstract class Settings
+abstract class Settings implements PropertyValidator
 {
     use ValidatesRequiredProperties;
 

@@ -13,7 +13,7 @@ trait ValidatesRequiredProperties
      * @return bool
      * @throws \Laranix\Support\Exception\InvalidTypeException
      */
-    protected function validateProperties(array $properties): bool
+    public function validateProperties(array $properties): bool
     {
         foreach ($properties as $property => $allowed) {
             $this->validateProperty($property, $allowed);
@@ -30,7 +30,7 @@ trait ValidatesRequiredProperties
      * @return bool
      * @throws \Laranix\Support\Exception\InvalidTypeException
      */
-    protected function validateProperty(string $property, $allowed): bool
+    public function validateProperty(string $property, $allowed): bool
     {
         if (is_string($allowed)) {
             $allowed = explode('|', $allowed);
