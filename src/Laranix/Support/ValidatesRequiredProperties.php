@@ -43,7 +43,7 @@ trait ValidatesRequiredProperties
         $valid = false;
         $optional = in_array('optional', $allowed);
 
-        if ($optional && $this->{$property} === null) {
+        if ($optional && (!isset($this->{$property}) || $this->{$property} === null)) {
             return true;
         }
 
