@@ -42,7 +42,11 @@
      "laravel": {
         "providers": [
           "Laranix\\Auth\\Email\\Verification\\ServiceProvider",
+          "Laranix\\Auth\\Group\\ServiceProvider",
           "Laranix\\Auth\\Password\\Reset\\ServiceProvider",
+          "Laranix\\Auth\\User\\Cage\\ServiceProvider",
+          "Laranix\\Auth\\User\\Groups\\ServiceProvider",
+          "Laranix\\Auth\\User\\ServiceProvider",
           "Laranix\\Auth\\ServiceProvider"
         ]
     }
