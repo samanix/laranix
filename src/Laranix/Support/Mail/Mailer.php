@@ -98,8 +98,8 @@ abstract class Mailer implements PropertyValidator
      */
     protected function createSettings($data = null): MailSettings
     {
-        if ($data === null && method_exists($this, 'getPayload')) {
-            $data = $this->getPayload();
+        if (method_exists($this, 'getPayload')) {
+            $data = $this->getPayload($data);
         }
 
         if ($data instanceof MailSettings) {
