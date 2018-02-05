@@ -16,7 +16,7 @@
     }
   ],
   "require": {
-    "php": ">=7.1.0",
+    "php": "~7.1.0",
     "laranix/antispam": "~4.0",
     "laranix/support": "~4.0",
     "laranix/themer": "~4.0",

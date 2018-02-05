@@ -16,7 +16,7 @@
     }
   ],
   "require": {
-    "php": ">=7.1.0",
+    "php": "~7.1.0",
     "illuminate/auth": "5.5.*",
     "illuminate/console": "5.5.*",
     "illuminate/contracts": "5.5.*",
@@ -42,11 +42,7 @@
      "laravel": {
         "providers": [
           "Laranix\\Auth\\Email\\Verification\\ServiceProvider",
-          "Laranix\\Auth\\Group\\ServiceProvider",
           "Laranix\\Auth\\Password\\Reset\\ServiceProvider",
-          "Laranix\\Auth\\User\\Cage\\ServiceProvider",
-          "Laranix\\Auth\\User\\Groups\\ServiceProvider",
-          "Laranix\\Auth\\User\\ServiceProvider",
           "Laranix\\Auth\\ServiceProvider"
         ]
     }
