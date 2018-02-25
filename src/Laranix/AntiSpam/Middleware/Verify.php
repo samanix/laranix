@@ -9,13 +9,7 @@ use Laranix\Support\Request\Middleware;
 class Verify extends Middleware
 {
     /**
-     * Process middleware.
-     * Write this as you would a normal handle method for laravel middleware
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param \Closure                 $next
-     * @param bool                     $recaptcha
-     * @return mixed
+     * @inheritDoc
      */
     protected function before($request, Closure $next)
     {
