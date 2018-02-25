@@ -9,23 +9,6 @@ use Laranix\Support\Request\Middleware;
 class Verify extends Middleware
 {
     /**
-     * Handle request.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param \Closure                 $next
-     * @param bool                     $recaptcha
-     * @return mixed
-     */
-    public function handle($request, Closure $next, bool $recaptcha = true)
-    {
-        if ($this->shouldExecute($request)) {
-            return $this->before($request, $next, $recaptcha);
-        }
-
-        return $next($request);
-    }
-
-    /**
      * Process middleware.
      * Write this as you would a normal handle method for laravel middleware
      *
@@ -34,7 +17,7 @@ class Verify extends Middleware
      * @param bool                     $recaptcha
      * @return mixed
      */
-    protected function before($request, Closure $next, bool $recaptcha = true)
+    protected function before($request, Closure $next)
     {
         $sequence   = $this->app->make(Sequence::class);
 
@@ -42,7 +25,7 @@ class Verify extends Middleware
             return $sequence->redirect();
         }
 
-        if ($recaptcha) {
+        if ($request->session()->pull('__recaptcha_active') === true) {
             $recaptcha = $this->app->make(Recaptcha::class);
 
             if (!$recaptcha->verify()) {

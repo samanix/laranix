@@ -104,12 +104,17 @@ class Controller extends BaseController
      */
     protected function prepareForFormResponse(bool $withRecaptcha = true, ...$scripts)
     {
+        $app = app();
+
         if ($withRecaptcha) {
-            $recaptcha = app()->make(Recaptcha::class);
+            $recaptcha = $app->make(Recaptcha::class);
+
+            $app->make('session')
+                ->put('__recaptcha_active', true);
         }
 
         $this->share([
-            'sequence'  => app()->make(Sequence::class),
+            'sequence'  => $app->make(Sequence::class),
             'recaptcha' => $recaptcha ?? null,
         ]);
 
