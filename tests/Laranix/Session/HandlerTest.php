@@ -162,6 +162,41 @@ class HandlerTest extends LaranixTestCase
     }
 
     /**
+     * Test writing with anonymised IP
+     *
+     * @throws \Laranix\Support\Exception\NullValueException
+     */
+    public function testWriteSessionWithAnonymousIp()
+    {
+        $data = ['bar' => 'baz', 'url' => 'http://foobar.com'];
+
+        $handler = $this->createHandlerAnonIp('1.1.1.100');
+
+        $this->assertTrue($handler->write(100, $data));
+
+        $this->assertDatabaseHas(config('session.table'), [
+           'id'     => 100,
+           'ipv4'   => ip2long('1.1.1.0'),
+        ]);
+    }
+
+     /**
+     * Test writing with anonymised IP
+     *
+     * @throws \Laranix\Support\Exception\NullValueException
+     */
+    public function testReadSessionWithAnonymousIp()
+    {
+        $data = ['bar' => 'baz', 'url' => 'http://foobar.com'];
+
+        $handler = $this->createHandlerAnonIp('1.1.1.100');
+
+        $handler->write(100, $data);
+
+        $this->assertSame(serialize($data), $handler->read(100));
+    }
+
+    /**
      * Test get model
      */
     public function testGetModel()
@@ -186,6 +221,26 @@ class HandlerTest extends LaranixTestCase
         return new Handler(new Repository([
             'session' => [
                 'lifetime' => 120,
+            ],
+        ]), $request);
+    }
+
+    /**
+     * @param string $ip
+     * @return \Laranix\Session\Handler
+     */
+    protected function createHandlerAnonIp($ip = '1.1.1.0')
+    {
+        $request = m::mock(Request::class);
+
+        $request->shouldReceive('getClientIp')->andReturn($ip);
+        $request->shouldReceive('user')->andReturnNull();
+        $request->shouldReceive('server')->withAnyArgs()->andReturn('agent');
+
+        return new Handler(new Repository([
+            'session' => [
+                'lifetime' => 120,
+                'anonymise_ip' => true,
             ],
         ]), $request);
     }

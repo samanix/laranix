@@ -24,6 +24,13 @@ class Handler implements SessionHandlerInterface
     protected $request;
 
     /**
+     * GDPR Compliance
+     *
+     * @var bool
+     */
+    protected $anonymiseIp = false;
+
+    /**
      * @var \Laranix\Session\Session
      */
     protected $session;
@@ -43,6 +50,8 @@ class Handler implements SessionHandlerInterface
     {
         $this->config = $config;
         $this->request = $request;
+
+        $this->anonymiseIp = $this->config->get('session.anonymise_ip', false);
     }
 
     /**
@@ -66,7 +75,7 @@ class Handler implements SessionHandlerInterface
      */
     public function read($session_id)
     {
-        $this->session = $this->readFromDatabase($session_id, $this->request->getClientIp());
+        $this->session = $this->readFromDatabase($session_id, $this->getClientIp());
 
         if ($this->session === null || $this->expired($this->session) || !isset($this->session->data)) {
             return null;
@@ -98,6 +107,7 @@ class Handler implements SessionHandlerInterface
 
     /**
      * {@inheritdoc}
+     * @throws \Laranix\Support\Exception\NullValueException
      */
     public function write($session_id, $data)
     {
@@ -119,8 +129,9 @@ class Handler implements SessionHandlerInterface
     /**
      * Perform an insert operation on the session ID.
      *
-     * @param  array   $payload
+     * @param  array $payload
      * @return \Laranix\Support\Database\Model
+     * @throws \Laranix\Support\Exception\NullValueException
      */
     protected function performInsert(array $payload)
     {
@@ -214,11 +225,30 @@ class Handler implements SessionHandlerInterface
      */
     protected function getLongIp($ip = null) : int
     {
-        if ($ip === null) {
-            $ip = $this->request->getClientIp();
+        $ip = $this->getClientIp($ip);
+
+        return ip2long($ip);
+    }
+
+    /**
+     * Anonymise IP for GDPR compliance if required
+     *
+     * @param null|string $ip
+     * @return string
+     */
+    protected function getClientIp($ip = null): string
+    {
+        $ip = $ip ?? $this->request->getClientIp();
+
+        if (is_int($ip)) {
+            $ip = long2ip($ip);
         }
 
-        return is_int($ip) ? $ip : ip2long($ip);
+        if ($this->anonymiseIp) {
+            return substr($ip, 0, strrpos($ip, '.')) . '.0';
+        }
+
+        return $ip;
     }
 
     /**
