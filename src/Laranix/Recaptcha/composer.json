@@ -1,6 +1,6 @@
 {
-  "name": "laranix/antispam",
-  "description": "Laranix AntiSpam package",
+  "name": "laranix/recaptcha",
+  "description": "Laranix Recaptcha package",
   "minimum-stability": "dev",
   "prefer-stable": true,
   "license": "MIT",
@@ -20,12 +20,11 @@
     "guzzlehttp/guzzle": "~6.0",
     "illuminate/contracts": "5.5.*",
     "illuminate/http": "5.5.*",
-    "illuminate/support": "5.5.*",
-    "laranix/support": "~4.0"
+    "illuminate/support": "5.5.*"
   },
   "autoload": {
     "psr-4": {
-      "Laranix\\AntiSpam\\": ""
+      "Laranix\\Recaptcha\\": ""
     }
   },
   "config": {
@@ -34,12 +33,8 @@
   "extra": {
      "laravel": {
         "providers": [
-          "Laranix\\AntiSpam\\ServiceProvider"
-        ],
-        "aliases": {
-          "Recaptcha": "Laranix\\AntiSpam\\Recaptcha\\Facade",
-          "Sequence": "Laranix\\AntiSpam\\Sequence\\Facade"
-        }
+          "Laranix\\Recaptcha\\ServiceProvider"
+        ]
     }
   }
 }

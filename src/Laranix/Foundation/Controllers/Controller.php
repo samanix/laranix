@@ -6,8 +6,6 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Laranix\AntiSpam\Sequence\Sequence;
-use Laranix\AntiSpam\Recaptcha\Recaptcha;
 use Laranix\Support\IO\LoadsViews;
 use Laranix\Support\IO\Url\Url;
 use Laranix\Themer\LoadsThemer;
@@ -97,27 +95,13 @@ class Controller extends BaseController
     /**
      * Add parts required for rendering a form
      *
-     * @param bool                          $withRecaptcha
+     * @param bool                          $recaptcha
      * @param array|ThemerFileSettings|null $scripts
      * @throws \Laranix\Support\Exception\InvalidInstanceException
      * @throws \Laranix\Support\Exception\InvalidTypeException
      */
-    protected function prepareForFormResponse(bool $withRecaptcha = true, ...$scripts)
+    protected function prepareForFormResponse(bool $recaptcha = true, ...$scripts)
     {
-        $app = app();
-
-        if ($withRecaptcha) {
-            $recaptcha = $app->make(Recaptcha::class);
-
-            $app->make('session')
-                ->put('__recaptcha_active', true);
-        }
-
-        $this->share([
-            'sequence'  => $app->make(Sequence::class),
-            'recaptcha' => $recaptcha ?? null,
-        ]);
-
-        $this->loadThemerDefaultFormFiles($this->config, $recaptcha ?? null, ...$scripts);
+        $this->loadThemerDefaultFormFiles($this->config, $recaptcha, ...$scripts);
     }
 }
