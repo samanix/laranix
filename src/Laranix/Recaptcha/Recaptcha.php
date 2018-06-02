@@ -8,6 +8,8 @@ use Illuminate\Contracts\View\Factory as ViewFactory;
 
 class Recaptcha
 {
+    const SESSION_NAME = '__recaptcha_active';
+
     /**
      * @var \Illuminate\Contracts\Config\Repository
      */
@@ -109,5 +111,34 @@ class Recaptcha
                 $data
             )
         ];
+    }
+
+    /**
+     * Assign in status that recaptcha is active
+     */
+    public function activate()
+    {
+        $this->request->session()
+                      ->put(self::SESSION_NAME, true);
+    }
+
+    /**
+     * Deactivate recaptcha being active
+     */
+    public function deactivate()
+    {
+        $this->request->session()
+                      ->put(self::SESSION_NAME, true);
+    }
+
+    /**
+     * Check if recaptcha active
+     *
+     * @return bool
+     */
+    public function isActive(): bool
+    {
+        return $this->request->session()
+                             ->get(self::SESSION_NAME, false) === true;
     }
 }
