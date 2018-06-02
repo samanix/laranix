@@ -22,7 +22,6 @@
     "illuminate/filesystem": "5.5.*",
     "illuminate/http": "5.5.*",
     "illuminate/support": "5.5.*",
-    "laranix/antispam": "~4.0",
     "laranix/support": "~4.0"
   },
   "autoload": {

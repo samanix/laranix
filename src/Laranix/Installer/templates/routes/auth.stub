@@ -7,7 +7,7 @@ Route::name('register.')->namespace('Auth')->prefix('register')->middleware('gue
 
     Route::post('/', 'Register@store')
          ->name('store')
-         ->middleware('throttle:10,10', 'antispam');
+         ->middleware('throttle:10,10');
 
     Route::get('success', 'Register@success')
          ->name('success');
@@ -21,7 +21,7 @@ Route::namespace('Auth')->group(function () {
 
     Route::post('login', 'Login@doLogin')
          ->name('login')
-         ->middleware('throttle:10,10', 'guest', 'antispam');
+         ->middleware('throttle:10,10', 'guest');
 
     Route::post('logout', 'Login@doLogout')
          ->name('logout')
@@ -36,7 +36,7 @@ Route::name('password.')->namespace('Auth\\Password\\Reset')->prefix('password')
 
      Route::post('/forgot', 'Forgot@store')
           ->name('forgot.store')
-          ->middleware('throttle:10,10', 'antispam');
+          ->middleware('throttle:10,10');
 
      // Reset
      Route::get('/reset', 'Reset@show')
@@ -44,7 +44,7 @@ Route::name('password.')->namespace('Auth\\Password\\Reset')->prefix('password')
 
      Route::post('/reset', 'Reset@update')
           ->name('reset')
-          ->middleware('throttle:10,10', 'antispam');
+          ->middleware('throttle:10,10');
 
      Route::get('/reset/error', 'Reset@error')
           ->name('reset.error');
@@ -58,14 +58,14 @@ Route::name('email.verify.')->namespace('Auth\\Email\\Verification')->prefix('em
 
     Route::post('verify', 'Verification@update')
          ->name('update')
-         ->middleware('throttle:10,10', 'antispam');
+         ->middleware('throttle:10,10');
 
     Route::get('verify/refresh', 'Verification@create')
          ->name('create');
 
     Route::post('verify/refresh', 'Verification@store')
          ->name('store')
-         ->middleware('throttle:10,10', 'antispam');
+         ->middleware('throttle:10,10');
 
     Route::get('verify/result', 'Verification@result')
          ->name('result');

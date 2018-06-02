@@ -22,10 +22,10 @@
     "laravel/framework": "5.5.*"
   },
   "replace": {
-    "laranix/antispam": "self.version",
     "laranix/auth": "self.version",
     "laranix/foundation": "self.version",
     "laranix/installer": "self.version",
+    "laranix/recaptcha": "self.version",
     "laranix/session": "self.version",
     "laranix/support": "self.version",
     "laranix/themer": "self.version",
@@ -58,7 +58,6 @@
   "extra": {
      "laravel": {
         "providers": [
-          "Laranix\\AntiSpam\\ServiceProvider",
           "Laranix\\Auth\\Email\\Verification\\ServiceProvider",
           "Laranix\\Auth\\Group\\ServiceProvider",
           "Laranix\\Auth\\Password\\Reset\\ServiceProvider",
@@ -69,13 +68,12 @@
           "Laranix\\Foundation\\Config\\ServiceProvider",
           "Laranix\\Foundation\\Support\\ServiceProvider",
           "Laranix\\Installer\\ServiceProvider",
+          "Laranix\\Recaptcha\\ServiceProvider",
           "Laranix\\Session\\ServiceProvider",
           "Laranix\\Themer\\ServiceProvider",
           "Laranix\\Tracker\\ServiceProvider"
         ],
         "aliases": {
-          "Recaptcha": "Laranix\\AntiSpam\\Recaptcha\\Facade",
-          "Sequence": "Laranix\\AntiSpam\\Sequence\\Facade",
           "Images": "Laranix\\Themer\\Image\\Facade",
           "Scripts": "Laranix\\Themer\\Script\\Facade",
           "Styles": "Laranix\\Themer\\Style\\Facade"

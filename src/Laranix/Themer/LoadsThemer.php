@@ -1,9 +1,7 @@
 <?php
 namespace Laranix\Themer;
 
-use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Config\Repository;
-use Laranix\AntiSpam\Recaptcha\Recaptcha;
 use Laranix\Themer\Scripts\Scripts;
 use Laranix\Themer\Styles\Styles;
 use Laranix\Themer\Images\Images;
@@ -60,18 +58,18 @@ trait LoadsThemer
      * Load the default themer files
      *
      * @param \Illuminate\Contracts\Config\Repository    $config
-     * @param \Laranix\AntiSpam\Recaptcha\Recaptcha|null $recaptcha
+     * @param bool                                       $recaptcha
      * @param array                                      $scripts
      * @throws \Laranix\Support\Exception\InvalidInstanceException
      * @throws \Laranix\Support\Exception\InvalidTypeException
      */
-    protected function loadThemerDefaultFormFiles(Repository $config, ?Recaptcha $recaptcha, ...$scripts)
+    protected function loadThemerDefaultFormFiles(Repository $config, bool $recaptcha = true, ...$scripts)
     {
         $this->loadStylesheets(...$config->get('themerdefaultfiles.styles.form', []));
 
         $this->loadScripts(...array_merge($config->get('themerdefaultfiles.scripts.form', []), $scripts));
 
-        if ($recaptcha !== null && $recaptcha->enabled()) {
+        if ($recaptcha && $config->get('recaptcha.enabled', true) === true) {
             $this->loadScript(...$config->get('themerdefaultfiles.scripts.recaptcha', []));
         }
     }

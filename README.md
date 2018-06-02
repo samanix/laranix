@@ -32,9 +32,6 @@ Laranix is open-sourced software licensed under the [MIT license](http://opensou
 
 
 ## Features
-### AntiSpam
-Provides invisible recaptcha entry on forms (sign up with Google), as well as a sequence ID field, which will prevent the form being submitted twice.
-
 ### Auth
 Custom auth package built on top of Laravels own, providing:
 
@@ -49,6 +46,9 @@ Provides base packages and configs for your app.
 
 ### Installer
 Installs, publishes and copies files for Laranix to your app.
+
+### Recaptcha
+Provides invisible recaptcha entry on forms. Sign up with Google.
 
 ### Session
 Adds IP locking to sessions, not required if you don't want to use it.
@@ -186,11 +186,9 @@ Add the following to your `App\Providers\EventServiceProvider.php` inside the `$
 ***You can always register your own listeners as well as or instead of the default provided.***
 
 ### Middleware
-Open `app/Http/Kernel.php` and add the following to `$routeMiddleware`:
+Open `app/Http/Kernel.php` and add the following to `$middleware`:
 
-    'antispam'  => \Laranix\AntiSpam\Middleware\Verify::class,
-
-Then, add `\Laranix\Tracker\Middleware\Flush::class` to the `$middleware` array.
+    \Laranix\Tracker\Middleware\Flush::class
 
 ### Configure
 Open the `config\auth.php` and edit the `providers` array, add:
@@ -245,9 +243,9 @@ Provides links to various social media outlets, you are free to add your own.
 
 Add and configure default user groups for when the database is seeded.
 
-***antispam.php***
+***recaptcha.php***
 
-Configures AntiSpam components.
+Configures Recaptcha component.
 
 ***tracker.php***
 
