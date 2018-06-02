@@ -9,6 +9,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Laranix\Support\IO\LoadsViews;
 use Laranix\Support\IO\Url\Url;
 use Laranix\Themer\LoadsThemer;
+use Laranix\Recaptcha\Recaptcha;
 use Laranix\Themer\ResourceSettings as ThemerFileSettings;
 
 class Controller extends BaseController
@@ -95,13 +96,24 @@ class Controller extends BaseController
     /**
      * Add parts required for rendering a form
      *
-     * @param bool                          $recaptcha
+     * @param bool                          $useRecaptcha
      * @param array|ThemerFileSettings|null $scripts
      * @throws \Laranix\Support\Exception\InvalidInstanceException
      * @throws \Laranix\Support\Exception\InvalidTypeException
      */
-    protected function prepareForFormResponse(bool $recaptcha = true, ...$scripts)
+    protected function prepareForFormResponse(bool $useRecaptcha = true, ...$scripts)
     {
-        $this->loadThemerDefaultFormFiles($this->config, $recaptcha, ...$scripts);
+        $app = app();
+
+        if ($useRecaptcha) {
+            /** @var Recaptcha $recaptcha */
+            $recaptcha = $app->make(Recaptcha::class);
+
+            $recaptcha->activate();
+        }
+
+        $this->share('recaptcha', $recaptcha);
+
+        $this->loadThemerDefaultFormFiles($this->config, $recaptcha ?? null, ...$scripts);
     }
 }
