@@ -63,7 +63,7 @@ class Recaptcha implements Rule
     }
 
     /**
-     * Check if enabled
+     * Check if enabled and active
      *
      * @return bool
      */
@@ -72,6 +72,6 @@ class Recaptcha implements Rule
         /** @var \Laranix\Recaptcha\Recaptcha $recaptcha */
         $recaptcha = app(RecaptchaService::class);
 
-        return $recaptcha->enabled();
+        return $recaptcha->enabled() && $recaptcha->isActive();
     }
 }
